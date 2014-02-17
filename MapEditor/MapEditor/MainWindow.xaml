@@ -1,0 +1,75 @@
+﻿<Window x:Class="MapEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MapEditor.GUIElements"
+        Title="MainWindow" Height="385.404" Width="749.567">
+    <Window.Resources>
+        <DataTemplate x:Key="ColorDataTemplate">
+            <Grid Width="108">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Grid.ColumnSpan="1" Height="20" Margin="0,0,1,0" Stroke="Black" Fill="{Binding Color}" VerticalAlignment="Top" Width="Auto"/>
+                <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Center"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Loaded="Grid_Loaded">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="13"/>
+            <ColumnDefinition Width="147"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Margin="10,10,0,0" HorizontalScrollBarVisibility="Visible">
+            <StackPanel x:Name="MapHolder" Background="#FFACB9F1">
+                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Background="#FFDBF14C" x:Name="MapRowTemplate">
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                    <controls:MapTile></controls:MapTile>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,68"/>
+        <TabControl Margin="1,10,0,0" Grid.Column="2">
+            <TabItem Header="Tiles">
+                <Grid Background="#FFE5E5E5">
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Options">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="23"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label Content="Border Options:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <CheckBox x:Name="CheckDisplayBorder" Content="Display" HorizontalAlignment="Center" Grid.Row="1" IsChecked="{Binding DisplayBorder}" VerticalAlignment="Center" />
+                    <ComboBox x:Name="DropColor" Grid.Row="3" Width="Auto" ItemTemplate="{DynamicResource ColorDataTemplate}" SelectedIndex="0" VerticalAlignment="Center" />
+                    <Label Content="Border Color:" HorizontalAlignment="Center" VerticalAlignment="Center" Height="24" Width="94" Grid.Row="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="109*"/>
+                <ColumnDefinition Width="262*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Debug: AddRow" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Width="129" Click="Button_Click_1" Height="22" RenderTransformOrigin="-0.676,0.233" Grid.Column="1"/>
+            <Slider VerticalAlignment="Center" Minimum="5" Maximum="50" x:Name="SlideSize" Value="{Binding Size}"/>
+            <Button Content="Debug: Load JSON" Grid.Column="1" HorizontalAlignment="Left" Margin="168,0,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+        </Grid>
+
+    </Grid>
+</Window>
