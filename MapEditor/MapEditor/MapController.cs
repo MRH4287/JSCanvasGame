@@ -16,8 +16,11 @@ namespace MapEditor
     {
         StackPanel MapHolder = null;
 
-        private MapTile selected = null;
 
+        public Dictionary<string, ElementDefinition> Elements { get; private set; }
+
+        private MapTile selected = null;
+        
         public MapController(StackPanel holder)
         {
             this.MapHolder = holder;
@@ -37,9 +40,9 @@ namespace MapEditor
 
                 var elements = ElementDefinition.Create(content);
 
-                var elementDict = elements.ToDictionary(el => el.ID);
+                Elements = elements.ToDictionary(el => el.ID);
 
-
+                
                 //----------------
 
                 info = new FileInfo(path + "map.json");
@@ -48,10 +51,23 @@ namespace MapEditor
 
                 reader.Close();
 
-                var map = Tile.Create(content, elementDict);
+                var map = Tile.Create(content, Elements);
 
-                
 
+                foreach (var row in map)
+                {
+                    var rowContainer = getRowContainer();
+
+                    foreach (var collom in row)
+                    {
+                        var tile = MapTile.Create(collom);
+                        tile.MouseDown += tile_MouseDown;
+                        rowContainer.Children.Add(tile);
+
+                    }
+                    MapHolder.Children.Add(rowContainer);
+
+                }
 
 
             }

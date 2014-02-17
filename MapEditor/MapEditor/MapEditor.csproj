@@ -72,6 +72,7 @@
     <Compile Include="Elements\Tile.cs" />
     <Compile Include="GUIElements\ColorDataModel.cs" />
     <Compile Include="GUIElements\MapTile.cs" />
+    <Compile Include="GUIElements\TileImage.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

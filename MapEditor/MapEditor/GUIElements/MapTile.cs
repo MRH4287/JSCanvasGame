@@ -234,6 +234,8 @@ namespace MapEditor.GUIElements
             }
         }
 
+        public Tile Tile;
+
 
         public MapTile()
         {
@@ -269,6 +271,24 @@ namespace MapEditor.GUIElements
 
         public static MapTile Create(Tile input)
         {
+            MapTile output = new MapTile();
+            output.Tile = input;
+
+            output.BottomLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Bottom].ImageURI));
+
+            if (input[ElementLevel.Middle] != null)
+            {
+                output.MiddleLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Middle].ImageURI));
+            }
+
+            if (input[ElementLevel.Top] != null)
+            {
+                output.TopLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Top].ImageURI));
+            }
+
+
+
+            return output;
 
         }
 

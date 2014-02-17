@@ -96,6 +96,20 @@ namespace MapEditor
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             controller.LoadConfig("./map/");
+
+            this.TileHolder.Children.Clear();
+
+            foreach (var item in controller.Elements)
+            {
+                this.TileHolder.Children.Add(new TileImage(item.Value));
+            }
+
+
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            this.MapHolder.Children.Clear();
         }
     }
 }

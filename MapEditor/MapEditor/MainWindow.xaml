@@ -41,9 +41,9 @@
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,68"/>
         <TabControl Margin="1,10,0,0" Grid.Column="2">
             <TabItem Header="Tiles">
-                <Grid Background="#FFE5E5E5">
+                <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal">
                     
-                </Grid>
+                </WrapPanel>
             </TabItem>
             <TabItem Header="Options">
                 <Grid>
@@ -69,6 +69,7 @@
             <Button Content="Debug: AddRow" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Width="129" Click="Button_Click_1" Height="22" RenderTransformOrigin="-0.676,0.233" Grid.Column="1"/>
             <Slider VerticalAlignment="Center" Minimum="5" Maximum="50" x:Name="SlideSize" Value="{Binding Size}"/>
             <Button Content="Debug: Load JSON" Grid.Column="1" HorizontalAlignment="Left" Margin="168,0,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+            <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Left" Margin="334,1,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
         </Grid>
 
     </Grid>
