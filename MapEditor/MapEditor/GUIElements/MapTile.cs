@@ -17,11 +17,71 @@ namespace MapEditor.GUIElements
 {
     class MapTile : ContentControl
     {
-        private static double _size = 25;
+        private static double _size = 30;
         private static Thickness _thickness = new Thickness(0);
         private static Brush _borderBrush = Brushes.Black;
 
+        private static Visibility _visibilityBottom = Visibility.Visible;
+        private static Visibility _visibilityMiddle = Visibility.Visible;
+        private static Visibility _visibilityTop = Visibility.Visible;
+
         #region Static
+
+
+        public static Visibility GlobalVisibilityBottom
+        {
+            get
+            {
+                return _visibilityBottom;
+            }
+            set
+            {
+                _visibilityBottom = value;
+                if (GlobalVisibilityBottomChanged != null)
+                {
+                    GlobalVisibilityBottomChanged(new object(), new EventArgs());
+                }
+            }
+        }
+
+        public static event EventHandler GlobalVisibilityBottomChanged;
+
+        public static Visibility GlobalVisibilityMiddle
+        {
+            get
+            {
+                return _visibilityMiddle;
+            }
+            set
+            {
+                _visibilityMiddle = value;
+                if (GlobalVisibilityMiddleChanged != null)
+                {
+                    GlobalVisibilityMiddleChanged(new object(), new EventArgs());
+                }
+            }
+        }
+
+        public static event EventHandler GlobalVisibilityMiddleChanged;
+
+        public static Visibility GlobalVisibilityTop
+        {
+            get
+            {
+                return _visibilityTop;
+            }
+            set
+            {
+                _visibilityTop = value;
+                if (GlobalVisibilityTopChanged != null)
+                {
+                    GlobalVisibilityTopChanged(new object(), new EventArgs());
+                }
+            }
+        }
+
+        public static event EventHandler GlobalVisibilityTopChanged;
+
 
  
         public static double GlobalSize 
@@ -137,9 +197,6 @@ namespace MapEditor.GUIElements
         #region Other Dependency Properties
 
 
-
-
-
         public static Visibility GetSelectionIndicatorVisible(DependencyObject obj)
         {
             return (Visibility)obj.GetValue(SelectionIndicatorVisibleProperty);
@@ -155,11 +212,67 @@ namespace MapEditor.GUIElements
             DependencyProperty.RegisterAttached("SelectionIndicatorVisible", typeof(Visibility), typeof(MapTile), new PropertyMetadata(Visibility.Collapsed));
 
 
+
+
+        public static Visibility GetVisibilityBottom(DependencyObject obj)
+        {
+            return (Visibility)obj.GetValue(VisibilityBottomProperty);
+        }
+
+        public static void SetVisibilityBottom(DependencyObject obj, Visibility value)
+        {
+            obj.SetValue(VisibilityBottomProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for VisibilityBottom.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VisibilityBottomProperty =
+            DependencyProperty.RegisterAttached("VisibilityBottom", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityBottom));
+
+
+
+
+
+        public static Visibility GetVisibilityMiddle(DependencyObject obj)
+        {
+            return (Visibility)obj.GetValue(VisibilityMiddleProperty);
+        }
+
+        public static void SetVisibilityMiddle(DependencyObject obj, Visibility value)
+        {
+            obj.SetValue(VisibilityMiddleProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for VisibilityMiddle.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VisibilityMiddleProperty =
+            DependencyProperty.RegisterAttached("VisibilityMiddle", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityMiddle));
+
+
+
+
+        public static Visibility GetVisibilityTop(DependencyObject obj)
+        {
+            return (Visibility)obj.GetValue(VisibilityTopProperty);
+        }
+
+        public static void SetVisibilityTop(DependencyObject obj, Visibility value)
+        {
+            obj.SetValue(VisibilityTopProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for VisibilityTop.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty VisibilityTopProperty =
+            DependencyProperty.RegisterAttached("VisibilityTop", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityTop));
+
+        
+
+
+
         #endregion
 
 
         #endregion
 
+        #region Properties
 
         public ImageSource BottomLayerImage
         {
@@ -236,6 +349,82 @@ namespace MapEditor.GUIElements
 
         public Tile Tile;
 
+        public Visibility VisibilityBottom
+        {
+            get
+            {
+                return MapTile.GetVisibilityBottom(this);
+            }
+            set
+            {
+                MapTile.SetVisibilityBottom(this, value);
+            }
+        }
+
+        public Visibility VisibilityMiddle
+        {
+            get
+            {
+                return MapTile.GetVisibilityMiddle(this);
+            }
+            set
+            {
+                MapTile.SetVisibilityMiddle(this, value);
+            }
+        }
+
+        public Visibility VisibilityTop
+        {
+            get
+            {
+                return MapTile.GetVisibilityTop(this);
+            }
+            set
+            {
+                MapTile.SetVisibilityTop(this, value);
+            }
+        }
+
+
+        public bool ShowBottom
+        {
+            get
+            {
+                return GlobalVisibilityBottom == System.Windows.Visibility.Visible;
+            }
+            set
+            {
+                GlobalVisibilityBottom = (value) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public bool ShowMiddle
+        {
+            get
+            {
+                return GlobalVisibilityMiddle == System.Windows.Visibility.Visible;
+            }
+            set
+            {
+                GlobalVisibilityMiddle = (value) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public bool ShowTop
+        {
+            get
+            {
+                return GlobalVisibilityTop == System.Windows.Visibility.Visible;
+            }
+            set
+            {
+                GlobalVisibilityTop = (value) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+
+        #endregion
+
 
         public MapTile()
         {
@@ -246,7 +435,12 @@ namespace MapEditor.GUIElements
             bind("GlobalSize", MapTile.HeightProperty);
             bind("GlobalThickness", MapTile.BorderThicknessProperty);
             bind("GlobalBorderBrush", MapTile.BorderBrushProperty);
-                        
+
+            bind("GlobalVisibilityBottom", MapTile.VisibilityBottomProperty);
+            bind("GlobalVisibilityMiddle", MapTile.VisibilityMiddleProperty);
+            bind("GlobalVisibilityTop", MapTile.VisibilityTopProperty);
+
+
             this.Background = Brushes.Orange;
 
             ImageSource image = new BitmapImage(GetAbsoluteUri(@"graphics\terrain\grass.png"));

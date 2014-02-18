@@ -36,6 +36,9 @@ namespace MapEditor
             var tile = new MapTile();
 
             this.CheckDisplayBorder.DataContext = tile;
+            this.CheckShowBottom.DataContext = tile;
+            this.CheckShowMiddle.DataContext = tile;
+            this.CheckShowTop.DataContext = tile;
             this.SlideSize.DataContext = tile;
 
             this.MapRowTemplate.Visibility = System.Windows.Visibility.Collapsed;
@@ -110,6 +113,11 @@ namespace MapEditor
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             this.MapHolder.Children.Clear();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }

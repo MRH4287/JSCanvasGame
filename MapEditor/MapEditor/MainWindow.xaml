@@ -42,7 +42,7 @@
         <TabControl Margin="1,10,0,0" Grid.Column="2">
             <TabItem Header="Tiles">
                 <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal">
-                    
+
                 </WrapPanel>
             </TabItem>
             <TabItem Header="Options">
@@ -52,12 +52,21 @@
                         <RowDefinition Height="26"/>
                         <RowDefinition Height="26"/>
                         <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Label Content="Border Options:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <CheckBox x:Name="CheckDisplayBorder" Content="Display" HorizontalAlignment="Center" Grid.Row="1" IsChecked="{Binding DisplayBorder}" VerticalAlignment="Center" />
-                    <ComboBox x:Name="DropColor" Grid.Row="3" Width="Auto" ItemTemplate="{DynamicResource ColorDataTemplate}" SelectedIndex="0" VerticalAlignment="Center" />
-                    <Label Content="Border Color:" HorizontalAlignment="Center" VerticalAlignment="Center" Height="24" Width="94" Grid.Row="2"/>
+                    <Label Content="Border Options:" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="22,0" Height="23" Width="92"/>
+                    <CheckBox x:Name="CheckDisplayBorder" Content="Display" HorizontalAlignment="Center" Grid.Row="1" IsChecked="{Binding DisplayBorder}" VerticalAlignment="Center" Margin="40,5" Height="16" Width="56" />
+                    <ComboBox x:Name="DropColor" Grid.Row="3" Width="Auto" ItemTemplate="{DynamicResource ColorDataTemplate}" SelectedIndex="0" VerticalAlignment="Center" Margin="0,2,0,0" Height="24" />
+                    <Label Content="Border Color:" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" />
+                    <Label Content="Layout:" HorizontalAlignment="Center" VerticalAlignment="Center"  Grid.Row="4" />
+                    <CheckBox x:Name="CheckShowBottom" Content="Top" HorizontalAlignment="Center" Grid.Row="5" IsChecked="{Binding ShowTop}" VerticalAlignment="Center" />
+                    <CheckBox x:Name="CheckShowMiddle" Content="Middle" HorizontalAlignment="Center" Grid.Row="6" IsChecked="{Binding ShowMiddle}" VerticalAlignment="Center" />
+                    <CheckBox x:Name="CheckShowTop" Content="Bottom" HorizontalAlignment="Center" Grid.Row="7" IsChecked="{Binding ShowBottom}" VerticalAlignment="Center" />
+
                 </Grid>
             </TabItem>
         </TabControl>
@@ -68,8 +77,9 @@
             </Grid.ColumnDefinitions>
             <Button Content="Debug: AddRow" HorizontalAlignment="Left" Margin="10,2,0,0" VerticalAlignment="Top" Width="129" Click="Button_Click_1" Height="22" RenderTransformOrigin="-0.676,0.233" Grid.Column="1"/>
             <Slider VerticalAlignment="Center" Minimum="5" Maximum="50" x:Name="SlideSize" Value="{Binding Size}"/>
-            <Button Content="Debug: Load JSON" Grid.Column="1" HorizontalAlignment="Left" Margin="168,0,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
-            <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Left" Margin="334,1,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+            <Button Content="Debug: Load JSON" Grid.Column="1" HorizontalAlignment="Left" Margin="144,1,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+            <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Left" Margin="439,4,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+            <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="269,1,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
         </Grid>
 
     </Grid>
