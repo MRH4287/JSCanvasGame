@@ -1,0 +1,3013 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SystemLib</name>
+    </assembly>
+    <members>
+        <member name="T:SecureChannel.Ex.SecureChannelException">
+            <summary>
+            Die vom System geworfene Exception, sollten fehler auftreten
+            </summary>
+        </member>
+        <member name="M:SecureChannel.Ex.SecureChannelException.#ctor">
+            <summary>
+            BaseException
+            </summary>
+        </member>
+        <member name="M:SecureChannel.Ex.SecureChannelException.#ctor(System.String)">
+            <summary>
+            BaseException
+            </summary>
+            <param name="message">Message</param>
+        </member>
+        <member name="M:SecureChannel.Ex.SecureChannelException.#ctor(System.String,System.Exception)">
+            <summary>
+            BaseException
+            </summary>
+            <param name="message">Message</param>
+            <param name="innerException">InnerException</param>
+        </member>
+        <member name="T:UpdateLib.WebLookup.Types.BackendResponse">
+            <summary>
+            Response from the Update Server
+            </summary>
+        </member>
+        <member name="F:UpdateLib.WebLookup.Types.BackendResponse.info">
+            <summary>
+            The Info Recievied from the Server
+            </summary>
+        </member>
+        <member name="F:UpdateLib.WebLookup.Types.BackendResponse.error">
+            <summary>
+            The Error Message Recieved from the Server
+            </summary>
+        </member>
+        <member name="F:UpdateLib.WebLookup.Types.BackendResponse.version">
+            <summary>
+            The Version of the Update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.WebLookup.Types.BackendResponse.notes">
+            <summary>
+            Notes of this Update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.WebLookup.Types.BackendResponse.released">
+            <summary>
+            When is this Update Releades
+            </summary>
+        </member>
+        <member name="P:UpdateLib.WebLookup.Types.BackendResponse.UpdateAvailable">
+            <summary>
+            Containes this Response informations about a new Version
+            </summary>
+        </member>
+        <member name="T:Data.XMLTree">
+            <summary>
+            A Representation of a XML-file
+            </summary>
+        </member>
+        <member name="M:Data.XMLTree.#ctor(Data.XMLTree,System.String)">
+            <summary>
+            Creates a new XMLTree
+            </summary>
+            <param name="parent">Parent Node</param>
+            <param name="name">Node Name</param>
+        </member>
+        <member name="M:Data.XMLTree.getParent">
+            <summary>
+            Returnes the parent-node of this XML-Tree Object
+            </summary>
+            <returns>Parent Node</returns>
+        </member>
+        <member name="M:Data.XMLTree.setParent(Data.XMLTree)">
+            <summary>
+            Sets the parent node to a specific Node
+            </summary>
+            <param name="parent">The new parent node</param>
+        </member>
+        <member name="M:Data.XMLTree.addChild(Data.XMLTree)">
+            <summary>
+            Appends a new child Node
+            </summary>
+            <param name="child">The Node to add</param>
+        </member>
+        <member name="M:Data.XMLTree.removeChild(Data.XMLTree)">
+            <summary>
+            Rmeoves a Node of the List of Nodes
+            </summary>
+            <param name="child">The Node, that should be removed</param>
+        </member>
+        <member name="M:Data.XMLTree.setValue(System.String)">
+            <summary>
+            Sets the value of this Element
+            </summary>
+            <param name="value">new value string</param>
+        </member>
+        <member name="M:Data.XMLTree.getKey">
+            <summary>
+            Returns the Key of this Node
+            </summary>
+            <returns>Schlüsselname</returns>
+        </member>
+        <member name="M:Data.XMLTree.getValue">
+            <summary>
+            Returns the value of this Node
+            </summary>
+            <returns>Aktueller Wert</returns>
+        </member>
+        <member name="M:Data.XMLTree.getChildren">
+            <summary>
+            Returns all child elements as LinkedList
+            </summary>
+            <returns>List of all children</returns>
+        </member>
+        <member name="M:Data.XMLTree.haveChildren">
+            <summary>
+            Does this Node have children
+            </summary>
+            <returns>Has Children</returns>
+        </member>
+        <member name="M:Data.XMLTree.haveChild(System.String)">
+            <summary>
+            Is a specific Key is a Child of this Element
+            </summary>
+            <param name="child">The Key to search for</param>
+            <returns>is Child</returns>
+        </member>
+        <member name="M:Data.XMLTree.haveChild(Data.XMLTree)">
+            <summary>
+            Is a specidic XMLTree element child of this Node
+            </summary>
+            <param name="child">The <see cref="T:Data.XMLTree"/> Object to search for</param>
+            <returns>Is Child</returns>
+        </member>
+        <member name="M:Data.XMLTree.getChild(System.String)">
+            <summary>
+            Returns the <see cref="T:Data.XMLTree"/> child Object with a specific Key
+            </summary>
+            <param name="child">The Key of the wanted child</param>
+            <returns>Child element or null</returns>
+        </member>
+        <member name="M:Data.XMLTree.addAtribute(System.String,System.String)">
+            <summary>
+            Appends a Attribute to this Node
+            </summary>
+            <param name="key">Key</param>
+            <param name="atribut">Value</param>
+        </member>
+        <member name="M:Data.XMLTree.getAtribute(System.String)">
+            <summary>
+            Returnes a Attribute with a specific name
+            </summary>
+            <param name="key">KEy</param>
+            <returns>Attribute Value</returns>
+        </member>
+        <member name="M:Data.XMLTree.setAtribute(System.String,System.String)">
+            <summary>
+            Sets the Value of a Attribute
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="M:Data.XMLTree.getAtributes">
+            <summary>
+            Returns the Attributes
+            </summary>
+            <returns>Attribute Dictionary</returns>
+        </member>
+        <member name="M:Data.XMLTree.copy(Data.XMLTree)">
+            <summary>
+            Returns a clone of the current Object
+            </summary>
+            <param name="parent">Parent Node</param>
+            <returns>Copy of this element</returns>
+        </member>
+        <member name="M:Data.XMLTree.System#Collections#Generic#IEnumerable{Data#XMLTree}#GetEnumerator">
+            <summary>
+            Returns the Enumerator
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
+        <member name="M:Data.XMLTree.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns the Enumerator
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
+        <member name="M:Data.XMLTree.ToString">
+            <summary>
+            Returns the Name of this XMLTree Instance
+            </summary>
+            <returns>Name of this Instance</returns>
+        </member>
+        <member name="P:Data.XMLTree.Item(System.String)">
+            <summary>
+            Returnes or Sets a Attribute
+            </summary>
+            <param name="key">Attribute Name</param>
+            <returns>Attribute Value</returns>
+        </member>
+        <member name="T:SecureChannel.Types.Request">
+            <summary>
+            Die Login Anfrage
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Request.user">
+            <summary>
+            Der Benutzername
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Request.key">
+            <summary>
+            Der Passwort Hash
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Request.verification">
+            <summary>
+            Der Verifikations Key
+            </summary>
+        </member>
+        <member name="T:PluginApi.Manager.Writer">
+            <summary>
+            Statische Klasse, die Plugin Dateien schreiben kann
+            </summary>
+        </member>
+        <member name="M:PluginApi.Manager.Writer.writePluginFile(System.String,System.Int32,System.String,System.String,System.String[])">
+            <summary>
+            Schreibe Plugin
+            </summary>
+            <param name="name">Name des Plugins</param>
+            <param name="version">Version des Plugins</param>
+            <param name="assemblyPath">Pfad zur Assembly-Datei</param>
+            <param name="path">AusgabePfad</param>
+            <param name="requirements">Plugins, zu denen eine Abhänigkeit besteht</param>
+        </member>
+        <member name="T:Encryption.Serializer">
+            <summary>
+            Object Serializer
+            </summary>
+        </member>
+        <member name="M:Encryption.Serializer.writeData(System.Object,System.String,System.String)">
+            <summary>
+            Writes a Object into a File
+            </summary>
+            <param name="data">Serializeable Object</param>
+            <param name="filename">File Path</param>
+            <param name="key">File Password</param>
+        </member>
+        <member name="M:Encryption.Serializer.readData``1(System.String,System.String)">
+            <summary>
+            Reads a Object out of a File
+            </summary>
+            <typeparam name="T">Type of the file</typeparam>
+            <param name="filename">Path to the file</param>
+            <param name="key">Password of this File</param>
+            <returns>Deserialized Object</returns>
+        </member>
+        <member name="T:Network.TCPClient">
+            <summary>
+            Der TCP Client
+            </summary>
+        </member>
+        <member name="F:Network.TCPClient.client">
+            <summary>
+            Die Verbindung zum Server
+            </summary>
+        </member>
+        <member name="M:Network.TCPClient.#ctor(System.String,System.Int32)">
+            <summary>
+            Konstruktor für <see cref="T:Network.TCPClient"/>
+            </summary>
+            <param name="serverIP">Die IP des Servers</param>
+            <param name="port">Port</param>
+        </member>
+        <member name="M:Network.TCPClient.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Konstruktor der Klasse <see cref="T:Network.TCPClient"/>
+            </summary>
+            <param name="serverIP">Die IP des Servers</param>
+            <param name="port">Port</param>
+            <param name="password">Angeben, wenn verschlüsselte Daten zu erwarten sind und nicht das standard Passwort verwendet wird</param>
+        </member>
+        <member name="M:Network.TCPClient.TCP_Connect">
+            <summary>
+            Verbindet zum Server mit den angegebenen Daten
+            </summary>
+            <returns>Liefert true bei einer erfolgreichen Verbindung</returns>
+        </member>
+        <member name="M:Network.TCPClient.TCP_Close">
+            <summary>
+            Beendet den TCP Client
+            </summary>
+        </member>
+        <member name="M:Network.TCPClient.TCP_Send(System.String)">
+            <summary>
+            Sendet einen String zum Serer
+            </summary>
+            <param name="data">Zu sendener String</param>
+        </member>
+        <member name="M:Network.TCPClient.TCP_Disconnect">
+            <summary>
+            Trennt die Verbindung zu Server
+            </summary>
+        </member>
+        <member name="M:Network.TCPClient.TCP_SendByteStream(System.Byte[])">
+            <summary>
+            Schickt einen Byte Stream an den Server
+            </summary>
+            <param name="data">Byte Stream</param>
+        </member>
+        <member name="M:Network.TCPClient.sendData(System.Byte[],System.Int32)">
+            <summary>
+            Sendet Daten an den Server
+            </summary>
+            <param name="data">Zu sendende Daten</param>
+            <param name="length">Die Länge der zu sendenden Daten</param>
+        </member>
+        <member name="M:Network.TCPClient.SendCallback(System.IAsyncResult)">
+            <summary>
+            Callback
+            </summary>
+            <param name="ar">Callback Result</param>
+        </member>
+        <member name="M:Network.TCPClient.ReceiveCallback(System.IAsyncResult)">
+            <summary>
+            Callback
+            </summary>
+            <param name="ar">CallbackResult</param>
+        </member>
+        <member name="M:Network.TCPClient.TriggerError(Network.NetworkException)">
+            <summary>
+            Benutzt um den Geerbten Klassen die Möglichkeit zu bieten die Fehlernachricht zu Triggern ohne das Event zu überschreiben
+            </summary>
+            <param name="ex">Fehler</param>
+        </member>
+        <member name="M:Network.TCPClient.TriggerTextRecieved(System.String,System.Byte[],System.Net.Sockets.Socket)">
+            <summary>
+            Benutzt um Geerbten Klassen die Möglichkeit zu geben dieses Event zu triggern
+            </summary>
+            <param name="input">Nachricht</param>
+            <param name="byteInput">Byte Daten</param>
+            <param name="client">Client</param>
+        </member>
+        <member name="E:Network.TCPClient.OnConnect">
+            <summary>
+            Das System hat sich erfolgreich zum Server verbunden
+            </summary>
+        </member>
+        <member name="E:Network.TCPClient.OnTextRecieved">
+            <summary>
+            Eine neue Nachricht wurde erhalten
+            </summary>
+        </member>
+        <member name="E:Network.TCPClient.OnError">
+            <summary>
+            Ein Fehler ist aufgetreten
+            </summary>
+        </member>
+        <member name="T:Network.TCPClient.ConnectedEvent">
+            <summary>
+            Der Client hat sich erfolgreich zunm Server Verbunden
+            </summary>
+            <param name="server"></param>
+        </member>
+        <member name="T:Network.TCPClient.TextRecievedEvent">
+            <summary>
+            Neue Nachricht erhalten
+            </summary>
+            <param name="input">Enthaltene Textnachricht</param>
+            <param name="byteInput">Erhaltene bytes</param>
+            <param name="client">TCPClient Objekt, von dem die Nachricht erhalten wurde</param>
+        </member>
+        <member name="T:Network.TCPClient.TCPErrorEvent">
+            <summary>
+            Ein Fehler ist Aufgetreten
+            </summary>
+            <param name="exception">Aufgetretener Fehler</param>
+        </member>
+        <member name="T:Data.JSON.JSONSerializer">
+            <summary>
+            Json Serializer
+            </summary>
+        </member>
+        <member name="M:Data.JSON.JSONSerializer.serialize``1(``0)">
+            <summary>
+            Serializes an object to a json string
+            </summary>
+            <typeparam name="T">Type of the object to be serialized</typeparam>
+            <param name="data">Object to be serialized</param>
+            <returns>Json string</returns>
+        </member>
+        <member name="M:Data.JSON.JSONSerializer.deserialize``1(System.String)">
+            <summary>
+            DeSerializes a json-string into a object
+            </summary>
+            <typeparam name="T">Type of the object</typeparam>
+            <param name="json">Json-String</param>
+            <returns>Deserialized Object</returns>
+        </member>
+        <member name="T:Network.DefaultMode.TCP">
+            <summary>
+            Der TCP Server im Default Mode
+            </summary>
+        </member>
+        <member name="T:Network.TCP">
+            <summary>
+            Der TCP Server
+            </summary>
+        </member>
+        <member name="F:Network.TCP.close">
+            <summary>
+            Soll das System Beendet werden
+            </summary>
+        </member>
+        <member name="F:Network.TCP.bufferSize">
+            <summary>
+            Verwendete Buffer größe
+            </summary>
+        </member>
+        <member name="F:Network.TCP.encryt">
+            <summary>
+            Die verwendete Verschlüsselung
+            </summary>
+        </member>
+        <member name="F:Network.TCP.crypto">
+            <summary>
+            Sollen Daten Pakete Verschlüsselt werden
+            </summary>
+        </member>
+        <member name="F:Network.TCP.verifyClients">
+            <summary>
+            Sollen die verbundenen Clients überprüft werden
+            </summary>
+        </member>
+        <member name="M:Network.TCP.#ctor(System.Int32)">
+            <summary>
+            Konstructor der Klasse <see cref="T:Network.TCP"/>
+            </summary>
+            <param name="port">Gibt den zu öffnenden Port an</param>
+        </member>
+        <member name="M:Network.TCP.#ctor(System.Int32,System.String)">
+            <summary>
+            Konstruktor der Klasse <see cref="T:Network.TCP"/>
+            </summary>
+            <param name="port">Gibt den zu öffnenden Port an</param>
+            <param name="password">Passwort für die Verschlüsselung</param>
+        </member>
+        <member name="M:Network.TCP.TCP_Close">
+            <summary>
+            Schließt den Server
+            </summary>
+        </member>
+        <member name="M:Network.TCP.HandleClient(System.Object)">
+            <summary>
+            Ein neuer Client hat Connected
+            </summary>
+            <param name="oClient">Übergabe eines Client Objectes</param>
+        </member>
+        <member name="M:Network.TCP.AsynchronousLoop(System.Net.Sockets.NetworkStream,System.Net.Sockets.TcpClient)">
+            <summary>
+            Funktion zum Empfangen der Nachrichten
+            </summary>
+            <param name="oStream">Stream</param>
+            <param name="oTcpClient">Verbundener Client</param>
+        </member>
+        <member name="M:Network.TCP.TCP_Send(System.String,System.Net.Sockets.TcpClient)">
+            <summary>
+            Sendet einen String an einen bestimmen Client
+            </summary>
+            <param name="text">Übergibt den zu sendenen String</param>
+            <param name="oTcpClient">Übergibt einen Client vom Typ <see cref="T:System.Net.Sockets.TcpClient"/></param>
+        </member>
+        <member name="M:Network.TCP.sendData(System.Byte[],System.Int32,System.Net.Sockets.TcpClient)">
+            <summary>
+            sendet Daten an den Client
+            </summary>
+            <param name="data">Daten</param>
+            <param name="length">Länge der Datenmenge</param>
+            <param name="oTcpClient">Client</param>
+        </member>
+        <member name="M:Network.TCP.TCP_SendByteStream(System.Byte[],System.Net.Sockets.TcpClient)">
+            <summary>
+            Schickt einen Byte Stream an einen Client
+            </summary>
+            <param name="data">Byte Stream</param>
+            <param name="client">Client</param>
+        </member>
+        <member name="M:Network.TCP.TCP_SendToAll(System.String)">
+            <summary>
+            Sendet einen String an jeden verbundenen Client
+            </summary>
+            <param name="text">Der zu sendene Text</param>
+        </member>
+        <member name="M:Network.TCP.TCP_SendToAll(System.Byte[])">
+            <summary>
+            Sendet einen ByteStream an jeden verbundenen Client
+            </summary>
+            <param name="input">Die Nachricht, die an alle Clients geschickt werden soll</param>
+        </member>
+        <member name="M:Network.TCP.TCP_GetClient(System.Int32)">
+            <summary>
+            Liefert einen bestimmten Client
+            </summary>
+            <param name="nr">Gibt die ClientID an (beginnend mit 0)</param>
+            <returns>Client Objekt</returns>
+        </member>
+        <member name="M:Network.TCP.TriggerError(Network.NetworkException)">
+            <summary>
+            Bietet geerbten Klassen das Event zu triggern
+            </summary>
+            <param name="ex">Exception</param>
+        </member>
+        <member name="M:Network.TCP.TriggerOnTextRecieved(System.String,System.Byte[],System.Net.Sockets.TcpClient)">
+            <summary>
+            Bietet geerbten Klassen das Event zu triggern
+            </summary>
+            <param name="input">Text</param>
+            <param name="byteInput">ByteData</param>
+            <param name="client">Verbundener Client</param>
+        </member>
+        <member name="E:Network.TCP.OnTextRecieved">
+            <summary>
+            Eine neue Nachricht wurde erhalten
+            </summary>
+        </member>
+        <member name="E:Network.TCP.OnClientConnected">
+            <summary>
+            Ein neuer Client hat sich zum System verbunden
+            </summary>
+        </member>
+        <member name="E:Network.TCP.OnClientDisconnected">
+            <summary>
+            Ein Client hat sich vom  System getrennt
+            </summary>
+        </member>
+        <member name="E:Network.TCP.OnError">
+            <summary>
+            Ein Fehler ist aufgetreten
+            </summary>
+        </member>
+        <member name="P:Network.TCP.TCP_ConnectedClients">
+            <summary>
+            Liefert die Anzahl der Verbundenen Clients
+            </summary>
+        </member>
+        <member name="T:Network.TCP.TextRecievedEvent">
+            <summary>
+            Neue Nachricht erhalten
+            </summary>
+            <param name="input">Enthaltene Textnachricht</param>
+            <param name="byteInput">Erhaltene bytes</param>
+            <param name="client">TCPClient Objekt, von dem die Nachricht erhalten wurde</param>
+        </member>
+        <member name="T:Network.TCP.ClientConnectedEvent">
+            <summary>
+            Ein neuer Client hat sich verbunden
+            </summary>
+            <param name="client">Client, der sich verbunden hat</param>
+        </member>
+        <member name="T:Network.TCP.ClientDisconnectedEvent">
+            <summary>
+            Ein Client hat sich vom System getrennt
+            </summary>
+            <param name="client">Client, der sich vom System getrennt hat</param>
+        </member>
+        <member name="T:Network.TCP.TCPErrorEvent">
+            <summary>
+            Ein Fehler ist Aufgetreten
+            </summary>
+            <param name="exception">Aufgetretener Fehler</param>
+        </member>
+        <member name="M:Network.DefaultMode.TCP.#ctor(System.Int32)">
+            <summary>
+            Instanziert den TCP Server im Default Mode
+            </summary>
+            <param name="port">Der Port auf dem der Server horchen soll</param>
+        </member>
+        <member name="M:Network.DefaultMode.TCP.AsynchronousLoop(System.Net.Sockets.NetworkStream,System.Net.Sockets.TcpClient)">
+            <summary>
+            Empfängt die Daten vom Client 
+            </summary>
+            <param name="oStream">Verwendeter Daten Stream</param>
+            <param name="oTcpClient">Verbundener Client</param>
+        </member>
+        <member name="M:Network.DefaultMode.TCP.sendData(System.Byte[],System.Int32,System.Net.Sockets.TcpClient)">
+            <summary>
+            Sendet Daten an den Client
+            </summary>
+            <param name="data">Die zu sendenden Daten</param>
+            <param name="length">Wird ignoriert.</param>
+            <param name="oTcpClient">Der Client an den gesendet wird</param>
+        </member>
+        <member name="T:PluginApi.Manager.PluginRegisteredEventArgs">
+            <summary>
+            Event Args for Plugin Registered Event
+            </summary>
+        </member>
+        <member name="M:PluginApi.Manager.PluginRegisteredEventArgs.#ctor(System.String,System.Int32)">
+            <summary>
+            Creates a new EventArg Object Instance
+            </summary>
+            <param name="name">The name of the plugin</param>
+            <param name="version">The version of the plugin</param>
+        </member>
+        <member name="P:PluginApi.Manager.PluginRegisteredEventArgs.Name">
+            <summary>
+            The name of the plugin
+            </summary>
+        </member>
+        <member name="P:PluginApi.Manager.PluginRegisteredEventArgs.Version">
+            <summary>
+            The version of the plugin
+            </summary>
+        </member>
+        <member name="T:Data.Win7.ProgressBar">
+            <summary>
+            Win7 Taskbar-Progressbar
+            </summary>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.#ctor(System.Windows.Forms.Form)">
+            <summary>
+            Create a new ProgressBar Instance
+            </summary>
+            <param name="input">Base Formular</param>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.#ctor(System.IntPtr)">
+            <summary>
+             Create a new ProgressBar Instance
+            </summary>
+            <param name="handle">IntPtr of the Window</param>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.setProgress(System.Int32)">
+            <summary>
+            Set the current Progress to a specific value
+            </summary>
+            <param name="progress">Progress-vakue</param>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Create">
+            <summary>
+            Initialize a ProgressBar
+            </summary>
+            <returns>false, if not supported</returns>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Pause">
+            <summary>
+            Set the status to pause
+            </summary>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Error">
+            <summary>
+            Set status to error
+            </summary>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Resume">
+            <summary>
+            Set status to normal
+            </summary>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Unknown">
+            <summary>
+            Set status to unknown
+            </summary>
+        </member>
+        <member name="M:Data.Win7.ProgressBar.Stop">
+            <summary>
+            Removes the ProgressBar
+            </summary>
+        </member>
+        <member name="P:Data.Win7.ProgressBar.Progress">
+            <summary>
+            Read or set the current progress-value
+            </summary>
+        </member>
+        <member name="T:PluginApi.Manager.PluginLoader">
+            <summary>
+            Klasse zum Laden und Verwalten der Plugins
+            </summary>
+        </member>
+        <member name="F:PluginApi.Manager.PluginLoader.fileKey">
+            <summary>
+            Verwendeter Passwortschlüssel
+            </summary>
+        </member>
+        <member name="F:PluginApi.Manager.PluginLoader.pluginExtension">
+            <summary>
+            Die Dateierweiterung, die verwednet werden soll
+            </summary>
+        </member>
+        <member name="F:PluginApi.Manager.PluginLoader.eventBase">
+            <summary>
+            IEventBase Instanz, die alle Events hält, zu denen sich die Plugins registireren können
+            </summary>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.#ctor(PluginApi.Manager.IEventBase)">
+            <summary>
+            Erzeugt einen neuen PluginLoader
+            </summary>
+            <param name="eventBase">IEventBase Instanz, die alle Events hält, zu denen sich die Plugins registrieren können</param>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.register(System.String,PluginApi.Elements.IPlugin,System.Int32)">
+            <summary>
+            Registriert ein Plugin beim PluginLoader um es für andere Plugins sichtbar zu machen
+            </summary>
+            <param name="name">Name des Plugins</param>
+            <param name="plugin">Instanz des Plugins</param>
+            <param name="version">Die Version des Plugins</param>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.get(System.String)">
+            <summary>
+            Liefert eine bestimmte IPlugin Instanz zurück
+            Warnung: Nicht von den Plugins aufrufbar
+            </summary>
+            <param name="name">Name des Plugins</param>
+            <returns>IPlugin Instanz</returns>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.get``1(System.String)">
+            <summary>
+            Liefert eine bestimmte IPlugin Instanz zurück
+            Warnung: Nicht von den Plugins aufrufbar
+            </summary>
+            <typeparam name="T">Typ der Instanz</typeparam>
+            <param name="name">Name des Plugins</param>
+            <returns>IPlugin Instanz</returns>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.getVersion(System.String,System.String)">
+            <summary>
+            Ermittelt die aktuelle Version eines Plugins
+            </summary>
+            <param name="plugin">Name des Plugins</param>
+            <param name="path">Pfad zum Plugin Order</param>
+            <returns>Plugin Version</returns>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.getVersion(PluginApi.Elements.Plugin)">
+            <summary>
+            Ermittelt die aktuelle Version eines Plugins
+            </summary>
+            <param name="plugin">Plugin Instanz</param>
+            <returns>Plugin Version</returns>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.load(System.String,System.String)">
+            <summary>
+            Läd ein Plugin und alle Abhänigkeiten
+            </summary>
+            <param name="plugin">Name des Plugins</param>
+            <param name="path">Pfad zum Plugin Order</param>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.r_load(System.String,System.String,System.Collections.Generic.LinkedList{PluginApi.Elements.IPlugin},System.Int32,System.Int32)">
+            <summary>
+            Läd Rekursiv alle Plugins und Abhänigkeiten und weckt diese auf
+            </summary>
+            <param name="plugin">Name des Plugins</param>
+            <param name="path">Pfad zum Plugin Ordner</param>
+            <param name="pluginList">Liste der aufzuweckenden Plugins</param>
+            <param name="depth">Tiefe</param>
+            <param name="minVersion">Minimal Notwendige Version</param>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.sendMessageToPlugin(System.String,System.String,System.Object[])">
+            <summary>
+            Sende Nachricht zu einem Plugin
+            </summary>
+            <param name="pluginName">Name des Plugins</param>
+            <param name="messageName">Name der Nachricht</param>
+            <param name="arguments">Nachrichten Argumente</param>
+            <returns>Antwort</returns>
+        </member>
+        <member name="M:PluginApi.Manager.PluginLoader.Contains(System.String)">
+            <summary>
+            Beinhaltet der PluginLoader ein Plugin mit einem bestimmten Namen
+            </summary>
+            <param name="name">Name des Plugins</param>
+            <returns>Ist Plugin im Pluginloader registriert</returns>
+        </member>
+        <member name="E:PluginApi.Manager.PluginLoader.onPluginRegistered">
+            <summary>
+            Event, wenn ein Plugin registriert wird
+            </summary>
+        </member>
+        <member name="P:PluginApi.Manager.PluginLoader.Plugins">
+            <summary>
+            Ruft alle registrierten Plugins auf
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.Controls.TextboxList">
+            <summary>
+            A List of Textboxes
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.TextboxList.components">
+            <summary>
+            Erforderliche Designervariable.
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.Dispose(System.Boolean)">
+            <summary> 
+            Verwendete Ressourcen bereinigen.
+            </summary>
+            <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.InitializeComponent">
+            <summary>
+            Erforderliche Methode für die Designerunterstützung.
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.#ctor">
+            <summary>
+            Creates a new TextboxList
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.#ctor(System.ComponentModel.IContainer)">
+            <summary>
+            Creates a new TextboxList
+            </summary>
+            <param name="container">Container</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.AddTextbox(System.String)">
+            <summary>
+            Adds a new Textbox
+            </summary>
+            <param name="name">Unique name of this Textbox</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.RemoveTextbox(System.String)">
+            <summary>
+            Removes a Textbox
+            </summary>
+            <param name="name">Name of the Textbox</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.Clear">
+            <summary>
+            Removes all Textboxes
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.getPanel(System.String)">
+            <summary>
+            Returnes a specific Panel for a Textbox
+            </summary>
+            <param name="name">Textbox Name</param>
+            <returns>Panel</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.getTextbox(System.String)">
+            <summary>
+            Returns a Specific Textbox
+            </summary>
+            <param name="name">Textbox Name</param>
+            <returns>Textbox</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.getLabel(System.String)">
+            <summary>
+            Returns a Label for a specific Textbox
+            </summary>
+            <param name="name">Textbox Name</param>
+            <returns>Label</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.getList">
+            <summary>
+            Return all Entrys
+            </summary>
+            <returns>TextboxList Data</returns>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.PanelHeight">
+            <summary>
+            Panel Height
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.TextLength">
+            <summary>
+            Text Width
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.Values">
+            <summary>
+            The Values int the Format "Key|Value"
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.Item(System.String)">
+            <summary>
+            Reads and Write sthe Content of a Textbox
+            </summary>
+            <param name="name">Textbox Name</param>
+            <returns>Textbox Content</returns>
+        </member>
+        <member name="T:GraphicLibary.Controls.TextboxList.TextboxListData">
+            <summary>
+            TextboxList Entry
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.TextboxList.TextboxListData.#ctor(System.String,System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="Name">Textbox Name</param>
+            <param name="Value">Textbox Value</param>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.TextboxListData.Name">
+            <summary>
+            Textbox Name
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.TextboxList.TextboxListData.Value">
+            <summary>
+            Textbox Value
+            </summary>
+        </member>
+        <member name="T:Encryption.KeyGenerator">
+            <summary>
+            Class for the creation of CD-Keys
+            </summary>
+        </member>
+        <member name="F:Encryption.KeyGenerator.pw_key">
+            <summary>
+            Password Key
+            </summary>
+        </member>
+        <member name="F:Encryption.KeyGenerator.key_list">
+            <summary>
+            Key
+            </summary>
+        </member>
+        <member name="F:Encryption.KeyGenerator.security_level">
+            <summary>
+            Security-Level
+            </summary>
+        </member>
+        <member name="M:Encryption.KeyGenerator.#ctor(System.Int32,System.String,System.Int32)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="pw_key">PW-Key (1000-9999)</param>
+            <param name="key_list">Key List (Length = 10)</param>
+            <param name="security">Security-Level (1-5)</param>
+        </member>
+        <member name="M:Encryption.KeyGenerator.#ctor(System.Int32,System.String)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="pw_key">PW-Key (1000-9999)</param>
+            <param name="key_list">Key List (Length = 10)</param>
+        </member>
+        <member name="M:Encryption.KeyGenerator.#ctor(System.Int32)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="pw_key">PW-Key (1000-9999)</param>
+        </member>
+        <member name="M:Encryption.KeyGenerator.rechne_key(System.String)">
+            <summary>
+            Calculates a new CD-Key
+            </summary>
+            <param name="indaten">Input String</param>
+            <returns>CD-Key</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.pruefe_key(System.String)">
+            <summary>
+            Checks CD-Key
+            </summary>
+            <param name="pw">Used Key</param>
+            <returns>Is Valid</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.isValid(System.String)">
+            <summary>
+            Checks if Key is Valid
+            </summary>
+            <param name="key">CD-Key</param>
+            <returns>Valid</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.generateRandomKey(System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Creates a new random Key
+            </summary>
+            <param name="length">The Length of this Key</param>
+            <param name="seed">Seed Value</param>
+            <returns>CD-Key</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.generateKey(System.String,System.Int32)">
+            <summary>
+            Creates a CD-Key
+            </summary>
+            <param name="key">Starting String</param>
+            <param name="depth">Depth</param>
+            <returns>Valid CD-Key</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.getKey">
+            <summary>
+            Generates a random Key
+            </summary>
+            <returns>Random Key</returns>
+        </member>
+        <member name="M:Encryption.KeyGenerator.getKey(System.String)">
+            <summary>
+            Creates a Valid Key, that beginns with a specific Text
+            </summary>
+            <param name="begin">Beginning</param>
+            <returns>Random CD-Key</returns>
+        </member>
+        <member name="P:Encryption.KeyGenerator.Key">
+            <summary>
+            Used Keycode
+            </summary>
+        </member>
+        <member name="P:Encryption.KeyGenerator.KeyList">
+            <summary>
+            Used Key List
+            </summary>
+        </member>
+        <member name="P:Encryption.KeyGenerator.SecurityLevel">
+            <summary>
+            Used Security-Level
+            </summary>
+        </member>
+        <member name="T:Data.InvokeHelper">
+            <summary>
+            Component for Threadsave Accesses of Form Elements
+            </summary>
+        </member>
+        <member name="M:Data.InvokeHelper.#ctor(System.Windows.Forms.Form)">
+            <summary>
+            Creates a new InvokeHelper
+            </summary>
+            <param name="input">Windows Form Instance</param>
+        </member>
+        <member name="M:Data.InvokeHelper.SetText(System.Windows.Forms.Control,System.String)">
+            <summary>
+            Sets the Text Value of a Component
+            </summary>
+            <param name="obj">Component</param>
+            <param name="text">Value</param>
+        </member>
+        <member name="M:Data.InvokeHelper.AppendText(System.Windows.Forms.Control,System.String)">
+            <summary>
+            Appends Treadsave Content to the Text Attribute of a Control Element
+            </summary>
+            <param name="obj">Control</param>
+            <param name="text">Text to append</param>
+        </member>
+        <member name="M:Data.InvokeHelper.setEnabled(System.Windows.Forms.Control,System.Boolean)">
+            <summary>
+            Sets treadsave the Enabled Attribute
+            </summary>
+            <param name="obj">Control</param>
+            <param name="on">New Value</param>
+        </member>
+        <member name="M:Data.InvokeHelper.setVisible(System.Windows.Forms.Control,System.Boolean)">
+            <summary>
+            Sets Treadsave the Visible Attribute of a Control
+            </summary>
+            <param name="obj">Control</param>
+            <param name="visible">New Value</param>
+        </member>
+        <member name="T:SecureChannel.Types.Initialize">
+            <summary>
+            Das vom Server erhaltene AntwortPaket auf eine Login Anfrage
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Initialize.loginOk">
+            <summary>
+            Login Vorgang erfolgreich
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Initialize.token">
+            <summary>
+            Das vom Server ausgestellte Token
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Initialize.error">
+            <summary>
+            Ist ein Fehler aufgetreten
+            </summary>
+        </member>
+        <member name="T:UpdateLib.FileData">
+            <summary>
+            Die Daten, die in einem Update gespeichert werden
+            </summary>
+        </member>
+        <member name="M:UpdateLib.FileData.#ctor(System.String)">
+            <summary>
+            Erzeuge eine neue Datei
+            </summary>
+            <param name="filepath">Pfad zur Datei</param>
+        </member>
+        <member name="M:UpdateLib.FileData.needUpdate(System.String)">
+            <summary>
+            Benötigt eine Datei ein Update
+            </summary>
+            <param name="path">Pfad zur Datei</param>
+            <returns>Update Notwendig</returns>
+        </member>
+        <member name="M:UpdateLib.FileData.getHash(System.String)">
+            <summary>
+            Ermittle den Hash Wert einer Datei
+            </summary>
+            <param name="path">Die Datei, für die der Hash ermitelt werden soll</param>
+            <returns>Hash einer Datei</returns>
+        </member>
+        <member name="M:UpdateLib.FileData.getHash(System.Byte[])">
+            <summary>
+            Ermittelt den Hash eines Byte Arrays
+            </summary>
+            <param name="input">Byte Array</param>
+            <returns>Hash Wert</returns>
+        </member>
+        <member name="M:UpdateLib.FileData.Update(System.String)">
+            <summary>
+            Macht ein Update von den der Datei
+            </summary>
+            <param name="path">Pfad zur Datei</param>
+        </member>
+        <member name="P:UpdateLib.FileData.FileInfo">
+            <summary>
+            Die Fileinfo der Datei
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.GraphicHelper">
+            <summary>
+            Class for Graphical Opeerations
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.#ctor(System.Int32,System.Int32,System.Nullable{System.Drawing.Color})">
+            <summary>
+            Creates a new Instance with a specific Width and Height
+            </summary>
+            <param name="width">Width</param>
+            <param name="height">Height</param>
+            <param name="background">Background Color</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.#ctor(System.Drawing.Bitmap,System.Nullable{System.Drawing.Color})">
+            <summary>
+            Creates a new Instance for a specific Bitmap
+            </summary>
+            <param name="image">Input Bitmap</param>
+            <param name="background">Background Color</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.#ctor(System.Windows.Forms.Control,System.Nullable{System.Drawing.Color})">
+            <summary>
+            Creates a new Instance with the Width and Height of a Specifc Control Element
+            </summary>
+            <param name="control">Control</param>
+            <param name="background">Background Color</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.DisposeBackBuffer">
+            <summary>
+            Clears Back Buffer
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.PrepareBackBuffer">
+            <summary>
+            Bereitet den Bildpuffer vor
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.Prepare(System.Nullable{System.Drawing.Color})">
+            <summary>
+            Bereitet den Bildpuffer vor
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.writeString(System.String,System.Int32,System.Int32,System.Drawing.Color)">
+            <summary>
+            Writes a Text on the Image
+            </summary>
+            <param name="text">Text</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+            <param name="color">Color</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.writeString(System.String,System.Int32,System.Int32,System.Drawing.Color,System.Drawing.Font)">
+            <summary>
+            Writes a Text on the Image
+            </summary>
+            <param name="text">Text</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+            <param name="color">Color</param>
+            <param name="font">Font</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.Drawing.Image,System.Int32,System.Int32)">
+            <summary>
+            Adds new Image
+            </summary>
+            <param name="picture">Image</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.String,System.Int32,System.Int32)">
+            <summary>
+            Adds new Image
+            </summary>
+            <param name="url">URL of the Image</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a resized Image
+            </summary>
+            <param name="url">URL of the Image</param>
+            <param name="sizex">Width (-1 for Original)</param>
+            <param name="sizey">Height (-1 for Original)</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a resized Image
+            </summary>
+            <param name="image">Image</param>
+            <param name="sizex">Width (-1 for Original)</param>
+            <param name="sizey">Height (-1 for Original)</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Single,System.Single)">
+            <summary>
+            Adds a specific Area of a Image
+            </summary>
+            <param name="image">Input Image Object</param>
+            <param name="positionx">Image Area Copy X-Position</param>
+            <param name="positiony">Image Area Copy Y-Position</param>
+            <param name="width">Width of the Area to copy</param>
+            <param name="height">Height of the Area to copy</param>
+            <param name="x">The X-Position, where the Area should be added</param>
+            <param name="y">The Y-Position, where the Area should be added</param>
+            <param name="sizex">X-Size Modifier (2 = Double width)</param>
+            <param name="sizey">Y-Size Modifier (2 = Double height)</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawImage(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a specific Area of a Image
+            </summary>
+            <param name="url">Image URL</param>
+            <param name="positionx">Image Area Copy X-Position</param>
+            <param name="positiony">Image Area Copy Y-Position</param>
+            <param name="width">Width of the Area to copy</param>
+            <param name="height">Height of the Area to copy</param>
+            <param name="x">The X-Position, where the Area should be added</param>
+            <param name="y">The Y-Position, where the Area should be added</param>
+            <param name="sizex">X-Size Modifier (2 = Double width)</param>
+            <param name="sizey">Y-Size Modifier (2 = Double height)</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.LoadPicture(System.String)">
+            <summary>
+            Loads a Image from a Web-Resource
+            </summary>
+            <param name="url">Image URL</param>
+            <returns>Image</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.getPictureFromBase64(System.String)">
+            <summary>
+            Converts a Base64 Encoded Picture into a Bitmap
+            </summary>
+            <param name="base64">Base64 Encoded Bitmap</param>
+            <returns>Bitmap</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.getPicture(System.Byte[])">
+            <summary>
+            Convert a Byte Array into a Bitmap
+            </summary>
+            <param name="data">Input</param>
+            <returns>Bitmap</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawRescaleImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a Image with a specific Width and calculated Height
+            </summary>
+            <param name="bild">Image</param>
+            <param name="wantedWidth">Wanted Width</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawRescaleImage(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds a Image with a specific Width and calculated Height
+            </summary>
+            <param name="url">Image URL</param>
+            <param name="wantedWidth">Wanted Width</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawCenterImage(System.Drawing.Image)">
+            <summary>
+            Adds and centeres Image
+            </summary>
+            <param name="picture">Image</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawCenterImage(System.String)">
+            <summary>
+            Adds and centeres Image
+            </summary>
+            <param name="URL">Image URL</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawCenterImage(System.Drawing.Image,System.Int32)">
+            <summary>
+            Adds a Image with a specific Width and centers it
+            </summary>
+            <param name="bild">Image</param>
+            <param name="wantedWidth">wanted Width</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawCenterImage(System.String,System.Int32)">
+            <summary>
+            Adds a Image with a specific Width and centers it
+            </summary>
+            <param name="URL">Image URL</param>
+            <param name="wantedWidth">wanted Width</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawFullImage(System.Drawing.Image,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds, resizes and centers a image for a specific Container
+            </summary>
+            <param name="image">Input Image</param>
+            <param name="width">Container Width</param>
+            <param name="height">Container Height</param>
+            <param name="left">X-Offset</param>
+            <param name="top">Y-Offset</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawFullImage(System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Adds, resizes and centers a image for a specific Container
+            </summary>
+            <param name="url">Image URL</param>
+            <param name="width">Container Width</param>
+            <param name="height">Container Height</param>
+            <param name="left">X-Offset</param>
+            <param name="top">Y-Offset</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawFullImage(System.Drawing.Image,System.Windows.Forms.Control,System.Int32,System.Int32)">
+            <summary>
+            Adds, resizes and centers a image for a specific Container
+            </summary>
+            <param name="image">Input Image</param>
+            <param name="control">Container for the Image</param>
+            <param name="left">X-Offset</param>
+            <param name="top">Y-Offset</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawFullImage(System.String,System.Windows.Forms.Control,System.Int32,System.Int32)">
+            <summary>
+            Adds, resizes and centers a image for a specific Container
+            </summary>
+            <param name="url">Image URL</param>
+            <param name="control">Container for the Image</param>
+            <param name="left">X-Offset</param>
+            <param name="top">Y-Offset</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawFillRectangle(System.Int32,System.Int32,System.Drawing.Color,System.Int32,System.Int32)">
+            <summary>
+            Draws a filled Rectangle
+            </summary>
+            <param name="width">Width</param>
+            <param name="height">Height</param>
+            <param name="color">Color</param>
+            <param name="x">x Position</param>
+            <param name="y">y Position</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.drawLine(System.Drawing.Color,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Draws a Linie
+            </summary>
+            <param name="color">Color</param>
+            <param name="x1">Position 1 X</param>
+            <param name="y1">Position 1 Y</param>
+            <param name="x2">Position 2 X</param>
+            <param name="y2">Position 2 Y</param>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.PictureLoad(System.String)">
+            <summary>
+            Loads a Image from a Web-Resource
+            </summary>
+            <param name="url">URL</param>
+            <returns>Bild</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.flush">
+            <summary>
+            Returns the current Image
+            </summary>
+            <returns>Created Image</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.stringSize(System.String)">
+            <summary>
+            Calculated the Width and Height of a Text
+            </summary>
+            <param name="text">Text</param>
+            <returns>Width and Height</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.stringSize(System.String,System.Drawing.Font)">
+            <summary>
+            Calculated the Width and Height of a Text with a specific Font
+            </summary>
+            <param name="text">Text</param>
+            <param name="font">Font</param>
+            <returns>Width and Height</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.op_Implicit(GraphicLibary.GraphicHelper)~System.Drawing.Bitmap">
+            <summary>
+            Converts a GraphicHelper Object into a Bitmap
+            </summary>
+            <param name="me">The Current GraphicHelper</param>
+            <returns>Bitmap</returns>
+        </member>
+        <member name="M:GraphicLibary.GraphicHelper.op_Implicit(System.Drawing.Bitmap)~GraphicLibary.GraphicHelper">
+            <summary>
+            Converts a Bitmap into a GraphicHelper Object
+            </summary>
+            <param name="bitmap">The Bitmap</param>
+            <returns>GraphicHelper</returns>
+        </member>
+        <member name="P:GraphicLibary.GraphicHelper.graphic">
+            <summary>
+            The used Graphic Object
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.GraphicHelper.Width">
+            <summary>
+            Current Width
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.GraphicHelper.Height">
+            <summary>
+            Current Height
+            </summary>
+        </member>
+        <member name="T:Network.Web.WebComponents">
+            <summary>
+            Functions to Communicate with a Web Server
+            </summary>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpRequest(System.String,System.Byte[],System.Boolean,System.String)">
+            <summary>
+            Sends a HTTP Request to a Server
+            </summary>
+            <param name="uri">Adress of the Server</param>
+            <param name="bytes">Bytes to be sent</param>
+            <param name="post">Should this Data be posted</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Text returened be the Server</returns>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpRequest(System.String,System.String,System.Boolean,System.String)">
+            <summary>
+            Sends a HTTP Request to a Server
+            </summary>
+            <param name="uri">Adress of the Server</param>
+            <param name="parameters">The Parameters that should be sent</param>
+            <param name="post">Should this Data be posted</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Text returned by the Server</returns>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpRequest(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean,System.String)">
+            <summary>
+            Sends a HTTP Request to a Server
+            </summary>
+            <param name="uri">The Adress of the Server</param>
+            <param name="parameters">The Paramaters that should be sent</param>
+            <param name="post">Should this Data be posted</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Text retured by the Server</returns>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpPost(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Sends a HTTP Post Request to a Server
+            </summary>
+            <param name="uri">Adress of the Server</param>
+            <param name="parameters">Parameters of the Request</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Result submitted by the Server</returns>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpPost(System.String,System.String,System.String)">
+            <summary>
+            Sends a HTTP Post Request to a Server
+            </summary>
+            <param name="uri">Adress of the Server</param>
+            <param name="parameters">Parameters of the Request</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Result submitted by the Server</returns>
+        </member>
+        <member name="M:Network.Web.WebComponents.HttpPost(System.String,System.Byte[],System.String)">
+            <summary>
+            Sends a HTTP Post Request to a Server
+            </summary>
+            <param name="uri">Adress of the Server</param>
+            <param name="bytes">Data ro Send to the Server</param>
+            <param name="contentType">Content Type</param>
+            <returns>The Result submitted by the Server</returns>
+        </member>
+        <member name="T:GraphicLibary.Controls.StringList">
+            <summary>
+            String List Component
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.panellist">
+            <summary>
+            Enthält eine Liste aller Panels
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.panels">
+            <summary>
+            Enthält eine Reffernz von Namen zu Panel
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.images">
+            <summary>
+            Enthält die Refferennz von Panel zur BildBox
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.labels">
+            <summary>
+            Enthält die Reffernez von Panel zu Label
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.hold">
+            <summary>
+            ObjektHalter
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.topleft">
+            <summary>
+            Anfangs X Wert
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.top">
+            <summary>
+            Anfangy Y Wert
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.Pheight">
+            <summary>
+            Die Höhe der Panels
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.image">
+            <summary>
+            Das zu verwendende Bild
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.#ctor">
+            <summary>
+            Creates a new String List
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.#ctor(System.ComponentModel.IContainer)">
+            <summary>
+            Creates a new String List
+            </summary>
+            <param name="container">Container</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Add(System.String)">
+            <summary>
+            Appends Line
+            </summary>
+            <param name="name">Name</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Add(System.String,System.Object)">
+            <summary>
+            Appends Line
+            </summary>
+            <param name="name">Name</param>
+            <param name="hold">Holding Element</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.redrawPanels">
+            <summary>
+            Redraws the Panels
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Remove(System.String)">
+            <summary>
+            Removes a Line
+            </summary>
+            <param name="name">Unique Name</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Clear">
+            <summary>
+            Removes all Lines
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Contains(System.String)">
+            <summary>
+            Is the Key int the List of Lines
+            </summary>
+            <param name="name">Name</param>
+            <returns>Containes</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.getContentList">
+            <summary>
+            Returns the Elements
+            </summary>
+            <returns>List of Line Content</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.getContent">
+            <summary>
+            Returns the Elements
+            </summary>
+            <returns>Array of Line Content</returns>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.setContent(System.Collections.Generic.LinkedList{System.String})">
+            <summary>
+            Sets the Content of the String List
+            </summary>
+            <param name="list">String List</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.setContent(System.String[])">
+            <summary>
+            Sets the Content of the String List
+            </summary>
+            <param name="list">String Array</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.setContent(System.Collections.Generic.LinkedList{GraphicLibary.Controls.StringList.StringListData})">
+            <summary>
+            Sets the Content of the String List
+            </summary>
+            <param name="list">Content</param>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.components">
+            <summary>
+            Erforderliche Designervariable.
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.Dispose(System.Boolean)">
+            <summary> 
+            Verwendete Ressourcen bereinigen.
+            </summary>
+            <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.InitializeComponent">
+            <summary>
+            Erforderliche Methode für die Designerunterstützung.
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            </summary>
+        </member>
+        <member name="E:GraphicLibary.Controls.StringList.OnStringListClick">
+            <summary>
+            Event if the Icon of the side of a Element is clicked
+            </summary>
+        </member>
+        <member name="E:GraphicLibary.Controls.StringList.OnStringListRemoved">
+            <summary>
+            Event when a Element was removed 
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.Keys">
+            <summary>
+            The Used Elements
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.UsedImage">
+            <summary>
+            Used Image for the entrys
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.Item(System.String)">
+            <summary>
+            Returns the Elements
+            </summary>
+            <param name="name">Entry Name</param>
+            <returns>Entry Content</returns>
+        </member>
+        <member name="T:GraphicLibary.Controls.StringList.StringListData">
+            <summary>
+            Line Information
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.StringListData.#ctor(System.String,System.Object)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="name">The Name of this Element</param>
+            <param name="hold">The Holding Element</param>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListData.Name">
+            <summary>
+            The Name of the clicked element
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListData.Hold">
+            <summary>
+            The Element, that is contained in the clicked element
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.Controls.StringList.StringListContainer">
+            <summary>
+            Content Container
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.StringListContainer.#ctor(System.String,System.Windows.Forms.Panel,System.Object)">
+            <summary>
+            Creates a new StringListContainer
+            </summary>
+            <param name="name">The Name of this entry</param>
+            <param name="panel">The Panel element</param>
+            <param name="hold">The holding Element</param>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListContainer.Panel">
+            <summary>
+            The Clicked Panel
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.Controls.StringList.StringListEvent">
+            <summary>
+             String List Event Arguments
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.StringListEvent.#ctor(GraphicLibary.Controls.StringList.StringListContainer)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="data">The Data of this Event</param>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListEvent.Name">
+            <summary>
+            The Name of the Clicked Entry
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListEvent.Panel">
+            <summary>
+            The clicked Panel
+            </summary>
+        </member>
+        <member name="P:GraphicLibary.Controls.StringList.StringListEvent.Hold">
+            <summary>
+            The Holding Element
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.Controls.StringList.StringListClickEvent">
+            <summary>
+            Event for StringListClick
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.StringList.StringListClickEvent.#ctor(GraphicLibary.Controls.StringList.StringListContainer)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="data">Input Date</param>
+        </member>
+        <member name="F:GraphicLibary.Controls.StringList.StringListClickEvent.Cancel">
+            <summary>
+            Prevent Deletion
+            </summary>
+        </member>
+        <member name="T:Network.NetworkException">
+            <summary>
+            The NetworkException
+            </summary>
+        </member>
+        <member name="M:Network.NetworkException.#ctor(System.String)">
+            <summary>
+            Creates a new NetworkException
+            </summary>
+            <param name="message">Error Message</param>
+        </member>
+        <member name="M:Network.NetworkException.#ctor">
+            <summary>
+            Creates a new NetworkException
+            </summary>
+        </member>
+        <member name="M:Network.NetworkException.#ctor(System.String,System.Exception)">
+            <summary>
+            Creates a new NetworkException
+            </summary>
+            <param name="message">Error Message</param>
+            <param name="innerException">inner Exception</param>
+        </member>
+        <member name="T:Data.Elements.CircularList`1">
+            <summary>
+            A CiscularList
+            </summary>
+            <typeparam name="T">Generic List Type</typeparam>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.#ctor(`0[])">
+            <summary>
+            Creates a new List
+            </summary>
+            <param name="elements">The Elements, that should be added to the List</param>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Creates a new List
+            </summary>
+            <param name="elements">The Elements, that should be added to the List</param>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.push(`0)">
+            <summary>
+            Appends a new Element
+            </summary>
+            <param name="element">Element, you wish to add</param>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.pop">
+            <summary>
+            Returnes the current Object and increments the pointer
+            </summary>
+            <returns>current Object</returns>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.peek">
+            <summary>
+            Returnes the current Object without a pointer incrementation
+            </summary>
+            <returns>current Object</returns>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.GetEnumerator">
+            <summary>
+            Returnes the Enumerator
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
+        <member name="M:Data.Elements.CircularList`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns the Enumerator
+            </summary>
+            <returns>Enumerator</returns>
+        </member>
+        <member name="P:Data.Elements.CircularList`1.Length">
+            <summary>
+            The current Length of the List
+            </summary>
+        </member>
+        <member name="T:Data.Config">
+            <summary>
+            Config Management Class
+            </summary>
+        </member>
+        <member name="F:Data.Config.config">
+            <summary>
+            The used configuration
+            </summary>
+        </member>
+        <member name="F:Data.Config.parser">
+            <summary>
+            The used XMLPareser
+            </summary>
+        </member>
+        <member name="F:Data.Config.defaultValues">
+            <summary>
+            The default Values for the Configuration
+            </summary>
+        </member>
+        <member name="F:Data.Config.path">
+            <summary>
+            The path to the config file
+            </summary>
+        </member>
+        <member name="M:Data.Config.#ctor(System.String)">
+            <summary>
+            Creates a new Config Object with a given file
+            </summary>
+            <param name="path">The path to the config file</param>
+        </member>
+        <member name="M:Data.Config.#ctor(Data.Config)">
+            <summary>
+            Creates a new Config Object based on a other Config
+            </summary>
+            <param name="config">Config Object</param>
+        </member>
+        <member name="M:Data.Config.parse(System.String)">
+            <summary>
+            Reads a Config File
+            </summary>
+            <param name="path">Path to the config File</param>
+        </member>
+        <member name="M:Data.Config.setElement(System.String,Data.XMLTree)">
+            <summary>
+            Sets a Element in the Config File
+            </summary>
+            <param name="index">The Config Path to the Element</param>
+            <param name="newElement">The new child Element</param>
+        </member>
+        <member name="M:Data.Config.getElement(System.String)">
+            <summary>
+            Returns the XMLObject in a  specific config Path
+            </summary>
+            <param name="index">Path to Config Value</param>
+            <returns>XMLTree Object</returns>
+        </member>
+        <member name="M:Data.Config.getConfigurations">
+            <summary>
+            Returns all configuration Values, except the defaultValues
+            </summary>
+            <returns>A Dictionary with all Config Values</returns>
+        </member>
+        <member name="P:Data.Config.Item(System.String)">
+            <summary>
+            Config value
+            </summary>
+            <param name="index">Path to the config value</param>
+            <returns>Config Value</returns>
+        </member>
+        <member name="T:PluginApi.Exceptions.PluginLoaderException">
+            <summary>
+            Exception die vom PluginLoader geworfen werden kann
+            </summary>
+        </member>
+        <member name="M:PluginApi.Exceptions.PluginLoaderException.#ctor(System.String)">
+            <summary>
+            Erzeugt eine neue Exception
+            </summary>
+            <param name="message">Nachricht der Exception</param>
+        </member>
+        <member name="M:PluginApi.Exceptions.PluginLoaderException.#ctor(System.String,System.Exception)">
+            <summary>
+            Erzeugt eine neue Exception
+            </summary>
+            <param name="message">Nachricht der Exception</param>
+            <param name="innerException">Innere Exception</param>
+        </member>
+        <member name="P:PluginApi.Exceptions.PluginLoaderException.Message">
+            <summary>
+            Ruft die Nachricht der Exception ab
+            </summary>
+        </member>
+        <member name="T:SecureChannel.Api">
+            <summary>
+            Die Implementierung des SecureChannel Systems
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Api.getUserID">
+            <summary>
+            Die Funktion, die einen UserID Lookup macht
+            </summary>
+        </member>
+        <member name="M:SecureChannel.Api.#ctor(System.String,System.String)">
+            <summary>
+            Initialisiert das System
+            </summary>
+            <param name="adress">Die URL des Webservers</param>
+            <param name="sharedSecret">Das Shared Secret</param>
+        </member>
+        <member name="M:SecureChannel.Api.login(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Versucht eine neue Session mit dem Server aufzubauen
+            </summary>
+            <param name="user">Benutzername</param>
+            <param name="password">Passwort</param>
+            <param name="id">Die BenutzerID</param>
+            <param name="used">Wurde die Funktion Rekursiv aufgerufen</param>
+            <returns>Das vom Server gesendete Antwort Paket</returns>
+        </member>
+        <member name="M:SecureChannel.Api.command(System.String,System.String[])">
+            <summary>
+            Sendet eine Anfrage an den Server 
+            </summary>
+            <param name="command">Der Befehl, der ausgeführt werden soll</param>
+            <param name="argument">Die Argumente an das System</param>
+            <returns>Die vom Server erhaltene Antwort</returns>
+        </member>
+        <member name="E:SecureChannel.Api.UserIDLookup">
+            <summary>
+            Event, das aufgerufen wird, wenn eine neue ID gefunden wurde
+            </summary>
+        </member>
+        <member name="P:SecureChannel.Api.Connected">
+            <summary>
+            Gibt es eine Valide Verbindung zwischen Server und Client
+            </summary>
+        </member>
+        <member name="T:PluginApi.Manager.IEventBase">
+            <summary>
+            Klasse, die alle Events für die Plugins hält.
+            Muss auch von den Plugins sichtbar sein.
+            => Externe dll oder einbinden der exe
+            </summary>
+        </member>
+        <member name="T:Network.StateObject">
+            <summary>
+            Das für die Netzwerk Kommunikation verwendete State Objekt
+            </summary>
+        </member>
+        <member name="F:Network.StateObject.BufferSize">
+            <summary>
+            Size of receive buffer.
+            </summary>
+        </member>
+        <member name="F:Network.StateObject.workSocket">
+            <summary>
+            Client socket.
+            </summary>
+        </member>
+        <member name="F:Network.StateObject.buffer">
+            <summary>
+            Receive buffer.
+            </summary>
+        </member>
+        <member name="F:Network.StateObject.sb">
+            <summary>
+            Received data string.
+            </summary>
+        </member>
+        <member name="F:GraphicLibary.Controls.ExtendedPictureBox.components">
+            <summary>
+            Erforderliche Designervariable.
+            </summary>
+        </member>
+        <member name="M:GraphicLibary.Controls.ExtendedPictureBox.InitializeComponent">
+            <summary>
+            Erforderliche Methode für die Designerunterstützung.
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            </summary>
+        </member>
+        <member name="T:Encryption.Steganography">
+            <summary>
+            Steganography Implementation
+            </summary>
+        </member>
+        <member name="F:Encryption.Steganography.v_Masks">
+            <summary>
+            Masks used for Encryption
+            </summary>
+        </member>
+        <member name="M:Encryption.Steganography.getAvailableSpace(System.Drawing.Bitmap,System.Int32)">
+            <summary>
+            Returns the maximal Space in Byte useable for Steganography
+            </summary>
+            <param name="image">Input Image</param>
+            <param name="stripBitsCount">Bit count used for Data Storage</param>
+            <returns>Maximal Space in Byte</returns>
+        </member>
+        <member name="M:Encryption.Steganography.storeInformation(System.Drawing.Bitmap,System.Int32,System.Byte[])">
+            <summary>
+            Saves Information into a Image
+            </summary>
+            <param name="image">Input Image</param>
+            <param name="stripBitsCount">Bit count used for Data Storage</param>
+            <param name="information">Input Data</param>
+            <returns>Image Byte Array</returns>
+        </member>
+        <member name="M:Encryption.Steganography.getInformation(System.Drawing.Bitmap,System.Int32)">
+            <summary>
+            Returnes hidden Information
+            </summary>
+            <param name="image">Input Image</param>
+            <param name="stripBitsCount">Bit count used for Data Storage</param>
+            <returns>Hidden Information</returns>
+        </member>
+        <member name="M:Encryption.Steganography.BitmapFromBitmapData(System.Byte[])">
+            <summary>
+            Converts a Byte Array into a Bitmap Object
+            </summary>
+            <param name="BitmapData">Byte Array</param>
+            <returns>Bitmap</returns>
+        </member>
+        <member name="M:Encryption.Steganography.BitmapDataFromBitmap(System.Drawing.Bitmap)">
+            <summary>
+            Converts Bitmap into Byte Array
+            </summary>
+            <param name="objBitmap">Input Bitmap</param>
+            <returns>Byte Array</returns>
+        </member>
+        <member name="T:Encryption.AesEncryptedInformation">
+            <summary>
+            AES-Container File
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.Encryption">
+            <summary>
+            The used AES Instance
+            </summary>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.#ctor">
+            <summary>
+            Creates a new File-Container
+            </summary>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.#ctor(System.String)">
+            <summary>
+            Creates a new File-Container
+            </summary>
+            <param name="passPhrase">Password</param>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.writeInformation(System.String,System.String)">
+            <summary>
+            Saves a String Encrypted into a file
+            </summary>
+            <param name="data">Input String</param>
+            <param name="filename">file path</param>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.writeInformation(System.String,System.IO.Stream)">
+            <summary>
+            Saves a String Encrypted into a Stream
+            </summary>
+            <param name="data">Input String</param>
+            <param name="stream">Output Stream</param>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.writeInformation(System.Byte[],System.String)">
+            <summary>
+            Saves a Byte Array into a File
+            </summary>
+            <param name="data">Input Byte Array</param>
+            <param name="filename">File Path</param>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.writeInformation(System.Byte[],System.IO.Stream)">
+            <summary>
+            Saves a Byte Array Encrypted into a Stream
+            </summary>
+            <param name="data">Input Array</param>
+            <param name="stream">Output Stream</param>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.readInformation(System.String)">
+            <summary>
+            Reads a Encrypted File
+            </summary>
+            <param name="filename">File Path</param>
+            <returns>Data Package</returns>
+        </member>
+        <member name="M:Encryption.AesEncryptedInformation.readInformation(System.IO.Stream)">
+            <summary>
+            Reads a Encrypted File
+            </summary>
+            <param name="stream">Input stream</param>
+            <returns>Data Package</returns>
+        </member>
+        <member name="T:Encryption.AesEncryptedInformation.DataTypes">
+            <summary>
+            Data Types
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataTypes.String">
+            <summary>
+            File Containes String
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataTypes.File">
+            <summary>
+            File Containes Byte Array
+            </summary>
+        </member>
+        <member name="T:Encryption.AesEncryptedInformation.DataPackage">
+            <summary>
+            Data Package
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataPackage.Typ">
+            <summary>
+            The Type of this File
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataPackage.Encrypted">
+            <summary>
+            The Encrypted Data
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataPackage.Decrypted">
+            <summary>
+            The Decrypted Data
+            </summary>
+        </member>
+        <member name="F:Encryption.AesEncryptedInformation.DataPackage.Value">
+            <summary>
+            Containing Text
+            </summary>
+        </member>
+        <member name="T:UpdateLib.Update">
+            <summary>
+            Ein Update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.Name">
+            <summary>
+            Der Name des Updates
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.Version">
+            <summary>
+            Die Version des Updates
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.Changelog">
+            <summary>
+            Der Changelog des Updates
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.ReleaseDate">
+            <summary>
+            Das Datum an dem das Update erschienen ist
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.fileList">
+            <summary>
+            Die Dateien, die im Update enthalten sind
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.fileAmount">
+            <summary>
+            Die Anzahl an Dateien in diesem Update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.filesUpdated">
+            <summary>
+            How many files has allready updated
+            </summary>
+        </member>
+        <member name="M:UpdateLib.Update.#ctor(System.String)">
+            <summary>
+            Erzeugt eines neues Update aus bestehenden Daten
+            </summary>
+            <param name="path">Pfad zum Verzeichnis</param>
+        </member>
+        <member name="M:UpdateLib.Update.getLog">
+            <summary>
+            Liefert die Log Daten des Vorgangs
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UpdateLib.Update.getLogString">
+            <summary>
+            Liefert die Log Daten des Vorgangs
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:UpdateLib.Update.runUpdate(System.String)">
+            <summary>
+            Startet das Update
+            </summary>
+            <param name="path">Pfad zum Verzeichnis</param>
+        </member>
+        <member name="M:UpdateLib.Update.save(System.String)">
+            <summary>
+            Speichert das Update ab
+            </summary>
+            <param name="filename">Dateiname</param>
+        </member>
+        <member name="M:UpdateLib.Update.load(System.String)">
+            <summary>
+            Löd ein Update aus einer Datei
+            </summary>
+            <param name="filename">Pfad zur Datei</param>
+            <returns>Update, das aus der Datei geladen wurde</returns>
+        </member>
+        <member name="P:UpdateLib.Update.FileAmount">
+            <summary>
+            Die Anzahl an Dateien in diesem Update
+            </summary>
+        </member>
+        <member name="E:UpdateLib.Update.OnFileUpdated">
+            <summary>
+            The Event, that will be triggered, if a file has been updated
+            </summary>
+        </member>
+        <member name="T:UpdateLib.Update.FileUpdatedEventArgs">
+            <summary>
+            The EventArgs for the FileUpdates event
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.FileUpdatedEventArgs.fileNumber">
+            <summary>
+            How many files did updated so far.
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.FileUpdatedEventArgs.files">
+            <summary>
+            How many files are in this Update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.FileUpdatedEventArgs.fileName">
+            <summary>
+            The name of the file update
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.FileUpdatedEventArgs.directoryName">
+            <summary>
+            The name of the Directory
+            </summary>
+        </member>
+        <member name="F:UpdateLib.Update.FileUpdatedEventArgs.updateNeeded">
+            <summary>
+            Did this file needed an Update
+            </summary>
+        </member>
+        <member name="T:PluginApi.Elements.IPlugin">
+            <summary>
+            Abstrakte Plugin Klasse, von denen alle Plugins erben müssen
+            </summary>
+        </member>
+        <member name="F:PluginApi.Elements.IPlugin.loader">
+            <summary>
+            Der PluginLoader
+            </summary>
+        </member>
+        <member name="M:PluginApi.Elements.IPlugin.#ctor(PluginApi.Manager.PluginLoader)">
+            <summary>
+            Erzeuge ein neues Plugin
+            </summary>
+            <param name="loader">Plugin Loader</param>
+        </member>
+        <member name="M:PluginApi.Elements.IPlugin.handleMessage(System.String,System.Object[])">
+            <summary>
+            Abstrakte Methode, die alle eingehenden Nachrichten regelt
+            </summary>
+            <param name="messageName">Name der Nachricht</param>
+            <param name="arguments">Argumente der Nachricht</param>
+            <returns>Ergebnis</returns>
+        </member>
+        <member name="M:PluginApi.Elements.IPlugin.OnLoad">
+            <summary>
+            Abstrakte Methode, die aufgerufen wird, wenn das Plugin und alle Abhänigkeiten geladen wurden
+            </summary>
+        </member>
+        <member name="T:SecureChannel.Types.Command">
+            <summary>
+            Die Aufforderung des einer Kommandoausführung
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Command.token">
+            <summary>
+            Das Token zur Session Identifizierung
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Command.key">
+            <summary>
+            Der Autentifizierungs Schlüssel
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Command.command">
+            <summary>
+            Das Kommando das ausgeführt werden soll
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Command.arguments">
+            <summary>
+            Die Liste der Argumente
+            </summary>
+        </member>
+        <member name="T:GraphicLibary.Controls.ExtendedPictureBox`1">
+            <summary>
+            Picturebox that can be used as Data Storage
+            </summary>
+            <typeparam name="T">Type of the Object to hold</typeparam>
+        </member>
+        <member name="M:GraphicLibary.Controls.ExtendedPictureBox`1.setHold(`0)">
+            <summary>
+            Sets Element
+            </summary>
+            <param name="hold">Element to Hold</param>
+        </member>
+        <member name="M:GraphicLibary.Controls.ExtendedPictureBox`1.getHold">
+            <summary>
+            Returns Element
+            </summary>
+            <returns>Holding Object</returns>
+        </member>
+        <member name="T:Encryption.AES">
+            <summary>
+            AES Encryption Algorithm
+            </summary>
+        </member>
+        <member name="M:Encryption.AES.#ctor">
+            <summary>
+            Erzeugt eine neue AES Instanz
+            Benutzte Standard Konfiguration
+            </summary>
+        </member>
+        <member name="M:Encryption.AES.#ctor(System.String)">
+            <summary>
+            Erzeugt eine neue AES Instanz
+            </summary>
+            <param name="passPhrase">Passwort</param>
+        </member>
+        <member name="M:Encryption.AES.#ctor(System.String,System.String)">
+            <summary>
+            Erzeugt eine neue AES Instanz
+            </summary>
+            <param name="passPhrase">Passwort</param>
+            <param name="saltValue">Salt-Wert</param>
+        </member>
+        <member name="M:Encryption.AES.#ctor(System.String,System.String,Encryption.AES.HashAlgorithm)">
+            <summary>
+            Erzeugt eine neue AES Instanz
+            </summary>
+            <param name="passPhrase">Passwort</param>
+            <param name="saltValue">Salt-Wert</param>
+            <param name="hashMethode">Hash-Methode</param>
+        </member>
+        <member name="M:Encryption.AES.#ctor(System.String,System.String,Encryption.AES.HashAlgorithm,System.Int32)">
+            <summary>
+            Erzeugt eine neue AES Instanz
+            </summary>
+            <param name="passPhrase">Passwort</param>
+            <param name="saltValue">Salt-Wert</param>
+            <param name="hashMethode">Hash-Methode</param>
+            <param name="keySize">KeySize</param>
+        </member>
+        <member name="M:Encryption.AES.Encrypt(System.Byte[])">
+            <summary>
+            Encryptes a Byte Array
+            </summary>
+            <param name="data">To Encrypt</param>
+            <returns>Encrypted Byte Array</returns>
+        </member>
+        <member name="M:Encryption.AES.Encrypt(System.String)">
+            <summary>
+            Encryptes a String
+            </summary>
+            <param name="data">the string that should be encrypted</param>
+            <returns>Encrypted String</returns>
+        </member>
+        <member name="M:Encryption.AES.Decrypt(System.Byte[])">
+            <summary>
+            Decrypte a Byte Array
+            </summary>
+            <param name="data">Array to be Decrypted</param>
+            <returns>Decrypted Array</returns>
+        </member>
+        <member name="M:Encryption.AES.Decrypt(System.String)">
+            <summary>
+            Decryptes Base64 encoded Data
+            </summary>
+            <param name="Base64Data">Base64 Encoded Data</param>
+            <returns>Decrypted Data</returns>
+        </member>
+        <member name="M:Encryption.AES.EncryptToBase64(System.Byte[])">
+            <summary>
+            Ebcryptes a Byte Array and returns Base64 Encoded String
+            </summary>
+            <param name="data">Data to be Decrypted</param>
+            <returns>Base64 Encrypted Data</returns>
+        </member>
+        <member name="M:Encryption.AES.EncryptToBase64(System.String)">
+            <summary>
+            Encryptes a String and Returns Base64 Encoded String
+            </summary>
+            <param name="data">String to be encrypted</param>
+            <returns>Base64 Encryted String</returns>
+        </member>
+        <member name="M:Encryption.AES.DecryptToString(System.Byte[])">
+            <summary>
+            Decrypted a Byte Array and return String
+            </summary>
+            <param name="data">Input Data</param>
+            <returns>String</returns>
+        </member>
+        <member name="M:Encryption.AES.DecryptToString(System.String)">
+            <summary>
+            Decryptes a Base64 Encoded String to a String
+            </summary>
+            <param name="data">Base64 Encrypted Data</param>
+            <returns>UTF8-Encoded String</returns>
+        </member>
+        <member name="P:Encryption.AES.PassPhrase">
+            <summary>
+            Used Password
+            </summary>
+        </member>
+        <member name="P:Encryption.AES.SaltValue">
+            <summary>
+            Salt Value
+            </summary>
+        </member>
+        <member name="P:Encryption.AES.HashMethode">
+            <summary>
+            Used Hashing Algorithm
+            </summary>
+        </member>
+        <member name="P:Encryption.AES.PasswordIterations">
+            <summary>
+            Password Iterations
+            </summary>
+        </member>
+        <member name="P:Encryption.AES.InitVector">
+            <summary>
+            Init Vector
+            </summary>
+        </member>
+        <member name="P:Encryption.AES.KeySize">
+            <summary>
+            Key Site
+            </summary>
+        </member>
+        <member name="T:Encryption.AES.HashAlgorithm">
+            <summary>
+            Hash Algorithms
+            </summary>
+        </member>
+        <member name="F:Encryption.AES.HashAlgorithm.SHA1">
+            <summary>
+            SHA1
+            </summary>
+        </member>
+        <member name="F:Encryption.AES.HashAlgorithm.MD5">
+            <summary>
+            Message Digest 5
+            </summary>
+        </member>
+        <member name="T:Data.MMTimer">
+            <summary>
+            Multimedia Timer
+            </summary>
+        </member>
+        <member name="M:Data.MMTimer.#ctor(System.Int32)">
+            <summary>
+            Creates a new MultimediaTimer
+            </summary>
+            <param name="interval">Used Interval</param>
+        </member>
+        <member name="E:Data.MMTimer.OnTick">
+            <summary>
+            Timer Tick Event
+            </summary>
+        </member>
+        <member name="P:Data.MMTimer.Enabled">
+            <summary>
+            Timer Running
+            </summary>
+        </member>
+        <member name="P:Data.MMTimer.Interval">
+            <summary>
+            Used Interval
+            </summary>
+        </member>
+        <member name="T:Data.MMTimer.MMTimerEventargs">
+            <summary>
+            Multimedia Timer Event Args
+            </summary>
+        </member>
+        <member name="T:SecureChannel.Events.UserIDLookupEventArgs">
+            <summary>
+            Die Parameter, die übergeben werden, sollte eine UserID ermittelt worden sein
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Events.UserIDLookupEventArgs.username">
+            <summary>
+            Der Benutzername, für den die UserID ermittelt wurde
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Events.UserIDLookupEventArgs.userID">
+            <summary>
+            Die BenutzerID die ermittelt wurde
+            </summary>
+        </member>
+        <member name="T:UpdateLib.WebLookup.UpdateWebLookup">
+            <summary>
+            Class for Lookups on http://backend.mrh-development.de
+            </summary>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initiates a new Update Lookup Instance
+            </summary>
+            <param name="name">The Name of the Program (only needed if no licence is given)</param>
+            <param name="version">The Version of this Program</param>
+            <param name="licence">The Licence Code of this Program</param>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.getUpdate">
+            <summary>
+            Get the newest available Update as BackendResponse Object
+            </summary>
+            <returns>The newest available Update Information</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.isUpdateAvailable">
+            <summary>
+            Is a new Update Available
+            </summary>
+            <returns>Is a new Update Available</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.isDownloadAvailable">
+            <summary>
+            Is the newest available Update downloadable
+            </summary>
+            <returns>Is the newest available Update downloadable</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.downloadUpdate(System.String)">
+            <summary>
+            Downloads the newest Update
+            </summary>
+            <param name="target">The Path to save the Update</param>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.getDictonary">
+            <summary>
+            Builds the default Argument Dictionary for tge Communication
+            </summary>
+            <returns>Dictionary with predefined Values</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.getResponse(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Requests and converts an Answer into an BackendResponse Object
+            </summary>
+            <param name="data">The Parameter Dictionary</param>
+            <returns>The Answer as BackendResponse</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.request(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Requests an Answer from the Update Server
+            </summary>
+            <param name="data">The Parameter Dictionary</param>
+            <returns>The Answer</returns>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.download(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Downloads the newsest Update
+            </summary>
+            <param name="data">The Parameter Dictionary</param>
+            <param name="target">The path to save the Update</param>
+        </member>
+        <member name="M:UpdateLib.WebLookup.UpdateWebLookup.buildString(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Converts the Parameter Dictionary into a GET-Request String
+            </summary>
+            <param name="data">The Data Dictionary</param>
+            <returns>The built GET-Request String</returns>
+        </member>
+        <member name="P:UpdateLib.WebLookup.UpdateWebLookup.Host">
+            <summary>
+            The Update Server
+            </summary>
+        </member>
+        <member name="T:Data.XMLParser">
+            <summary>
+            XML-File Parser for the XMLTree Objects
+            </summary>
+        </member>
+        <member name="M:Data.XMLParser.read(System.String)">
+            <summary>
+            Reads a XML-File and returns a <see cref="T:Data.XMLTree"/> Object
+            </summary>
+            <param name="path">relative path to the input file</param>
+            <returns><see cref="T:Data.XMLTree"/> Object</returns>
+        </member>
+        <member name="M:Data.XMLParser.readString(System.String)">
+            <summary>
+            Reads a String and returns a <see cref="T:Data.XMLTree"/> Object
+            </summary>
+            <param name="input">XML-Input text</param>
+            <returns>XMLTree Object</returns>
+        </member>
+        <member name="M:Data.XMLParser.parse(System.Xml.XmlLinkedNode)">
+            <summary>
+            parses a xml-file
+            </summary>
+        </member>
+        <member name="M:Data.XMLParser.save(Data.XMLTree)">
+            <summary>
+            Saves a XMLTree into a XmlDocument Object
+            </summary>
+            <param name="element">The element to save</param>
+            <returns>XmlDocument Instance</returns>
+        </member>
+        <member name="M:Data.XMLParser.save(Data.XMLTree,System.String)">
+            <summary>
+            Saves a XMLTree Object into a file
+            </summary>
+            <param name="element">Object to savet</param>
+            <param name="filename">path to file</param>
+            <returns></returns>
+        </member>
+        <member name="M:Data.XMLParser.write(Data.XMLTree,System.Xml.XmlNode)">
+            <summary>
+            recursive save algorithm
+            </summary>
+            <param name="element">element to save</param>
+            <param name="parent">Parent Node</param>
+            <returns>created main node</returns>
+        </member>
+        <member name="T:Network.WebServer">
+            <summary>
+            A Webserver Implementation
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.respStatus">
+            <summary>
+            The list of all HTTP Error Codes
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.serverName">
+            <summary>
+            The Server Name, sent to the Client
+            </summary>
+        </member>
+        <member name="M:Network.WebServer.#ctor(System.Int32)">
+            <summary>
+            Creates a new Webserver on a specific Port 
+            </summary>
+            <param name="port">Used Port</param>
+        </member>
+        <member name="M:Network.WebServer.TriggerOnTextRecieved(System.String,System.Byte[],System.Net.Sockets.TcpClient)">
+            <summary>
+            Reagiere auf Eingehende Signale
+            </summary>
+            <param name="input">Die eingehenden Daten</param>
+            <param name="byteInput">Die eingehenden binären Daten</param>
+            <param name="client">Der verbundene Client</param>
+        </member>
+        <member name="P:Network.WebServer.ServerName">
+            <summary>
+            The Server Name, sent to the Client
+            </summary>
+        </member>
+        <member name="E:Network.WebServer.WebRequestRecieved">
+            <summary>
+            Event if a new new Request was recieved
+            </summary>
+        </member>
+        <member name="T:Network.WebServer.RequestType">
+            <summary>
+            The Type of the Requests
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.GET">
+            <summary>
+            ist die gebräuchlichste Methode. Mit ihr wird eine Ressource (z. B. eine Datei) unter Angabe eines URI vom Server angefordert. Als Argumente in dem URI können also auch Inhalte zum Server übertragen werden. Die Länge des URIs ist je nach eingesetztem Server begrenzt und sollte aus Gründen der Abwärtskompatibilität nicht länger als 255 Bytes sein.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.POST">
+            <summary>
+            schickt unbegrenzte, je nach physikalischer Ausstattung des eingesetzten Servers, Mengen an Daten zur weiteren Verarbeitung zum Server, diese werden als Inhalt der Nachricht übertragen und können beispielsweise aus Name-Wert-Paaren bestehen, die aus einem HTML-Formular stammen. Es können so neue Ressourcen auf dem Server entstehen oder bestehende modifiziert werden. POST-Daten werden im Allgemeinen nicht von Caches zwischengespeichert. Zusätzlich können bei dieser Art der Übermittlung auch Daten wie in der GET-Methode an den URI gehängt werden. 
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.HEAD">
+            <summary>
+            weist den Server an, die gleichen HTTP-Header wie bei GET, nicht jedoch den eigentlichen Dokumentinhalt (Body) zu senden. So kann zum Beispiel schnell die Gültigkeit einer Datei im Browsercache geprüft werden.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.PUT">
+            <summary>
+            dient dazu eine Ressource (z. B. eine Datei) unter Angabe des Ziel-URIs auf einen Webserver hochzuladen.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.DELETE">
+            <summary>
+            löscht die angegebene Ressource auf dem Server. Heute ist das, ebenso wie PUT, kaum implementiert bzw. in der Standardkonfiguration von Webservern abgeschaltet, beides erlangt jedoch mit RESTful Web Services und der HTTP-Erweiterung WebDAV neue Bedeutung.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.TRACE">
+            <summary>
+            liefert die Anfrage so zurück, wie der Server sie empfangen hat. So kann überprüft werden, ob und wie die Anfrage auf dem Weg zum Server verändert worden ist – sinnvoll für das Debugging von Verbindungen.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.OPTIONS">
+            <summary>
+            liefert eine Liste der vom Server unterstützen Methoden und Features.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.CONNECT">
+            <summary>
+            wird von Proxyservern implementiert, die in der Lage sind, SSL-Tunnel zur Verfügung zu stellen.
+            </summary>
+        </member>
+        <member name="F:Network.WebServer.RequestType.OTHER">
+            <summary>
+            Unbekannt
+            </summary>
+        </member>
+        <member name="T:Network.WebServer.WebRequestEventArgs">
+            <summary>
+            The Arguments used for the WebRequest Event
+            </summary>
+        </member>
+        <member name="M:Network.WebServer.WebRequestEventArgs.#ctor(System.String,System.Net.Sockets.TcpClient)">
+            <summary>
+            Parses a HTTP String
+            </summary>
+            <param name="input">Input String</param>
+            <param name="client">TcpClient</param>
+        </member>
+        <member name="M:Network.WebServer.WebRequestEventArgs.setAnswer(System.Byte[])">
+            <summary>
+            Sets the binary Answer to a specific Value, overwrites <see cref="P:Network.WebServer.WebRequestEventArgs.Answer"/>
+            </summary>
+            <param name="answer">The Data, that should be sent to the Client</param>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.Protocol">
+            <summary>
+            The used Protocol
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.RequestPath">
+            <summary>
+            The Requested Path
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.Client">
+            <summary>
+            The Client Connected to the Server
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.RawText">
+            <summary>
+            Raw Input
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.RequestType">
+            <summary>
+            HTTP-Request Type
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.Arguments">
+            <summary>
+            The Arguments sent by the Client
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.Header">
+            <summary>
+            Header Informations
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.ResponseCode">
+            <summary>
+            HTTP-Response Code
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.Answer">
+            <summary>
+            The Answer that should be sent to the client
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.BinaryAnswer">
+            <summary>
+            the answer that should be sent to the client
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.ResponseType">
+            <summary>
+            The Media Type of the Repsonse
+            </summary>
+        </member>
+        <member name="P:Network.WebServer.WebRequestEventArgs.IsAnswerBinary">
+            <summary>
+            Is the Answer a Binary Answer
+            </summary>
+        </member>
+        <member name="T:Network.DefaultMode.TCPClient">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Network.DefaultMode.TCPClient.#ctor(System.String,System.Int32)">
+            <summary>
+            Konstruktor für <see cref="T:Network.DefaultMode.TCPClient"/>
+            </summary>
+            <param name="serverIP">Die IP des Servers</param>
+            <param name="port">Port</param>
+        </member>
+        <member name="M:Network.DefaultMode.TCPClient.ReceiveCallback(System.IAsyncResult)">
+            <summary>
+            Callback
+            </summary>
+            <param name="ar">CallbackResult</param>
+        </member>
+        <member name="M:Network.DefaultMode.TCPClient.sendData(System.Byte[],System.Int32)">
+            <summary>
+            Sendet Daten an den Server ohne Längen Informationen zu schicken
+            </summary>
+            <param name="data">Daten</param>
+            <param name="length">Wird Ignoriert</param>
+        </member>
+        <member name="T:SecureChannel.Types.Response">
+            <summary>
+            Die vom Server kommende Antwort
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Response.token">
+            <summary>
+            Das Session Token
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Response.result">
+            <summary>
+            Das Ergebnis der Abfrage
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Response.key">
+            <summary>
+            Der Erhaltene Schlüssel vom Server
+            </summary>
+        </member>
+        <member name="F:SecureChannel.Types.Response.error">
+            <summary>
+            Ist ein Fehler aufgetreten
+            </summary>
+        </member>
+        <member name="T:Data.TemplateSystem">
+            <summary>
+            SiteTemplate
+            </summary>
+        </member>
+        <member name="F:Data.TemplateSystem.DEFAULT_NODE">
+            <summary>
+            Default Node
+            </summary>
+        </member>
+        <member name="F:Data.TemplateSystem.blocks">
+            <summary>
+            The nodes of this template
+            </summary>
+        </member>
+        <member name="F:Data.TemplateSystem.data">
+            <summary>
+            The set variables of this template
+            </summary>
+        </member>
+        <member name="F:Data.TemplateSystem.funcs">
+            <summary>
+            external replace functions
+            </summary>
+        </member>
+        <member name="M:Data.TemplateSystem.load(System.String)">
+            <summary>
+            Loads a template file
+            </summary>
+            <param name="path">The path to the template file</param>
+        </member>
+        <member name="M:Data.TemplateSystem.getPlaceholder(System.String,System.String)">
+            <summary>
+            Returnes a list of all matching Elements within a specific string
+            </summary>
+            <param name="input">Input</param>
+            <param name="key">Key</param>
+            <returns>All matching elements</returns>
+        </member>
+        <member name="M:Data.TemplateSystem.set(System.String,System.String)">
+            <summary>
+            Sets a variable
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="M:Data.TemplateSystem.append(System.String,System.String)">
+            <summary>
+            Append something to a Variable
+            </summary>
+            <param name="key">Key</param>
+            <param name="value">Value</param>
+        </member>
+        <member name="M:Data.TemplateSystem.getNode(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Returns a  specific Node with specifc Input Data
+            </summary>
+            <param name="name">The name of the node</param>
+            <param name="data">The data for this node</param>
+            <returns></returns>
+        </member>
+        <member name="M:Data.TemplateSystem.get(System.String)">
+            <summary>
+            Creates and returnes the content
+            </summary>
+            <param name="node">Name of the wanted Node</param>
+            <returns>created content</returns>
+        </member>
+        <member name="P:Data.TemplateSystem.Name">
+            <summary>
+            The name of this template
+            </summary>
+        </member>
+        <member name="P:Data.TemplateSystem.Autor">
+            <summary>
+            The Author of this Template
+            </summary>
+        </member>
+        <member name="P:Data.TemplateSystem.Functions">
+            <summary>
+            The external replace functions
+            </summary>
+        </member>
+        <member name="T:PluginApi.Elements.Plugin">
+            <summary>
+            PluginContainer
+            </summary>
+        </member>
+        <member name="F:PluginApi.Elements.Plugin.name">
+            <summary>
+            Name des Plugins
+            </summary>
+        </member>
+        <member name="F:PluginApi.Elements.Plugin.version">
+            <summary>
+            Version des Plugins
+            </summary>
+        </member>
+        <member name="F:PluginApi.Elements.Plugin.reqirements">
+            <summary>
+            Die Liste der Abhänigkeiten
+            </summary>
+        </member>
+        <member name="F:PluginApi.Elements.Plugin.assembly">
+            <summary>
+            Die Assembly in Byte-Form
+            </summary>
+        </member>
+        <member name="M:PluginApi.Elements.Plugin.getAssembly">
+            <summary>
+            Gibt die zu Grunde liegende Assembly in Byte-Form aus
+            </summary>
+            <returns>Assembly in Byte-Form</returns>
+        </member>
+        <member name="M:PluginApi.Elements.Plugin.#ctor(System.String,System.Int32,System.Byte[])">
+            <summary>
+            Erzeugt ein neues Plugin
+            </summary>
+            <param name="name">Name des Plugins</param>
+            <param name="version">Version des Plugins</param>
+            <param name="assembly">Zu Grunde liegende Assembly in Byte-Form</param>
+        </member>
+        <member name="M:PluginApi.Elements.Plugin.addRequirement(System.String)">
+            <summary>
+            Füge ein Plugin zu den Abhänigkeiten hinzu
+            </summary>
+            <param name="name">Name des Plugins</param>
+        </member>
+        <member name="M:PluginApi.Elements.Plugin.getRequirements">
+            <summary>
+            Ermittle die Abhäigkeiten des Plugins
+            </summary>
+            <returns>Abhänigkeiten des Plugins</returns>
+        </member>
+        <member name="P:PluginApi.Elements.Plugin.Name">
+            <summary>
+            Name des Plugins
+            </summary>
+        </member>
+        <member name="P:PluginApi.Elements.Plugin.Version">
+            <summary>
+            Version des Plugins
+            </summary>
+        </member>
+    </members>
+</doc>
