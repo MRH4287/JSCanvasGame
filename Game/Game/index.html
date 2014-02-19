@@ -27,7 +27,9 @@
 
             // Variables
             var _canvas;
+            var _buffer;
             var _ctx;
+            var _bufferctx;
 
             var _width = 0;
             var _height = 0;
@@ -55,6 +57,13 @@
                 $(_canvas)
                     .attr("width", _width)
                     .attr("height", _height);
+
+                _buffer = document.createElement("canvas");
+                $(_buffer)
+                    .attr("width", _width)
+                    .attr("height", _height);
+
+                _bufferctx = _buffer.getContext("2d");
 
                 _loadConfig();
                 _loadMap();
@@ -144,21 +153,27 @@
                 return tile;
             }
 
-            var _renderMap = function()
+            var _renderMap = function (ctx, callback)
             {
                 //_log("Map rendering ...");
 
-                for (collom = 0; collom < _map.length; collom ++)
+                function okCallback()
+                {
+                    window.setTimeout(callback, 1);
+
+                }
+
+                for (collom = 0; collom < _map.length; collom++)
                 {
                     //_log("Row: ", collom);
 
-                    var yOffset = collom * _config.tileSize - _offset.y;
+                    var yOffset = collom * _config.tileSize; // - _offset.y;
 
-                    for (element = 0; element < _map[collom].length; element ++)
+                    for (element = 0; element < _map[collom].length; element++)
                     {
                         //_log("Element: ", element);
 
-                        var xOffset = element * _config.tileSize - _offset.x;
+                        var xOffset = element * _config.tileSize; // - _offset.x;
 
                         _map[collom][element].X = xOffset;
                         _map[collom][element].Y = yOffset;
@@ -166,10 +181,10 @@
                         if ((((xOffset + _config.tileSize) < 0) || ((yOffset + _config.tileSize) < 0)) || ((xOffset > _width) || (yOffset > _height)))
                         {
                             //_log("Tile out of sight: ", _map[collom][element]);
-                            continue;
+                            //continue;
                         }
 
-                        _addTile(_map[collom][element], xOffset, yOffset, false);
+                        _addTile(ctx, _map[collom][element], xOffset, yOffset, false, ((collom == _map.length -1) && (element == _map[collom].length -1)) ? okCallback : undefined);
                     }
 
 
@@ -183,31 +198,33 @@
 
             this.test = function (offset)
             {
-                _clear();
+                _clear(_bufferctx);
 
 
                 _offset.x = offset;
                 _offset.y = 0;
 
-                _renderMap();
+                _renderMap(_bufferctx, function ()
+                {
 
+                    //_clear(_ctx);
 
-
-
+                    _ctx.drawImage(_buffer, _offset.x * -1, 0);
+                });
             }
 
 
 
 
             // --- Draw Functions ----
-            var _clear = function ()
+            var _clear = function (ctx)
             {
-                _ctx.rect(0, 0, _width, _height);
-                _ctx.fillStyle = 'green';
-                _ctx.fill();
+                ctx.rect(0, 0, _width, _height);
+                ctx.fillStyle = 'green';
+                ctx.fill();
             }
 
-            var _addTile = function (tile, x, y, ignoreOutOfSight)
+            var _addTile = function (ctx, tile, x, y, ignoreOutOfSight, readyCallback)
             {
                 //_log("Render Tile: ", tile);
 
@@ -219,8 +236,13 @@
                 {
                     if ((_config.showBlocking) && (!tile.Passable))
                     {
-                        _ctx.strokeStyle = "#f00";
-                        _ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                        ctx.strokeStyle = "#f00";
+                        ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                    }
+
+                    if (readyCallback !== undefined)
+                    {
+                        readyCallback();
                     }
                 }
 
@@ -228,7 +250,20 @@
                 {
                     if (top != undefined)
                     {
-                        _addImage(top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                        _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                    }
+                    else
+                    {
+                        if ((_config.showBlocking) && (!tile.Passable))
+                        {
+                            ctx.strokeStyle = "#f00";
+                            ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                        }
+
+                        if (readyCallback !== undefined)
+                        {
+                            readyCallback();
+                        }
                     }
                 }
 
@@ -236,29 +271,42 @@
                 {
                     if (middle !== undefined)
                     {
-                        _addImage(middle.ImageURI, x, y, undefined, undefined, middleCallback, ignoreOutOfSight);
+                        _addImage(ctx, middle.ImageURI, x, y, undefined, undefined, middleCallback, ignoreOutOfSight);
                     }
                     else if (top !== undefined)
                     {
-                        _addImage(top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                        _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                    }
+                    else
+                    {
+                        if ((_config.showBlocking) && (!tile.Passable))
+                        {
+                            ctx.strokeStyle = "#f00";
+                            ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                        }
+
+                        if (readyCallback !== undefined)
+                        {
+                            readyCallback();
+                        }
                     }
 
                 }
 
-                _addImage(bottom.ImageURI, x, y, undefined, undefined, bottomCallback, ignoreOutOfSight);
+                _addImage(ctx, bottom.ImageURI, x, y, undefined, undefined, bottomCallback, ignoreOutOfSight);
 
 
             }
 
-            var _addImage = function (src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
+            var _addImage = function (ctx, src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
             {
-               // _log("Add Image '" + src + "' at: ", { x: x, y: y });
+                // _log("Add Image '" + src + "' at: ", { x: x, y: y });
 
                 ignoreOutOfSight = (ignoreOutOfSight === undefined) ? false : Boolean(ignoreOutOfSight);
 
                 if (!ignoreOutOfSight && ((((x + width) < 0) && ((y + height) < 0)) || ((x > _width) && (y > _height))))
                 {
-                   // _log("Out of sight!");
+                    _log("Out of sight!");
                     return;
                 }
 
@@ -276,8 +324,7 @@
 
                 imageObj.onload = function ()
                 {
-
-                    _ctx.drawImage(imageObj, x, y, width, height);
+                    ctx.drawImage(imageObj, x, y, width, height);
 
                     if (typeof (imageOnLoad) != undefined)
                     {
@@ -375,7 +422,7 @@
 
         var run = true;
         var offset = 0;
-        
+
 
         $(document).ready(function ()
         {
@@ -393,9 +440,9 @@
 
                     render.test(offset);
                 }
-            }, 100);
+            }, 60);
 
-            //render.test();
+            render.test(0);
         });
 
 
