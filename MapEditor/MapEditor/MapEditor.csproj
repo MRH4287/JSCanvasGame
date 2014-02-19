@@ -66,12 +66,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CommandState.cs" />
     <Compile Include="Elements\ElementDefinition.cs" />
     <Compile Include="Elements\ElementLevel.cs" />
     <Compile Include="Elements\Events.cs" />
     <Compile Include="Elements\Tile.cs" />
     <Compile Include="GUIElements\ColorDataModel.cs" />
     <Compile Include="GUIElements\MapTile.cs" />
+    <Compile Include="GUIElements\TileCommand.cs" />
     <Compile Include="GUIElements\TileImage.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

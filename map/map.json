@@ -1,0 +1,111 @@
+[
+	[
+		{
+			"ID": "test",
+			"BottomElementID": "grass",
+			"Flags": [ "Soft" ],
+			"Passable": true,
+			"Speed": 1.0,
+			"Events":
+			[
+				{
+					"key": "OnWalkOver",
+					"value": "Test"
+				}
+			
+			]
+		},
+		{
+			"BottomElementID": "grass",
+			"MiddleElementID": "bush",
+			"TopElementID": "tree_top",
+			"Flags": [ "Thorny" ],
+			"Passable": false
+		}
+	
+	
+	],
+	[
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"MiddleElementID": "tree_middle",
+			"TopElementID": "tree_top",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		}	
+	],
+	[
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"MiddleElementID": "tree_middle",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		}	
+	],
+	[
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{		
+			"BottomElementID": "tree_bottom",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		},
+		{			
+			"BottomElementID": "grass",
+			"Passable": true
+		}	
+	]
+]

@@ -42,7 +42,13 @@
         <TabControl Margin="1,10,0,0" Grid.Column="2">
             <TabItem Header="Tiles">
                 <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal">
-
+                    <controls:TileCommand Text="Select" Background="Orange" Command="Select"></controls:TileCommand>
+                    <controls:TileCommand Text="Clear All" Background="WhiteSmoke" Command="ClearAll"></controls:TileCommand>
+                    <controls:TileCommand Text="Clear Bottom" Background="Gray" Command="ClearBottom"></controls:TileCommand>
+                    <controls:TileCommand Text="Clear Middle" Background="GreenYellow" Command="ClearMiddle"></controls:TileCommand>
+                    <controls:TileCommand Text="Clear Top" Background="LightBlue" Command="ClearTop"></controls:TileCommand>
+                    
+                    <controls:TileImage></controls:TileImage>
                 </WrapPanel>
             </TabItem>
             <TabItem Header="Options">

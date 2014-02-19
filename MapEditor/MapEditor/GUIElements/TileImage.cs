@@ -43,6 +43,36 @@ namespace MapEditor.GUIElements
         }
 
 
+        public static Visibility GetSelectionIndicatorVisible(DependencyObject obj)
+        {
+            return (Visibility)obj.GetValue(SelectionIndicatorVisibleProperty);
+        }
+
+        public static void SetSelectionIndicatorVisible(DependencyObject obj, Visibility value)
+        {
+            obj.SetValue(SelectionIndicatorVisibleProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for SelectionIndicatorVisible.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectionIndicatorVisibleProperty =
+            DependencyProperty.RegisterAttached("SelectionIndicatorVisible", typeof(Visibility), typeof(TileImage), new PropertyMetadata(Visibility.Collapsed));
+
+
+        public bool Selected
+        {
+            get
+            {
+                return (GetSelectionIndicatorVisible(this) == System.Windows.Visibility.Visible);
+            }
+            set
+            {
+                SetSelectionIndicatorVisible(this, (value) ? Visibility.Visible : Visibility.Collapsed);
+            }
+        }
+
+
+
+
         #endregion
 
 

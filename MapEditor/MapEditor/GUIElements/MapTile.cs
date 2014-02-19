@@ -347,7 +347,151 @@ namespace MapEditor.GUIElements
             }
         }
 
-        public Tile Tile;
+        private Tile _tile = null;
+
+        public Tile Tile
+        {
+            get
+            {
+                return _tile;
+            }
+            set
+            {
+                _tile = value;
+                if (value != null)
+                {
+                    if (_tile[ElementLevel.Bottom] != null)
+                    {
+                        BottomLayerImage = new BitmapImage(_tile[ElementLevel.Bottom].ImagePath);
+                    }
+                    else
+                    {
+                        BottomLayerImage = null;
+                    }
+
+                    if (_tile[ElementLevel.Middle] != null)
+                    {
+                        MiddleLayerImage = new BitmapImage(_tile[ElementLevel.Middle].ImagePath);
+                    }
+                    else
+                    {
+                        MiddleLayerImage = null;
+                    }
+
+                    if (_tile[ElementLevel.Top] != null)
+                    {
+                        TopLayerImage = new BitmapImage(_tile[ElementLevel.Top].ImagePath);
+                    }
+                    else
+                    {
+                        TopLayerImage = null;
+                    }
+
+                }
+
+            }
+
+        }
+
+        public ElementDefinition BottomElement
+        {
+            get
+            {
+                if (Tile != null)
+                {
+                    return Tile[ElementLevel.Bottom];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            set
+            {
+                if (Tile != null)
+                {
+                    this.Tile[ElementLevel.Bottom] = value;
+                }
+
+                if (value != null)
+                {
+                    this.BottomLayerImage = new BitmapImage(value.ImagePath);
+                }
+                else
+                {
+                    this.BottomLayerImage = null;
+                }
+            }
+
+        }
+
+        public ElementDefinition MiddleElement
+        {
+            get
+            {
+                if (Tile != null)
+                {
+                    return Tile[ElementLevel.Middle];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            set
+            {
+                if (Tile != null)
+                {
+                    this.Tile[ElementLevel.Middle] = value;
+                }
+
+                if (value != null)
+                {
+                    this.MiddleLayerImage = new BitmapImage(value.ImagePath);
+                }
+                else
+                {
+                    this.MiddleLayerImage = null;
+                }
+            }
+
+        }
+
+        public ElementDefinition TopElement
+        {
+            get
+            {
+                if (Tile != null)
+                {
+                    return Tile[ElementLevel.Top];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            set
+            {
+                if (Tile != null)
+                {
+                    this.Tile[ElementLevel.Top] = value;
+                }
+
+                if (value != null)
+                {
+                    this.TopLayerImage = new BitmapImage(value.ImagePath);
+                }
+                else
+                {
+                    this.TopLayerImage = null;
+                }
+            }
+
+        }
+
 
         public Visibility VisibilityBottom
         {
@@ -468,6 +612,7 @@ namespace MapEditor.GUIElements
             MapTile output = new MapTile();
             output.Tile = input;
 
+            /*
             output.BottomLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Bottom].ImageURI));
 
             if (input[ElementLevel.Middle] != null)
@@ -479,7 +624,7 @@ namespace MapEditor.GUIElements
             {
                 output.TopLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Top].ImageURI));
             }
-
+            */
 
 
             return output;

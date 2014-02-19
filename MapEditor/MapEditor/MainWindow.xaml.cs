@@ -27,7 +27,7 @@ namespace MapEditor
         {
             InitializeComponent();
 
-            controller = new MapController(this.MapHolder);
+            controller = new MapController(this.MapHolder, this.TileHolder);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
@@ -88,25 +88,21 @@ namespace MapEditor
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null);
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null, "graphics/objects/tree_top.png");
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null, "graphics/objects/tree_middle.png");
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null, "graphics/objects/tree_bottom.png");
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null);
-            controller.addRow(10, "graphics/terrain/bush.png", null, "graphics/terrain/flowers.png", null, null);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            controller.addRow(30);
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             controller.LoadConfig("./map/");
-
-            this.TileHolder.Children.Clear();
-
-            foreach (var item in controller.Elements)
-            {
-                this.TileHolder.Children.Add(new TileImage(item.Value));
-            }
-
 
         }
 
@@ -117,7 +113,8 @@ namespace MapEditor
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-           
+            controller.Serialize();
+
         }
     }
 }

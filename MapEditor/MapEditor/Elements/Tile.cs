@@ -51,6 +51,22 @@ namespace MapEditor.Elements
                 }
 
                 children[(int)level] = value;
+
+                switch (level)
+                {
+                    case ElementLevel.Bottom:
+                        BottomElementID = (value != null) ? value.ID : "";
+                        break;
+                    case ElementLevel.Middle:
+                        MiddleElementID = (value != null) ? value.ID : "";
+                        break;
+                    case ElementLevel.Top:
+                        TopElementID = (value != null) ? value.ID : "";
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }
 

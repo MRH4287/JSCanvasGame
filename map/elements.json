@@ -1,0 +1,55 @@
+[
+	{
+		"ID": "grass",
+		"Name": "Grass",
+		"Level": 0,
+		"Passable": true,
+		"Speed": 1.0,
+		"Flags": [
+			"green", "soft"
+		],
+		"ImageURI": "graphics/terrain/grass.png"	
+	},
+	{
+		"ID": "flower",
+		"Name": "Flower",
+		"Level": 1,
+		"Passable": true,
+		"Speed": 1.0,
+		"Flags": [
+			"green", "soft"
+		],
+		"ImageURI": "graphics/terrain/flowers.png"	
+	},
+	{
+		"ID": "bush",
+		"Name": "Bush",
+		"Level": 1,
+		"Passable": false,
+		"Flags": [
+			"green", "thorny"
+		],
+		"ImageURI": "graphics/terrain/bush.png"	
+	},
+	{
+		"ID": "tree_bottom",
+		"Name": "Tree-Bottom",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/objects/tree_bottom2.png"	
+	},
+	{
+		"ID": "tree_middle",
+		"Name": "Tree-Middle",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/objects/tree_middle.png"	
+	},
+	{
+		"ID": "tree_top",
+		"Name": "Tree-Top",
+		"Level": 2,
+		"Passable": true,
+		"ImageURI": "graphics/objects/tree_top.png"	
+	}
+]
