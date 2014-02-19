@@ -35,6 +35,10 @@
             var _elements = {};
             var _map = [];
 
+            var _offset = {
+                x: 0,
+                y: 0
+            }
 
 
             // Constructor ---------
@@ -142,19 +146,28 @@
 
             var _renderMap = function()
             {
-                _log("Map rendering ...");
+                //_log("Map rendering ...");
 
                 for (collom = 0; collom < _map.length; collom ++)
                 {
-                    _log("Row: ", collom);
+                    //_log("Row: ", collom);
 
-                    var yOffset = collom * _config.tileSize;
+                    var yOffset = collom * _config.tileSize - _offset.y;
 
                     for (element = 0; element < _map[collom].length; element ++)
                     {
-                        _log("Element: ", element);
+                        //_log("Element: ", element);
 
-                        var xOffset = element * _config.tileSize;
+                        var xOffset = element * _config.tileSize - _offset.x;
+
+                        _map[collom][element].X = xOffset;
+                        _map[collom][element].Y = yOffset;
+
+                        if ((((xOffset + _config.tileSize) < 0) || ((yOffset + _config.tileSize) < 0)) || ((xOffset > _width) || (yOffset > _height)))
+                        {
+                            //_log("Tile out of sight: ", _map[collom][element]);
+                            continue;
+                        }
 
                         _addTile(_map[collom][element], xOffset, yOffset, false);
                     }
@@ -168,11 +181,17 @@
 
             // -------------
 
-            this.test = function ()
+            this.test = function (offset)
             {
                 _clear();
 
+
+                _offset.x = offset;
+                _offset.y = 0;
+
                 _renderMap();
+
+
 
 
             }
@@ -184,13 +203,13 @@
             var _clear = function ()
             {
                 _ctx.rect(0, 0, _width, _height);
-                _ctx.fillStyle = 'orange';
+                _ctx.fillStyle = 'green';
                 _ctx.fill();
             }
 
             var _addTile = function (tile, x, y, ignoreOutOfSight)
             {
-                _log("Render Tile: ", tile);
+                //_log("Render Tile: ", tile);
 
                 var bottom = tile.BottomElement;
                 var middle = tile.MiddleElement;
@@ -233,13 +252,13 @@
 
             var _addImage = function (src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
             {
-                _log("Add Image '" + src + "' at: ", { x: x, y: y });
+               // _log("Add Image '" + src + "' at: ", { x: x, y: y });
 
                 ignoreOutOfSight = (ignoreOutOfSight === undefined) ? false : Boolean(ignoreOutOfSight);
 
                 if (!ignoreOutOfSight && ((((x + width) < 0) && ((y + height) < 0)) || ((x > _width) && (y > _height))))
                 {
-                    _log("Out of sight!");
+                   // _log("Out of sight!");
                     return;
                 }
 
@@ -354,9 +373,29 @@
 
         var render = new Renderer($("#canvas")[0]);
 
+        var run = true;
+        var offset = 0;
+        
+
         $(document).ready(function ()
         {
-            render.test();
+
+            window.setInterval(function ()
+            {
+                if (run)
+                {
+                    offset += 5;
+                    if (offset > 600)
+                    {
+                        offset = 0;
+                    }
+
+
+                    render.test(offset);
+                }
+            }, 100);
+
+            //render.test();
         });
 
 
