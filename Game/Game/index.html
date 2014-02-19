@@ -178,11 +178,22 @@
                         _map[collom][element].X = xOffset;
                         _map[collom][element].Y = yOffset;
 
-                        if ((((xOffset + _config.tileSize) < 0) || ((yOffset + _config.tileSize) < 0)) || ((xOffset > _width) || (yOffset > _height)))
-                        {
+                        //if ((((xOffset + _config.tileSize) < _offset.x) || ((yOffset + _config.tileSize) < _offset.y)) || ((xOffset + _offset.x > _width) || (yOffset + _offset.y > _height)))
+                        //{
                             //_log("Tile out of sight: ", _map[collom][element]);
                             //continue;
+                        //}
+
+                        if (
+                                ((xOffset + _config.tileSize ) < _offset.x) ||
+                                (yOffset + _config.tileSize ) < _offset.y //||
+                                //(xOffset > ( _width + _offset.x))
+                            
+                            )
+                        {
+                            continue;
                         }
+
 
                         _addTile(ctx, _map[collom][element], xOffset, yOffset, false, ((collom == _map.length -1) && (element == _map[collom].length -1)) ? okCallback : undefined);
                     }
@@ -202,14 +213,14 @@
 
 
                 _offset.x = offset;
-                _offset.y = 0;
+                _offset.y =  0;
 
                 _renderMap(_bufferctx, function ()
                 {
 
                     //_clear(_ctx);
 
-                    _ctx.drawImage(_buffer, _offset.x * -1, 0);
+                    _ctx.drawImage(_buffer, _offset.x * -1, _offset.y * -1);
                 });
             }
 
@@ -306,7 +317,7 @@
 
                 if (!ignoreOutOfSight && ((((x + width) < 0) && ((y + height) < 0)) || ((x > _width) && (y > _height))))
                 {
-                    _log("Out of sight!");
+                    //_log("Out of sight!");
                     return;
                 }
 
