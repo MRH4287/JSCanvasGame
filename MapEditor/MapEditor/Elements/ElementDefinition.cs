@@ -71,7 +71,7 @@ namespace MapEditor.Elements
         {
             get
             {
-                return MapTile.GetAbsoluteUri(ImageURI);
+                return MapController.GetAbsoluteUri(ImageURI);
             }
         }
 

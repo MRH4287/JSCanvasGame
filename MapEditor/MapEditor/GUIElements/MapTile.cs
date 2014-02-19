@@ -587,7 +587,7 @@ namespace MapEditor.GUIElements
 
             this.Background = Brushes.Orange;
 
-            ImageSource image = new BitmapImage(GetAbsoluteUri(@"graphics\terrain\grass.png"));
+            ImageSource image = new BitmapImage(MapController.GetAbsoluteUri(@"graphics\terrain\grass.png"));
             this.BottomLayerImage = image;
 
         }
@@ -599,13 +599,6 @@ namespace MapEditor.GUIElements
             this.SetBinding(dp, binding);
         }
 
-
-        public static Uri GetAbsoluteUri(string path)
-        {
-            
-            return new Uri(@"D:\Visual Studio 2010\Projects\SpriteGame\MapEditor\MapEditor\bin\Debug\"+path, UriKind.Absolute);
-
-        }
 
         public static MapTile Create(Tile input)
         {

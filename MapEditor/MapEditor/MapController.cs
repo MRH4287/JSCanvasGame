@@ -176,7 +176,7 @@ namespace MapEditor
         }
 
 
-        
+
         public void addRow(int count = 10)
         {
             var container = getRowContainer();
@@ -195,7 +195,7 @@ namespace MapEditor
                 tile.MouseMove += tile_MouseMove;
                 tile.MouseUp += tile_MouseUp;
 
-                
+
 
                 container.Children.Add(tile);
             }
@@ -293,11 +293,11 @@ namespace MapEditor
             foreach (var row in MapHolder.Children)
             {
                 if (row is StackPanel)
-                { 
+                {
                     var rowPanel = ((StackPanel)row).Children;
                     List<Tile> tileList = new List<Tile>(rowPanel.Count);
 
-                    foreach(var tile in rowPanel)
+                    foreach (var tile in rowPanel)
                     {
                         if (tile is MapTile)
                         {
@@ -325,6 +325,17 @@ namespace MapEditor
             return panel;
         }
 
+
+        public static Uri GetAbsoluteUri(string path)
+        {
+            var execPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+            FileInfo fileInfo = new FileInfo(execPath);
+
+            //@"D:\Visual Studio 2010\Projects\SpriteGame\MapEditor\MapEditor\bin\Debug\"
+            return new Uri(fileInfo.DirectoryName + "\\" + path, UriKind.Absolute);
+
+        }
 
 
     }
