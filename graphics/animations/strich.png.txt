@@ -1,0 +1,8 @@
+0 - base.png
+32 - winken1.png
+64 - winken2.png
+96 - winken3.png
+128 - winken4.png
+160 - winken5.png
+192 - winken6.png
+224 - winken7.png
