@@ -15,19 +15,43 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor.GUIElements
 {
+    /// <summary>
+    /// The Element that is rendered to the Map
+    /// </summary>
     class MapTile : ContentControl
     {
+        /// <summary>
+        /// The global Size
+        /// </summary>
         private static double _size = 30;
+        /// <summary>
+        /// The global Border Thickness 
+        /// </summary>
         private static Thickness _thickness = new Thickness(0);
+        /// <summary>
+        /// The Global Border Brush
+        /// </summary>
         private static Brush _borderBrush = Brushes.Black;
 
+
+        /// <summary>
+        /// Global - The Visibility of the Bottom Image
+        /// </summary>
         private static Visibility _visibilityBottom = Visibility.Visible;
+        /// <summary>
+        /// Global - The Visibility of the Middle Image
+        /// </summary>
         private static Visibility _visibilityMiddle = Visibility.Visible;
+        /// <summary>
+        /// Global - The Visibility of the Top Image
+        /// </summary>
         private static Visibility _visibilityTop = Visibility.Visible;
 
         #region Static
 
-
+        /// <summary>
+        /// Global - The Visibility of the Bottom Image
+        /// </summary>
         public static Visibility GlobalVisibilityBottom
         {
             get
@@ -44,8 +68,14 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Visibility Event of the Bottom Image
+        /// </summary>
         public static event EventHandler GlobalVisibilityBottomChanged;
 
+        /// <summary>
+        /// Global - The Visibility of the Middle Image
+        /// </summary>
         public static Visibility GlobalVisibilityMiddle
         {
             get
@@ -62,8 +92,14 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Visibility Event of the MiddleImage
+        /// </summary>
         public static event EventHandler GlobalVisibilityMiddleChanged;
 
+        /// <summary>
+        /// Global - The Visibility of the Top Image
+        /// </summary>
         public static Visibility GlobalVisibilityTop
         {
             get
@@ -80,11 +116,16 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Visibility Event of the Top Image
+        /// </summary>
         public static event EventHandler GlobalVisibilityTopChanged;
 
 
- 
-        public static double GlobalSize 
+        /// <summary>
+        /// Global - The Size of all Elements
+        /// </summary>
+        public static double GlobalSize
         {
             get
             {
@@ -100,9 +141,15 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Change Event of the GlobalSize
+        /// </summary>
         public static event EventHandler GlobalSizeChanged;
 
 
+        /// <summary>
+        /// Global - The Thickness of all Elements
+        /// </summary>
         public static Thickness GlobalThickness
         {
             get
@@ -119,9 +166,14 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Change Event of the GlobalThickness
+        /// </summary>
         public static event EventHandler GlobalThicknessChanged;
 
-
+        /// <summary>
+        /// Global - The BorderBruch of all Elements
+        /// </summary>
         public static Brush GlobalBorderBrush
         {
             get
@@ -138,56 +190,94 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - The Change Event of the GlobalBorderBrush
+        /// </summary>
         public static event EventHandler GlobalBorderBrushChanged;
 
 
         #region Image Dependency Properties
 
         // ------------------------ Imgages -----------------
+
+        /// <summary>
+        /// Get the current Value of the BottomLayer Proprty
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static ImageSource GetBottomLayerImage(DependencyObject obj)
         {
             return (ImageSource)obj.GetValue(BottomLayerImageProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the BottomLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetBottomLayerImage(DependencyObject obj, ImageSource value)
         {
             obj.SetValue(BottomLayerImageProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty BottomLayerImageProperty =
             DependencyProperty.RegisterAttached("BottomLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
 
 
 
-
+        /// <summary>
+        /// Gets the current Value of the MiddleLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static ImageSource GetMiddleLayerImage(DependencyObject obj)
         {
             return (ImageSource)obj.GetValue(MiddleLayerImageProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the MiddleLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetMiddleLayerImage(DependencyObject obj, ImageSource value)
         {
             obj.SetValue(MiddleLayerImageProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty MiddleLayerImageProperty =
             DependencyProperty.RegisterAttached("MiddleLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
 
 
-
+        /// <summary>
+        /// Gets the current Value of the TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>CurrentValue</returns>
         public static ImageSource GetTopLayerImage(DependencyObject obj)
         {
             return (ImageSource)obj.GetValue(TopLayerImageProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetTopLayerImage(DependencyObject obj, ImageSource value)
         {
             obj.SetValue(TopLayerImageProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for BottomLayerImage.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty TopLayerImageProperty =
             DependencyProperty.RegisterAttached("TopLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
 
@@ -196,84 +286,127 @@ namespace MapEditor.GUIElements
 
         #region Other Dependency Properties
 
-
+        /// <summary>
+        /// Gets the current Value of the SelectionIndicatiorVisible Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static Visibility GetSelectionIndicatorVisible(DependencyObject obj)
         {
             return (Visibility)obj.GetValue(SelectionIndicatorVisibleProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the SelectionIndicatiorVisible Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetSelectionIndicatorVisible(DependencyObject obj, Visibility value)
         {
             obj.SetValue(SelectionIndicatorVisibleProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for SelectionIndicatorVisible.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for SelectionIndicatorVisible.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty SelectionIndicatorVisibleProperty =
             DependencyProperty.RegisterAttached("SelectionIndicatorVisible", typeof(Visibility), typeof(MapTile), new PropertyMetadata(Visibility.Collapsed));
 
 
-
-
+        /// <summary>
+        /// Gets the current Value of the VisibilityBottom Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static Visibility GetVisibilityBottom(DependencyObject obj)
         {
             return (Visibility)obj.GetValue(VisibilityBottomProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the VisibilityBottom Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetVisibilityBottom(DependencyObject obj, Visibility value)
         {
             obj.SetValue(VisibilityBottomProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for VisibilityBottom.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for VisibilityBottom.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty VisibilityBottomProperty =
             DependencyProperty.RegisterAttached("VisibilityBottom", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityBottom));
 
 
 
 
-
+        /// <summary>
+        /// Gets the current Value of the VisibilityMiddle Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static Visibility GetVisibilityMiddle(DependencyObject obj)
         {
             return (Visibility)obj.GetValue(VisibilityMiddleProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the VisibilityMiddle Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetVisibilityMiddle(DependencyObject obj, Visibility value)
         {
             obj.SetValue(VisibilityMiddleProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for VisibilityMiddle.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for VisibilityMiddle.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty VisibilityMiddleProperty =
-            DependencyProperty.RegisterAttached("VisibilityMiddle", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityMiddle));
+        DependencyProperty.RegisterAttached("VisibilityMiddle", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityMiddle));
 
 
 
-
+        /// <summary>
+        /// Gets the current Value of the VisibilityTop Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>Current Value</returns>
         public static Visibility GetVisibilityTop(DependencyObject obj)
         {
             return (Visibility)obj.GetValue(VisibilityTopProperty);
         }
 
+        /// <summary>
+        /// Sets the current Value of the VisibilityTop Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
         public static void SetVisibilityTop(DependencyObject obj, Visibility value)
         {
             obj.SetValue(VisibilityTopProperty, value);
         }
 
-        // Using a DependencyProperty as the backing store for VisibilityTop.  This enables animation, styling, binding, etc...
+        /// <summary>
+        /// Using a DependencyProperty as the backing store for VisibilityTop.  This enables animation, styling, binding, etc...
+        /// </summary>
         public static readonly DependencyProperty VisibilityTopProperty =
             DependencyProperty.RegisterAttached("VisibilityTop", typeof(Visibility), typeof(MapTile), new PropertyMetadata(_visibilityTop));
 
-        
-
-
 
         #endregion
 
 
         #endregion
 
-        #region Properties
+        #region Display Properties
 
+        /// <summary>
+        /// The ImageSource of the BottomLayer Image
+        /// </summary>
         public ImageSource BottomLayerImage
         {
             get
@@ -286,6 +419,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// The Imagesource of the MiddleLayer Image
+        /// </summary>
         public ImageSource MiddleLayerImage
         {
             get
@@ -298,6 +434,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// The ImageSource of the TopLayer Image
+        /// </summary>
         public ImageSource TopLayerImage
         {
             get
@@ -311,6 +450,9 @@ namespace MapEditor.GUIElements
         }
 
 
+        /// <summary>
+        /// Global - The Size of all Elements
+        /// </summary>
         public double Size
         {
             get
@@ -323,6 +465,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - Display a Border arround the Elements
+        /// </summary>
         public bool DisplayBorder
         {
             get
@@ -335,6 +480,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Is this Element Selected
+        /// </summary>
         public bool Selected
         {
             get
@@ -347,8 +495,14 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// The corresponding Tile Object
+        /// </summary>
         private Tile _tile = null;
 
+        /// <summary>
+        /// Gets and Sets the Tile Instance for this MapTile
+        /// </summary>
         public Tile Tile
         {
             get
@@ -393,6 +547,9 @@ namespace MapEditor.GUIElements
 
         }
 
+        /// <summary>
+        /// The ElementDefinition for the BottomLayer
+        /// </summary>
         public ElementDefinition BottomElement
         {
             get
@@ -426,6 +583,9 @@ namespace MapEditor.GUIElements
 
         }
 
+        /// <summary>
+        /// The ElementDefinition for the MiddleLayer
+        /// </summary>
         public ElementDefinition MiddleElement
         {
             get
@@ -459,6 +619,9 @@ namespace MapEditor.GUIElements
 
         }
 
+        /// <summary>
+        /// The ElementDefinition for the TopLayer
+        /// </summary>
         public ElementDefinition TopElement
         {
             get
@@ -492,7 +655,9 @@ namespace MapEditor.GUIElements
 
         }
 
-
+        /// <summary>
+        /// The Visibility of the BottomElement
+        /// </summary>
         public Visibility VisibilityBottom
         {
             get
@@ -505,6 +670,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// The Visibility of the MiddleElement
+        /// </summary>
         public Visibility VisibilityMiddle
         {
             get
@@ -517,6 +685,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// The Visibility of the TopElement
+        /// </summary>
         public Visibility VisibilityTop
         {
             get
@@ -530,6 +701,9 @@ namespace MapEditor.GUIElements
         }
 
 
+        /// <summary>
+        /// Global - Show the BottomLayer Image
+        /// </summary>
         public bool ShowBottom
         {
             get
@@ -542,6 +716,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - Show the MiddleLayer Image
+        /// </summary>
         public bool ShowMiddle
         {
             get
@@ -554,6 +731,9 @@ namespace MapEditor.GUIElements
             }
         }
 
+        /// <summary>
+        /// Global - Show the TopLayer Image
+        /// </summary>
         public bool ShowTop
         {
             get
@@ -569,7 +749,23 @@ namespace MapEditor.GUIElements
 
         #endregion
 
+        #region Data Properties
 
+        /// <summary>
+        /// The X-Position on the Map
+        /// </summary>
+        public int X { get; set; }
+
+        /// <summary>
+        /// The Y-Position on the Map
+        /// </summary>
+        public int Y { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// Constructor of the MapTile Class
+        /// </summary>
         public MapTile()
         {
             //this.Width = Size;
@@ -592,6 +788,11 @@ namespace MapEditor.GUIElements
 
         }
 
+        /// <summary>
+        /// Add a new DataBinding
+        /// </summary>
+        /// <param name="localVar">Local Property to Bind</param>
+        /// <param name="dp">Binding to use</param>
         private void bind(string localVar, DependencyProperty dp)
         {
             Binding binding = new Binding(localVar);
@@ -600,26 +801,16 @@ namespace MapEditor.GUIElements
         }
 
 
+        /// <summary>
+        /// Create a new MapTile Instance from a Tile Instance
+        /// </summary>
+        /// <param name="input">Tile Instance</param>
+        /// <returns>MapTile Instance</returns>
         public static MapTile Create(Tile input)
         {
             MapTile output = new MapTile();
             output.Tile = input;
-
-            /*
-            output.BottomLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Bottom].ImageURI));
-
-            if (input[ElementLevel.Middle] != null)
-            {
-                output.MiddleLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Middle].ImageURI));
-            }
-
-            if (input[ElementLevel.Top] != null)
-            {
-                output.TopLayerImage = new BitmapImage(GetAbsoluteUri(input[ElementLevel.Top].ImageURI));
-            }
-            */
-
-
+            
             return output;
 
         }

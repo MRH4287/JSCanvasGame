@@ -1,5 +1,6 @@
 ﻿using MapEditor.Elements;
 using MapEditor.GUIElements;
+using MapEditor.GUIElements.Base;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,24 +13,60 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor
 {
+    /// <summary>
+    /// The Class used for controlling the Map-Editor
+    /// </summary>
     class MapController
     {
+        /// <summary>
+        /// The Element containing all MapTiles
+        /// </summary>
         StackPanel MapHolder = null;
+        /// <summary>
+        /// The Element containing all Tiles (Command / Images / Prefabs)
+        /// </summary>
         WrapPanel TileHolder = null;
 
+        /// <summary>
+        /// List of all Element-Definitions
+        /// </summary>
         public Dictionary<string, ElementDefinition> Elements { get; private set; }
 
-        public MapTile Selected { get; private set; }
-        public TileImage SelectedTileImage { get; private set; }
-        public TileCommand SelectedTileCommand { get; private set; }
+        /// <summary>
+        /// List of all Prefabs
+        /// </summary>
+        public Dictionary<string, Prefab> Prefabs { get; private set; }
 
+        /// <summary>
+        /// Instance of the current selected Element
+        /// </summary>
+        public MapTile Selected { get; private set; }
+
+        /// <summary>
+        /// Instance of the current selected TileElement
+        /// </summary>
+        public Selectable SelectedTile { get; private set; }
+
+        /// <summary>
+        /// List of predefined Command Elements
+        /// </summary>
         private LinkedList<TileCommand> CommandElements = new LinkedList<TileCommand>();
 
+        /// <summary>
+        /// The current State of the Editor
+        /// </summary>
         private CommandState state = CommandState.Select;
 
+        /// <summary>
+        /// Is the MouseButton pressed?
+        /// </summary>
         private bool isMouseDown = false;
 
-
+        /// <summary>
+        /// Creates a new MapController Instance
+        /// </summary>
+        /// <param name="holder">The MapTile Container</param>
+        /// <param name="tileHolder">The Container for the TileElements</param>
         public MapController(StackPanel holder, WrapPanel tileHolder)
         {
             this.MapHolder = holder;
@@ -45,18 +82,13 @@ namespace MapEditor
                         {
                             TileCommand commandElement = (TileCommand)sender;
 
-                            if (SelectedTileCommand != null)
+                            if (SelectedTile != null)
                             {
-                                SelectedTileCommand.Selected = false;
-                            }
-                            if (SelectedTileImage != null)
-                            {
-                                SelectedTileImage.Selected = false;
-                                SelectedTileImage = null;
+                                SelectedTile.Selected = false;
                             }
 
                             commandElement.Selected = true;
-                            SelectedTileCommand = commandElement;
+                            SelectedTile = commandElement;
 
                             state = commandElement.Command;
 
@@ -71,10 +103,15 @@ namespace MapEditor
         }
 
 
-        public void LoadConfig(string path)
+        /// <summary>
+        /// Load the Config
+        /// </summary>
+        /// <param name="path">Path to load Config from</param>
+        public void LoadConfig(string path, string prefabPath = null)
         {
             if (Directory.Exists(path))
             {
+                // Load the ElementDefinitions
                 FileInfo info = new FileInfo(path + "elements.json");
 
                 var reader = info.OpenText();
@@ -86,14 +123,58 @@ namespace MapEditor
 
                 Elements = elements.ToDictionary(el => el.ID);
 
+                // Load Prefabs
 
+                Prefabs = new Dictionary<string, Prefab>();
+
+                if (prefabPath != null)
+                {
+                    DirectoryInfo dir = new DirectoryInfo(prefabPath);
+
+                    foreach (var file in dir.GetFiles())
+                    {
+                        reader = file.OpenText();
+                        content = reader.ReadToEnd();
+
+                        reader.Close();
+
+                        var prefab = Prefab.Create(content, Elements);
+
+                        Prefabs[prefab.ID] = prefab;
+
+                    }
+
+
+                }
+
+
+
+                // Clear all old Elements from the TileHolder
                 this.TileHolder.Children.Clear();
 
+                // Readd all CommandElemens
                 foreach (var item in this.CommandElements)
                 {
                     this.TileHolder.Children.Add(item);
                 }
 
+                // Add all Prefabs to the TileHolder
+                if (this.Prefabs != null)
+                {
+                    foreach (var prefab in Prefabs)
+                    {
+                        var tilePrefab = new TilePrefab(prefab.Value);
+
+                        tilePrefab.MouseDown += tilePrefab_MouseDown;
+
+                        this.TileHolder.Children.Add(tilePrefab);
+
+                    }
+
+                }
+
+
+                // Add all ElementDefinitions to the TileHolder
                 foreach (var item in Elements)
                 {
                     var tileImage = new TileImage(item.Value);
@@ -128,25 +209,47 @@ namespace MapEditor
 
         }
 
+        /// <summary>
+        /// Triggered when one <see cref="TilePrefab"/> was clicked
+        /// </summary>
+        /// <param name="sender">TilePrefab instance</param>
+        /// <param name="e">Event Parameter</param>
+        void tilePrefab_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (this.SelectedTile != null)
+            {
+                SelectedTile.Selected = false;
+            }
+
+            state = CommandState.PaintPrefab;
+
+            SelectedTile = (TilePrefab)sender;
+            SelectedTile.Selected = true;
+        }
+
+        /// <summary>
+        /// Triggered when one <see cref="TileImage"/> was clicked
+        /// </summary>
+        /// <param name="sender">TileImage instance</param>
+        /// <param name="e">Event Parameter</param>
         void tileImage_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (this.SelectedTileImage != null)
+            if (this.SelectedTile != null)
             {
-                SelectedTileImage.Selected = false;
-            }
-            if (this.SelectedTileCommand != null)
-            {
-                SelectedTileCommand.Selected = false;
-                SelectedTileCommand = null;
+                SelectedTile.Selected = false;
             }
 
             state = CommandState.Paint;
 
-            SelectedTileImage = (TileImage)sender;
-            SelectedTileImage.Selected = true;
+            SelectedTile = (TileImage)sender;
+            SelectedTile.Selected = true;
         }
 
 
+        /// <summary>
+        /// Adds a Row of <see cref="Tile" /> instances to the Map 
+        /// </summary>
+        /// <param name="elements">List of <see cref="Tile"/> Instances</param>
         public void addRow(IEnumerable<Tile> elements)
         {
             var mapTileArray = elements.Select(el => MapTile.Create(el)).ToArray();
@@ -163,6 +266,10 @@ namespace MapEditor
         }
 
 
+        /// <summary>
+        /// Adds a Row of <see cref="MapTile"/> instances to the Map
+        /// </summary>
+        /// <param name="elements">List of <see cref="MapTile"/> instances</param>
         public void addRow(IEnumerable<MapTile> elements)
         {
             var container = getRowContainer();
@@ -177,6 +284,10 @@ namespace MapEditor
 
 
 
+        /// <summary>
+        /// Add a Row of blank MapTiles to the Map
+        /// </summary>
+        /// <param name="count">Ammount of Elements to add</param>
         public void addRow(int count = 10)
         {
             var container = getRowContainer();
@@ -204,6 +315,11 @@ namespace MapEditor
 
         }
 
+        /// <summary>
+        /// Draw an element to the Map
+        /// </summary>
+        /// <param name="def">The <see cref="ElementDefinition"/> that should be set the field</param>
+        /// <param name="destination">Field to apply the new ElementDefinition</param>
         private void draw(ElementDefinition def, MapTile destination)
         {
             switch (def.Level)
@@ -222,6 +338,17 @@ namespace MapEditor
             }
         }
 
+        private void drawPrefab(Prefab def, MapTile destination)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Triggered when one <see cref="MapTile"/> was clicked
+        /// </summary>
+        /// <param name="sender">MapTile instance</param>
+        /// <param name="e">Event Parameter</param>
         void tile_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             isMouseDown = true;
@@ -231,6 +358,10 @@ namespace MapEditor
             execMouseEvent(source);
         }
 
+        /// <summary>
+        /// Execute the current selected Mouse Action
+        /// </summary>
+        /// <param name="source">Destination of Mouse Action</param>
         private void execMouseEvent(MapTile source)
         {
             if (source == null)
@@ -247,9 +378,9 @@ namespace MapEditor
             Selected.Selected = true;
 
 
-            if ((state == CommandState.Paint) && (this.SelectedTileImage != null))
+            if ((state == CommandState.Paint) && (this.SelectedTile != null) && (this.SelectedTile is TileImage))
             {
-                draw(SelectedTileImage.Element, source);
+                draw((SelectedTile as TileImage).Element, source);
             }
             else if (state == CommandState.ClearAll)
             {
@@ -269,13 +400,27 @@ namespace MapEditor
             {
                 source.TopElement = null;
             }
+            else if ((state == CommandState.PaintPrefab) && (this.SelectedTile != null) && (this.SelectedTile is TilePrefab))
+            {
+                drawPrefab((SelectedTile as TilePrefab).Element, source);
+            }
         }
 
+        /// <summary>
+        /// The Mouse was released
+        /// </summary>
+        /// <param name="sender">MapTile Instance</param>
+        /// <param name="e">Event Arguments</param>
         void tile_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             this.isMouseDown = false;
         }
 
+        /// <summary>
+        /// The Mouse was moved
+        /// </summary>
+        /// <param name="sender">MapTile Instance</param>
+        /// <param name="e">Event Arguments</param>
         void tile_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (isMouseDown)
@@ -286,6 +431,10 @@ namespace MapEditor
         }
 
 
+        /// <summary>
+        /// Serializes the current Map. Returned JSON string
+        /// </summary>
+        /// <returns>JSON serialized MapFile</returns>
         public string Serialize()
         {
             List<List<Tile>> mapData = new List<List<Tile>>();
@@ -315,6 +464,10 @@ namespace MapEditor
         }
 
 
+        /// <summary>
+        /// Create a new RowContainer
+        /// </summary>
+        /// <returns>StackPanel Instance</returns>
         public StackPanel getRowContainer()
         {
             StackPanel panel = new StackPanel();
@@ -326,6 +479,11 @@ namespace MapEditor
         }
 
 
+        /// <summary>
+        /// Get the absolute URI from a relative Path
+        /// </summary>
+        /// <param name="path">Relative Path</param>
+        /// <returns>Absolute URI</returns>
         public static Uri GetAbsoluteUri(string path)
         {
             var execPath = System.Reflection.Assembly.GetExecutingAssembly().Location;

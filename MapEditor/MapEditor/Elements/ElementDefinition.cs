@@ -26,13 +26,13 @@ namespace MapEditor.Elements
         /// The Unique Identifier for this Element
         /// </summary>
         [DataMember]
-        public string ID;
+        public string ID { get; set; }
 
         /// <summary>
         /// The Name of this Element
         /// </summary>
         [DataMember]
-        public string Name;
+        public string Name { get; set; }
 
         /// <summary>
         /// Is this Item Passable by the Player
@@ -62,7 +62,7 @@ namespace MapEditor.Elements
         /// The Path to the Image File
         /// </summary>
         [DataMember]
-        public string ImageURI;
+        public string ImageURI { get; set; }
 
         /// <summary>
         /// The Uri Instance to the Image

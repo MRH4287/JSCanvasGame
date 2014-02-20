@@ -1,0 +1,38 @@
+{
+	"ID": "tree",
+	"PreviewImagePath": "graphics/objects/tree3.png",
+	"Overwrite": true,
+	"ClearOld": true,
+	Elements: [
+		{
+			"OffsetX": 0,
+			"OffsetY": 0,
+			Tile:
+			{		
+				"BottomElementID": "tree_bottom",
+				"Passable": false
+			}
+		},
+		{
+			"OffsetX": 0,
+			"OffsetY": -1,
+			Tile:
+			{	
+				"BottomElementID": "grass",
+				"MiddleElementID": "tree_middle",
+				"Passable": false
+			}
+		},
+		{
+			"OffsetX": 0,
+			"OffsetY": -2,
+			Tile:
+			{	
+				"BottomElementID": "grass",
+				"TopElementID": "tree_top",
+				"Passable": false
+			}
+		}
+	
+	]
+}

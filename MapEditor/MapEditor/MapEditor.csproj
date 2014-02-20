@@ -70,11 +70,15 @@
     <Compile Include="Elements\ElementDefinition.cs" />
     <Compile Include="Elements\ElementLevel.cs" />
     <Compile Include="Elements\Events.cs" />
+    <Compile Include="Elements\Prefab.cs" />
     <Compile Include="Elements\Tile.cs" />
     <Compile Include="GUIElements\ColorDataModel.cs" />
     <Compile Include="GUIElements\MapTile.cs" />
+    <Compile Include="GUIElements\Base\Selectable.cs" />
+    <Compile Include="GUIElements\Base\SelectableImage.cs" />
     <Compile Include="GUIElements\TileCommand.cs" />
     <Compile Include="GUIElements\TileImage.cs" />
+    <Compile Include="GUIElements\TilePrefab.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
