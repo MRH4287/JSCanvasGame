@@ -37,8 +37,65 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="graphics\animations\pichu\sleep\sleep.pdn" />
+    <None Include="graphics\animations\pichu\stand-down\stand-down.pdn" />
+    <None Include="graphics\animations\pichu\stand-left\stand-left.pdn" />
+    <None Include="graphics\animations\pichu\stand-right\stand-right.pdn" />
+    <None Include="graphics\animations\pichu\stand-up\stand-up.pdn" />
+    <None Include="graphics\animations\pichu\walk-down\walk-down.pdn" />
+    <None Include="graphics\animations\pichu\walk-left\walk-left.pdn" />
+    <None Include="graphics\animations\pichu\walk-right\walk-right.pdn" />
+    <None Include="graphics\animations\pichu\walk-up\walk-up.pdn" />
+    <None Include="graphics\animations\strich\base.pdn" />
+    <None Include="graphics\animations\strich\winken1.pdn" />
+    <None Include="graphics\animations\strich\winken2.pdn" />
+    <None Include="graphics\animations\strich\winken3.pdn" />
+    <None Include="graphics\animations\strich\winken4.pdn" />
+    <None Include="graphics\animations\strich\winken5.pdn" />
+    <None Include="graphics\animations\strich\winken6.pdn" />
+    <None Include="map\elements.json" />
+    <None Include="map\map.json" />
+    <None Include="map\map2.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="graphics\animations\pichu.png" />
+    <Content Include="graphics\animations\pichu.png.txt" />
+    <Content Include="graphics\animations\pichu\sleep\sleep1.png" />
+    <Content Include="graphics\animations\pichu\sleep\sleep2.png" />
+    <Content Include="graphics\animations\pichu\stand-down\stand-down.png" />
+    <Content Include="graphics\animations\pichu\stand-left\stand-left.png" />
+    <Content Include="graphics\animations\pichu\stand-right\stand-right.png" />
+    <Content Include="graphics\animations\pichu\stand-up\stand-up.png" />
+    <Content Include="graphics\animations\pichu\walk-down\walk-down-1.png" />
+    <Content Include="graphics\animations\pichu\walk-down\walk-down-2.png" />
+    <Content Include="graphics\animations\pichu\walk-left\walk-left-1.png" />
+    <Content Include="graphics\animations\pichu\walk-left\walk-left-2.png" />
+    <Content Include="graphics\animations\pichu\walk-right\walk-right-1.png" />
+    <Content Include="graphics\animations\pichu\walk-right\walk-right-2.png" />
+    <Content Include="graphics\animations\pichu\walk-up\walk-up-1.png" />
+    <Content Include="graphics\animations\pichu\walk-up\walk-up-2.png" />
+    <Content Include="graphics\animations\strich.png" />
+    <Content Include="graphics\animations\strich.png.txt" />
+    <Content Include="graphics\animations\strich\base.png" />
+    <Content Include="graphics\animations\strich\winken1.png" />
+    <Content Include="graphics\animations\strich\winken2.png" />
+    <Content Include="graphics\animations\strich\winken3.png" />
+    <Content Include="graphics\animations\strich\winken4.png" />
+    <Content Include="graphics\animations\strich\winken5.png" />
+    <Content Include="graphics\animations\strich\winken6.png" />
+    <Content Include="graphics\animations\strich\winken7.png" />
+    <Content Include="graphics\objects\tree3.png" />
+    <Content Include="graphics\objects\tree3_2.png" />
+    <Content Include="graphics\objects\tree_bottom.png" />
+    <Content Include="graphics\objects\tree_bottom2.png" />
+    <Content Include="graphics\objects\tree_middle.png" />
+    <Content Include="graphics\objects\tree_top.png" />
+    <Content Include="graphics\terrain\bush.png" />
+    <Content Include="graphics\terrain\flowers.png" />
+    <Content Include="graphics\terrain\grass.png" />
+    <Content Include="graphics\terrain\ledge.png" />
+    <Content Include="graphics\terrain\ledge_left.png" />
+    <Content Include="graphics\terrain\ledge_right.png" />
     <Content Include="index.html" />
     <Content Include="js\jquery-2.1.0.min.js" />
   </ItemGroup>

@@ -117,5 +117,45 @@ namespace MapEditor
             controller.Serialize();
 
         }
+
+
+        private void LoadConfigMenu(object sender, RoutedEventArgs e)
+        {
+            var open = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                controller.LoadConfig(open.SelectedPath + "/map/", open.SelectedPath + "/prefabs/");
+
+            }
+        }
+
+        private void LoadDefaultConfigMenu(object sender, RoutedEventArgs e)
+        {
+            controller.LoadConfig("./map/", "./prefabs/");
+        }
+
+        private void OpenMap(object sender, RoutedEventArgs e)
+        {
+            if (controller.Elements == null)
+            {
+                var res = MessageBox.Show("No config loaded. Load default Config?", "Load default Config?", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    LoadDefaultConfigMenu(sender, e);
+                }
+            }
+
+            var open = new System.Windows.Forms.OpenFileDialog();
+            open.Filter = "Json-File|*.json";
+
+            if (open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                controller.LoadMap(open.FileName);
+
+            }
+
+        }
+
     }
 }

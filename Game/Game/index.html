@@ -27,12 +27,46 @@
 
             // Variables
             var _canvas;
-            var _buffer;
             var _ctx;
-            var _bufferctx;
+
+            var _bufferCanvas;
+            var _bufferCtx;
+
+            var _layer =
+                {
+                    BottomStaticLayer:
+                        {
+                            canvas: null,
+                            ctx: null
+                        },
+                    MiddleStaticLayer:
+                        {
+                            canvas: null,
+                            ctx: null
+                        },
+                    PlayerLayer:
+                        {
+                            canvas: null,
+                            ctx: null
+                        },
+                    AnimationLayer:
+                        {
+                            canvas: null,
+                            ctx: null
+                        },
+                    TopStaticLayer:
+                        {
+                            cancas: null,
+                            ctx: null
+                        }
+                };
 
             var _width = 0;
             var _height = 0;
+
+            var _staticWidth = 0;
+            var _staticHeight = 0;
+            var _staticRendered = false;
 
             var _elements = {};
             var _map = [];
@@ -58,16 +92,34 @@
                     .attr("width", _width)
                     .attr("height", _height);
 
-                _buffer = document.createElement("canvas");
-                $(_buffer)
+
+
+                _bufferCanvas = document.createElement("canvas");
+                $(_bufferCanvas)
                     .attr("width", _width)
                     .attr("height", _height);
 
-                _bufferctx = _buffer.getContext("2d");
+                _bufferCtx = _bufferCanvas.getContext("2d");
+
 
                 _loadConfig();
                 _loadMap();
 
+            }
+
+
+            var _initLayer = function ()
+            {
+                // Init Layer:
+                $.each(_layer, function (k, el)
+                {
+                    _layer[k].canvas = document.createElement("canvas");
+                    $(_layer[k].canvas)
+                        .attr("width", _staticWidth)
+                        .attr("height", _staticHeight);
+
+                    _layer[k].ctx = _layer[k].canvas.getContext("2d");
+                });
             }
 
 
@@ -105,6 +157,11 @@
 
                 }
                 _map = result;
+
+                _staticHeight = _map.length * _config.tileSize;
+                _staticWidth = _map[0].length * _config.tileSize;
+
+                _initLayer();
 
                 _log("Map Loaded: ", _map);
 
@@ -153,13 +210,20 @@
                 return tile;
             }
 
-            var _renderMap = function (ctx, callback)
+            var _renderMap = function (callback)
             {
-                //_log("Map rendering ...");
+                _log("Map rendering ...");
+
+                _clear(_layer.BottomStaticLayer.ctx);
+                _clear(_layer.MiddleStaticLayer.ctx);
+                _clear(_layer.TopStaticLayer.ctx);
+
 
                 function okCallback()
                 {
                     window.setTimeout(callback, 1);
+
+                    _staticRendered = true;
 
                 }
 
@@ -175,27 +239,30 @@
 
                         var xOffset = element * _config.tileSize; // - _offset.x;
 
+                        //_log(xOffset);
+                        
+
                         _map[collom][element].X = xOffset;
                         _map[collom][element].Y = yOffset;
 
                         //if ((((xOffset + _config.tileSize) < _offset.x) || ((yOffset + _config.tileSize) < _offset.y)) || ((xOffset + _offset.x > _width) || (yOffset + _offset.y > _height)))
                         //{
-                            //_log("Tile out of sight: ", _map[collom][element]);
-                            //continue;
+                        //_log("Tile out of sight: ", _map[collom][element]);
+                        //continue;
                         //}
 
                         if (
-                                ((xOffset + _config.tileSize ) < _offset.x) ||
-                                (yOffset + _config.tileSize ) < _offset.y //||
-                                //(xOffset > ( _width + _offset.x))
-                            
+                                ((xOffset + _config.tileSize) < _offset.x) ||
+                                (yOffset + _config.tileSize) < _offset.y //||
+                            //(xOffset > ( _width + _offset.x))
+
                             )
                         {
                             continue;
                         }
 
 
-                        _addTile(ctx, _map[collom][element], xOffset, yOffset, false, ((collom == _map.length -1) && (element == _map[collom].length -1)) ? okCallback : undefined);
+                        _addTile(_map[collom][element], xOffset, yOffset, false, ((collom == _map.length - 1) && (element == _map[collom].length - 1)) ? okCallback : undefined);
                     }
 
 
@@ -203,25 +270,67 @@
 
             }
 
+            var _renderDynamic = function()
+            {
+                _clear(_layer.PlayerLayer.ctx);
+
+                _layer.PlayerLayer.ctx.fillStyle = "orange";
+                _layer.PlayerLayer.ctx.fillRect(10, 10, 100, 100);
+                _layer.PlayerLayer.ctx.fill();
+
+            }
+
+
+            var _render = function ()
+            {
+                var combine = function()
+                {
+                    // Clear the Buffer:
+                    _clear(_bufferCtx);
+                    //_clear(_ctx);
+
+                    //console.log("Combine");
+
+                    // Combine Layer:
+                    _bufferCtx.drawImage(_layer.BottomStaticLayer.canvas, 0, 0);
+                    _bufferCtx.drawImage(_layer.MiddleStaticLayer.canvas, 0, 0);
+                    _bufferCtx.drawImage(_layer.PlayerLayer.canvas, 0, 0);
+                    _bufferCtx.drawImage(_layer.AnimationLayer.canvas, 0, 0);
+                    _bufferCtx.drawImage(_layer.TopStaticLayer.canvas, 0, 0);
+
+
+                    window.setTimeout(function ()
+                    {
+                        _ctx.drawImage(_bufferCanvas, _offset.x * -1, _offset.y * -1);
+
+                    }, 2);
+                }
+
+                _renderDynamic();
+
+                if (!_staticRendered)
+                {
+                    // Trigger MapRender
+                    _renderMap(combine);
+                }
+                else
+                {
+                    combine();
+                }
+
+            }
 
 
             // -------------
 
             this.test = function (offset)
             {
-                _clear(_bufferctx);
 
 
                 _offset.x = offset;
-                _offset.y =  0;
+                _offset.y = 0;
 
-                _renderMap(_bufferctx, function ()
-                {
-
-                    //_clear(_ctx);
-
-                    _ctx.drawImage(_buffer, _offset.x * -1, _offset.y * -1);
-                });
+                _render();
             }
 
 
@@ -230,12 +339,16 @@
             // --- Draw Functions ----
             var _clear = function (ctx)
             {
-                ctx.rect(0, 0, _width, _height);
+                /*ctx.rect(0, 0, _width, _height);
                 ctx.fillStyle = 'green';
-                ctx.fill();
+                ctx.fill();*/
+
+                ctx.clearRect(0, 0, _width, _height);
             }
 
-            var _addTile = function (ctx, tile, x, y, ignoreOutOfSight, readyCallback)
+
+
+            var _addTile = function (tile, x, y, ignoreOutOfSight, readyCallback)
             {
                 //_log("Render Tile: ", tile);
 
@@ -243,27 +356,50 @@
                 var middle = tile.MiddleElement;
                 var top = tile.TopElement;
 
-                var topCallback = function ()
+                var callback = function (where)
                 {
-                    if ((_config.showBlocking) && (!tile.Passable))
-                    {
-                        ctx.strokeStyle = "#f00";
-                        ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
-                    }
 
-                    if (readyCallback !== undefined)
+                    if ((bottom === undefined) && (middle === undefined) && (top === undefined))
                     {
-                        readyCallback();
+                        return readyCallback;
                     }
-                }
-
-                var middleCallback = function ()
-                {
-                    if (top != undefined)
+                    else if ((bottom !== undefined) && (middle === undefined) && (top === undefined) && (where == "bottom"))
                     {
-                        _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                        return readyCallback;
+                    }
+                    else if ((bottom !== undefined) && (middle !== undefined) && (top === undefined) && (where == "middle"))
+                    {
+                        return readyCallback;
+                    }
+                    else if ((bottom !== undefined) && (top !== undefined) && (where == "top"))
+                    {
+                        return readyCallback;
                     }
                     else
+                    {
+                        return undefined;
+                    }
+                    
+                }
+
+
+                if (bottom !== undefined)
+                {
+                    _addImage(_layer.BottomStaticLayer.ctx, bottom.ImageURI, x, y, undefined, undefined, callback("bottom"), ignoreOutOfSight);
+                }
+                if (middle !== undefined)
+                {
+                    _addImage(_layer.MiddleStaticLayer.ctx, middle.ImageURI, x, y, undefined, undefined, callback("middle"), ignoreOutOfSight);
+                }
+                if (top !== undefined)
+                {
+                    _addImage(_layer.TopStaticLayer.ctx, top.ImageURI, x, y, undefined, undefined, callback("top"), ignoreOutOfSight);
+                }
+
+                var old = function ()
+                {
+                    /*
+                    var topCallback = function ()
                     {
                         if ((_config.showBlocking) && (!tile.Passable))
                         {
@@ -276,37 +412,57 @@
                             readyCallback();
                         }
                     }
-                }
 
-                var bottomCallback = function ()
-                {
-                    if (middle !== undefined)
+                    var middleCallback = function ()
                     {
-                        _addImage(ctx, middle.ImageURI, x, y, undefined, undefined, middleCallback, ignoreOutOfSight);
-                    }
-                    else if (top !== undefined)
-                    {
-                        _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
-                    }
-                    else
-                    {
-                        if ((_config.showBlocking) && (!tile.Passable))
+                        if (top != undefined)
                         {
-                            ctx.strokeStyle = "#f00";
-                            ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                            _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
                         }
-
-                        if (readyCallback !== undefined)
+                        else
                         {
-                            readyCallback();
+                            if ((_config.showBlocking) && (!tile.Passable))
+                            {
+                                ctx.strokeStyle = "#f00";
+                                ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                            }
+
+                            if (readyCallback !== undefined)
+                            {
+                                readyCallback();
+                            }
                         }
                     }
 
-                }
+                    var bottomCallback = function ()
+                    {
+                        if (middle !== undefined)
+                        {
+                            _addImage(ctx, middle.ImageURI, x, y, undefined, undefined, middleCallback, ignoreOutOfSight);
+                        }
+                        else if (top !== undefined)
+                        {
+                            _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
+                        }
+                        else
+                        {
+                            if ((_config.showBlocking) && (!tile.Passable))
+                            {
+                                ctx.strokeStyle = "#f00";
+                                ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
+                            }
 
-                _addImage(ctx, bottom.ImageURI, x, y, undefined, undefined, bottomCallback, ignoreOutOfSight);
+                            if (readyCallback !== undefined)
+                            {
+                                readyCallback();
+                            }
+                        }
 
+                    }
 
+                    _addImage(ctx, bottom.ImageURI, x, y, undefined, undefined, bottomCallback, ignoreOutOfSight);
+                    */
+                };
             }
 
             var _addImage = function (ctx, src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
@@ -337,7 +493,7 @@
                 {
                     ctx.drawImage(imageObj, x, y, width, height);
 
-                    if (typeof (imageOnLoad) != undefined)
+                    if (imageOnLoad !== undefined)
                     {
                         imageOnLoad({
                             x: x,
@@ -433,7 +589,9 @@
 
         var run = true;
         var offset = 0;
-
+        var moveOffset = 5;
+        var maxMove = 600;
+        var minMove = -500;
 
         $(document).ready(function ()
         {
@@ -442,16 +600,21 @@
             {
                 if (run)
                 {
-                    offset += 5;
-                    if (offset > 600)
+                    offset += moveOffset;
+                    if (offset > maxMove)
                     {
-                        offset = 0;
+                        offset = maxMove;
+                        moveOffset *= -1;
                     }
-
+                    else if (offset < minMove)
+                    {
+                        offset = minMove;
+                        moveOffset *= -1;
+                    }
 
                     render.test(offset);
                 }
-            }, 60);
+            }, 10);
 
             render.test(0);
         });

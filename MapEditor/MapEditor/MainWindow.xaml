@@ -15,8 +15,10 @@
             </Grid>
         </DataTemplate>
     </Window.Resources>
+    
     <Grid Loaded="Grid_Loaded">
         <Grid.RowDefinitions>
+            <RowDefinition Height="19"/>
             <RowDefinition/>
             <RowDefinition Height="26"/>
         </Grid.RowDefinitions>
@@ -25,7 +27,17 @@
             <ColumnDefinition Width="13"/>
             <ColumnDefinition Width="147"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer Margin="10,10,0,0" HorizontalScrollBarVisibility="Visible">
+
+        <Menu IsMainMenu="True" IsEnabled="True" Grid.ColumnSpan="3" >
+            <MenuItem Header="_File">
+                <MenuItem Header="Open _Config" Click="LoadDefaultConfigMenu" />
+                <MenuItem Header="Search Config _Base Folder" Click="LoadConfigMenu" />
+                <Separator/>
+                <MenuItem Header="Open Map" Click="OpenMap" />
+                
+            </MenuItem>
+        </Menu>
+        <ScrollViewer Margin="10,10,0,0" HorizontalScrollBarVisibility="Visible" Grid.Row="1" Grid.RowSpan="1">
             <StackPanel x:Name="MapHolder" Background="#FFACB9F1">
                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Background="#FFDBF14C" x:Name="MapRowTemplate">
                     <controls:MapTile></controls:MapTile>
@@ -38,8 +50,8 @@
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,68"/>
-        <TabControl Margin="1,10,0,0" Grid.Column="2">
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,46,4,68" Grid.Row="1"/>
+        <TabControl Margin="1,10,0,0" Grid.Column="2"  Grid.Row="1" Grid.RowSpan="1">
             <TabItem Header="Tiles">
                 <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal">
                     <controls:TileCommand Text="Select" Background="Orange" Command="Select"></controls:TileCommand>
@@ -47,7 +59,7 @@
                     <controls:TileCommand Text="Clear Bottom" Background="Gray" Command="ClearBottom"></controls:TileCommand>
                     <controls:TileCommand Text="Clear Middle" Background="GreenYellow" Command="ClearMiddle"></controls:TileCommand>
                     <controls:TileCommand Text="Clear Top" Background="LightBlue" Command="ClearTop"></controls:TileCommand>
-                    
+
                     <controls:TileImage></controls:TileImage>
                 </WrapPanel>
             </TabItem>
@@ -76,7 +88,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
+        <Grid Grid.Row="2" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="109*"/>
                 <ColumnDefinition Width="262*"/>
@@ -87,6 +99,7 @@
             <Button Content="Clear" Grid.Column="1" HorizontalAlignment="Left" Margin="439,4,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
             <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="269,1,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
         </Grid>
+
 
     </Grid>
 </Window>
