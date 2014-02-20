@@ -11,20 +11,53 @@ namespace MapEditor.GUIElements
 {
     class TilePrefab : SelectableImage
     {
-        public Prefab Element;
+        private Prefab element = null;
 
+        public Prefab Element
+        {
+            get
+            {
+                return element;
+            }
+            set
+            {
+                element = value;
+                triggerPropertyChanged("Element");
+                triggerPropertyChanged("Tooltip");
+            }
+        }
+
+
+        /// <summary>
+        /// The Tooltip of the Element
+        /// </summary>
+        public string Tooltip
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+
+                builder.Append("Prefab - ");
+                if (Element != null)
+                {
+
+                    builder.AppendFormat("[ID] = {0}", Element.ID);
+                }
+
+                return builder.ToString();
+            }
+        }
 
         public TilePrefab(Prefab def)
             : base()
         {
             this.Width = MapTile.GlobalSize;
-
-            // NaN ==> Auto
-            this.Height = Double.NaN;
+            this.Height = MapTile.GlobalSize;
 
             this.Element = def;
             this.ImageSource = new BitmapImage(def.PreviewImageUri);
 
+            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
         }
 
 

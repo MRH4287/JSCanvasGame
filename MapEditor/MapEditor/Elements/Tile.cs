@@ -67,6 +67,7 @@ namespace MapEditor.Elements
                         break;
                 }
 
+                updatePassable();
             }
         }
 
@@ -81,20 +82,20 @@ namespace MapEditor.Elements
         /// <summary>
         /// The Unique ID of the Element in the lowest Level
         /// </summary>
-        [DataMember]
-        public string BottomElementID;
+        [DataMember(IsRequired = false)]
+        public string BottomElementID { get; private set; }
 
         /// <summary>
         /// The Unique ID of the Element in the middle Level
         /// </summary>
         [DataMember(IsRequired = false)]
-        public string MiddleElementID = null;
+        public string MiddleElementID { get; private set; }
 
         /// <summary>
         /// The Unique ID of the Element in the top Level
         /// </summary>
         [DataMember(IsRequired = false)]
-        public string TopElementID = null;
+        public string TopElementID { get; private set; }
 
         /// <summary>
         /// List of Flags for this specific Tile
@@ -157,7 +158,10 @@ namespace MapEditor.Elements
 
                 if (elements != null)
                 {
-                    element[ElementLevel.Bottom] = elements[element.BottomElementID];
+                    if (!String.IsNullOrWhiteSpace(element.BottomElementID))
+                    {
+                        element[ElementLevel.Bottom] = elements[element.BottomElementID];
+                    }
                     if (!String.IsNullOrWhiteSpace(element.MiddleElementID))
                     {
                         element[ElementLevel.Middle] = elements[element.MiddleElementID];
@@ -178,6 +182,28 @@ namespace MapEditor.Elements
 
         }
 
+        /// <summary>
+        /// Updates the Passable Attribute
+        /// </summary>
+        private void updatePassable()
+        {
+            var passable = true;
+            if (this[ElementLevel.Bottom] != null)
+            {
+                passable = passable || this[ElementLevel.Bottom].Passable;
+            }
+            if (this[ElementLevel.Middle] != null)
+            {
+                passable = passable || this[ElementLevel.Middle].Passable;
+            }
+            if (this[ElementLevel.Top] != null)
+            {
+                passable = passable || this[ElementLevel.Top].Passable;
+            }
+
+
+            this.Passable = passable;
+        }
 
     }
 }

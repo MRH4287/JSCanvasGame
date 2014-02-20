@@ -7,7 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -159,19 +161,16 @@ namespace MapEditor
                 }
 
                 // Add all Prefabs to the TileHolder
-                if (this.Prefabs != null)
+                foreach (var prefab in Prefabs)
                 {
-                    foreach (var prefab in Prefabs)
-                    {
-                        var tilePrefab = new TilePrefab(prefab.Value);
+                    var tilePrefab = new TilePrefab(prefab.Value);
 
-                        tilePrefab.MouseDown += tilePrefab_MouseDown;
+                    tilePrefab.MouseDown += tilePrefab_MouseDown;
 
-                        this.TileHolder.Children.Add(tilePrefab);
-
-                    }
+                    this.TileHolder.Children.Add(tilePrefab);
 
                 }
+
 
 
                 // Add all ElementDefinitions to the TileHolder
@@ -185,29 +184,42 @@ namespace MapEditor
                 }
 
 
-                //----------------
-
-                info = new FileInfo(path + "map2.json");
-                reader = info.OpenText();
-                content = reader.ReadToEnd();
-
-                reader.Close();
-
-                var map = Tile.Create(content, Elements);
-
-
-                foreach (var row in map)
-                {
-                    addRow(row);
-
-                }
-
-
             }
 
 
 
         }
+
+        /// <summary>
+        /// Loads the Map
+        /// </summary>
+        /// <param name="path">Path to the MapFile</param>
+        public void LoadMap(string path)
+        {
+            if (File.Exists(path))
+            {
+                MapHolder.Children.Clear();
+
+                FileInfo info = new FileInfo(path);
+                var reader = info.OpenText();
+                string content = reader.ReadToEnd();
+
+                reader.Close();
+
+                var map = Tile.Create(content, Elements);
+
+                for (int y = 0; y < map.Count; y++)
+                {
+                    var row = map[y];
+
+                    addRow(row, y);
+
+
+                }
+            }
+
+        }
+
 
         /// <summary>
         /// Triggered when one <see cref="TilePrefab"/> was clicked
@@ -250,17 +262,23 @@ namespace MapEditor
         /// Adds a Row of <see cref="Tile" /> instances to the Map 
         /// </summary>
         /// <param name="elements">List of <see cref="Tile"/> Instances</param>
-        public void addRow(IEnumerable<Tile> elements)
+        /// <param name="YIndex">The Current Y-Coordinate</param>
+        public void addRow(IEnumerable<Tile> elements, int YIndex = 0)
         {
             var mapTileArray = elements.Select(el => MapTile.Create(el)).ToArray();
 
-            foreach (var tile in mapTileArray)
+            for (int x = 0; x < mapTileArray.Length; x++)
             {
+                var tile = mapTileArray[x];
+
                 tile.MouseDown += tile_MouseDown;
                 tile.MouseMove += tile_MouseMove;
                 tile.MouseUp += tile_MouseUp;
 
+                tile.X = x;
+                tile.Y = YIndex;
             }
+
 
             addRow(mapTileArray);
         }
@@ -338,8 +356,167 @@ namespace MapEditor
             }
         }
 
+        /// <summary>
+        /// Draw a Prefab on the Map
+        /// </summary>
+        /// <param name="def">the Prefab Definition to draw</param>
+        /// <param name="destination">The Position to draw</param>
         private void drawPrefab(Prefab def, MapTile destination)
         {
+            var localX = destination.X;
+            var localY = destination.Y;
+
+            var map = getMapTileData();
+
+            if (map[localY][localX] != destination)
+            {
+                throw new ArgumentException("The Desination and the Coordinates do not Match!");
+            }
+
+            foreach (var element in def.Elements)
+            {
+                var targetX = localX + element.OffsetX;
+                var targetY = localY + element.OffsetY;
+
+                if ((targetX < 0) || (targetY < 0) || (targetY > map.Count) || (targetX > map[targetY].Count))
+                {
+                    continue;
+                }
+
+                var targetElement = map[targetY][targetX];
+
+                if (def.ClearOld)
+                {
+                    targetElement.Tile = element.Tile;
+                }
+                else
+                {
+                    var targetTile = targetElement.Tile;
+                    var cloneTile = element.Tile;
+
+                    if (!string.IsNullOrWhiteSpace(cloneTile.ID))
+                    {
+                        if (!string.IsNullOrWhiteSpace(targetTile.ID))
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetTile.ID = cloneTile.ID;
+                            }
+                        }
+                        else
+                        {
+                            targetTile.ID = cloneTile.ID;
+                        }
+                    }
+
+
+                    if (!string.IsNullOrWhiteSpace(cloneTile.BottomElementID))
+                    {
+                        if (targetElement.BottomElement != null)
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetElement.BottomElement = cloneTile[ElementLevel.Bottom];
+                            }
+                        }
+                        else
+                        {
+                            targetElement.BottomElement = cloneTile[ElementLevel.Bottom];
+                        }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(cloneTile.MiddleElementID))
+                    {
+                        if (targetElement.MiddleElement != null)
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetElement.MiddleElement = cloneTile[ElementLevel.Middle];
+                            }
+                        }
+                        else
+                        {
+                            targetElement.MiddleElement = cloneTile[ElementLevel.Middle];
+                        }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(cloneTile.TopElementID))
+                    {
+                        if (targetElement.TopElement != null)
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetElement.TopElement = cloneTile[ElementLevel.Top];
+                            }
+                        }
+                        else
+                        {
+                            targetElement.TopElement = cloneTile[ElementLevel.Top];
+                        }
+                    }
+
+
+                    if (cloneTile.Flags != null)
+                    {
+                        if ((targetTile.Flags != null) && (targetTile.Flags.Count > 0))
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetTile.Flags = cloneTile.Flags;
+                            }
+                            else
+                            {
+                                foreach (var flag in cloneTile.Flags)
+                                {
+                                    if (!targetTile.Flags.Contains(flag))
+                                    {
+                                        targetTile.Flags.AddLast(flag);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            targetTile.Flags = cloneTile.Flags;
+                        }
+                    }
+
+
+                    targetTile.Passable = targetTile.Passable || cloneTile.Passable;
+
+                    targetTile.Speed = (new double[] { targetTile.Speed, cloneTile.Speed }).Min();
+
+                    if (cloneTile.Events != null)
+                    {
+                        if ((targetTile.Events != null) && (targetTile.Events.Count > 0))
+                        {
+                            if (def.Overwrite)
+                            {
+                                targetTile.Events = cloneTile.Events;
+                            }
+                            else
+                            {
+                                foreach (var el in cloneTile.Events)
+                                {
+                                    if (!targetTile.Events.Any(a => a.Key == el.Key))
+                                    {
+                                        targetTile.Events.Add(el);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            targetTile.Events = cloneTile.Events;
+                        }
+                    }
+
+
+                }
+
+
+            }
+
 
         }
 
@@ -355,24 +532,31 @@ namespace MapEditor
 
             MapTile source = (MapTile)sender;
 
-            execMouseEvent(source);
+            if (Selected != null)
+            {
+                Selected.Selected = false;
+            }
+
+            var old = Selected;
+            Selected = source;
+
+            execMouseEvent(Selected, old, true);
         }
 
         /// <summary>
         /// Execute the current selected Mouse Action
         /// </summary>
         /// <param name="source">Destination of Mouse Action</param>
-        private void execMouseEvent(MapTile source)
+        /// <param name="lastSelected">The Element that was selected before the current</param>
+        /// <param name="click">Was the Event Triggered by the MouseDown Event</param>
+        private void execMouseEvent(MapTile source, MapTile lastSelected, bool click = false)
         {
             if (source == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if (Selected != null)
-            {
-                Selected.Selected = false;
-            }
+
 
             Selected = source;
             Selected.Selected = true;
@@ -404,6 +588,20 @@ namespace MapEditor
             {
                 drawPrefab((SelectedTile as TilePrefab).Element, source);
             }
+            else if ((state == CommandState.Select) && (source == lastSelected) && click)
+            {
+                Task delayTask = new Task(() =>
+                {
+                    System.Threading.Thread.Sleep(100);
+
+                    MessageBox.Show("Some Information ...");
+
+                });
+
+                delayTask.Start();
+
+
+            }
         }
 
         /// <summary>
@@ -426,7 +624,16 @@ namespace MapEditor
             if (isMouseDown)
             {
                 MapTile source = (MapTile)sender;
-                execMouseEvent(source);
+
+                if (Selected != null)
+                {
+                    Selected.Selected = false;
+                }
+
+                var old = Selected;
+                Selected = source;
+
+                execMouseEvent(Selected, old);
             }
         }
 
@@ -437,20 +644,42 @@ namespace MapEditor
         /// <returns>JSON serialized MapFile</returns>
         public string Serialize()
         {
-            List<List<Tile>> mapData = new List<List<Tile>>();
+            return Data.JSON.JSONSerializer.serialize<List<List<Tile>>>(getMapData());
+        }
+
+        /// <summary>
+        /// Converts the Map into a Map-Array
+        /// </summary>
+        /// <returns></returns>
+        private List<List<Tile>> getMapData()
+        {
+            var input = getMapTileData();
+
+            var result = input.Select(el => new List<Tile>(el.Select(innerEl => innerEl.Tile))).ToList();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Converts the Map into a Map-Array
+        /// </summary>
+        /// <returns></returns>
+        private List<List<MapTile>> getMapTileData()
+        {
+            List<List<MapTile>> mapData = new List<List<MapTile>>();
 
             foreach (var row in MapHolder.Children)
             {
                 if (row is StackPanel)
                 {
                     var rowPanel = ((StackPanel)row).Children;
-                    List<Tile> tileList = new List<Tile>(rowPanel.Count);
+                    List<MapTile> tileList = new List<MapTile>(rowPanel.Count);
 
                     foreach (var tile in rowPanel)
                     {
                         if (tile is MapTile)
                         {
-                            tileList.Add(((MapTile)tile).Tile);
+                            tileList.Add((MapTile)tile);
                         }
                     }
 
@@ -458,9 +687,7 @@ namespace MapEditor
                 }
             }
 
-            string result = Data.JSON.JSONSerializer.serialize<List<List<Tile>>>(mapData);
-
-            return null;
+            return mapData;
         }
 
 
@@ -490,11 +717,29 @@ namespace MapEditor
 
             FileInfo fileInfo = new FileInfo(execPath);
 
-            //@"D:\Visual Studio 2010\Projects\SpriteGame\MapEditor\MapEditor\bin\Debug\"
-            return new Uri(fileInfo.DirectoryName + "\\" + path, UriKind.Absolute);
+            var loadPath = fileInfo.DirectoryName;
+
+            // Sets the Path to the development Path while in Design time
+            if (loadPath.Contains("Designer"))
+            {
+                loadPath = @"D:\Visual Studio 2010\Projects\SpriteGame";
+            }
+            return new Uri(loadPath + "\\" + path, UriKind.Absolute);
 
         }
 
+
+        /// <summary>
+        /// Add a new DataBinding
+        /// </summary>
+        /// <param name="localVar">Local Property to Bind</param>
+        /// <param name="dp">Binding to use</param>
+        public static void Bind(ContentControl target, string localVar, DependencyProperty dp)
+        {
+            Binding binding = new Binding(localVar);
+            binding.Source = target;
+            target.SetBinding(dp, binding);
+        }
 
     }
 }

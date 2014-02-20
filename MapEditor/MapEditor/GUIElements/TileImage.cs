@@ -14,7 +14,43 @@ namespace MapEditor.GUIElements
 {
     class TileImage : SelectableImage 
     {
-        public ElementDefinition Element { get; set; }
+        private ElementDefinition _element = null;
+
+        public ElementDefinition Element 
+        {
+            get
+            {
+                return _element;
+            }
+
+            set
+            {
+                _element = value;
+
+                triggerPropertyChanged("Element");
+                triggerPropertyChanged("Tooltip");
+            }
+        }
+
+        /// <summary>
+        /// The Tooltip of the Element
+        /// </summary>
+        public string Tooltip
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+
+                if (Element != null)
+                {
+                    builder.AppendFormat("[ID] = {0} - ", Element.ID);
+                    builder.AppendFormat("[Name] = {0}", Element.Name);
+
+                }
+
+                return builder.ToString();
+            }
+        }
 
         public TileImage()
             : base()
@@ -30,7 +66,7 @@ namespace MapEditor.GUIElements
             this.ImageSource = new BitmapImage(def.ImagePath);
 
 
-
+            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
         }
 
 

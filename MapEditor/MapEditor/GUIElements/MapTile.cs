@@ -18,7 +18,7 @@ namespace MapEditor.GUIElements
     /// <summary>
     /// The Element that is rendered to the Map
     /// </summary>
-    class MapTile : ContentControl
+    class MapTile : ContentControl, INotifyPropertyChanged
     {
         /// <summary>
         /// The global Size
@@ -416,6 +416,11 @@ namespace MapEditor.GUIElements
             set
             {
                 SetBottomLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("BottomLayerImage"));
+                }
             }
         }
 
@@ -431,6 +436,11 @@ namespace MapEditor.GUIElements
             set
             {
                 SetMiddleLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("MiddleLayerImage"));
+                }
             }
         }
 
@@ -446,6 +456,12 @@ namespace MapEditor.GUIElements
             set
             {
                 SetTopLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("TopLayerImage"));
+                }
+
             }
         }
 
@@ -462,6 +478,13 @@ namespace MapEditor.GUIElements
             set
             {
                 GlobalSize = value;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("GlobalSize"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Size"));
+                }
+
             }
         }
 
@@ -477,6 +500,15 @@ namespace MapEditor.GUIElements
             set
             {
                 GlobalThickness = new Thickness(value ? 1 : 0);
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("DisplayBorder"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("GlobalThickness"));
+                }
+
+
             }
         }
 
@@ -492,6 +524,12 @@ namespace MapEditor.GUIElements
             set
             {
                 MapTile.SetSelectionIndicatorVisible(this, (value) ? Visibility.Visible : Visibility.Collapsed);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Selected"));
+                }
+
             }
         }
 
@@ -543,6 +581,15 @@ namespace MapEditor.GUIElements
 
                 }
 
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tile"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("BottomElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("MiddleElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("TopElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
+
             }
 
         }
@@ -579,6 +626,13 @@ namespace MapEditor.GUIElements
                 {
                     this.BottomLayerImage = null;
                 }
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("BottomElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
+
             }
 
         }
@@ -614,6 +668,13 @@ namespace MapEditor.GUIElements
                 else
                 {
                     this.MiddleLayerImage = null;
+                }
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("MiddleElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
                 }
             }
 
@@ -651,6 +712,13 @@ namespace MapEditor.GUIElements
                 {
                     this.TopLayerImage = null;
                 }
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("TopElement"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
             }
 
         }
@@ -667,6 +735,13 @@ namespace MapEditor.GUIElements
             set
             {
                 MapTile.SetVisibilityBottom(this, value);
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("VisibilityBottom"));
+                }
+
             }
         }
 
@@ -682,6 +757,11 @@ namespace MapEditor.GUIElements
             set
             {
                 MapTile.SetVisibilityMiddle(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("VisibilityMiddle"));
+                }
             }
         }
 
@@ -697,6 +777,11 @@ namespace MapEditor.GUIElements
             set
             {
                 MapTile.SetVisibilityTop(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("VisibilityTop"));
+                }
             }
         }
 
@@ -713,6 +798,12 @@ namespace MapEditor.GUIElements
             set
             {
                 GlobalVisibilityBottom = (value) ? Visibility.Visible : Visibility.Collapsed;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ShowBottom"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("GlobalVisibilityBottom"));
+                }
             }
         }
 
@@ -728,6 +819,13 @@ namespace MapEditor.GUIElements
             set
             {
                 GlobalVisibilityMiddle = (value) ? Visibility.Visible : Visibility.Collapsed;
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ShowMiddle"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("GlobalVisibilityMiddle"));
+                }
             }
         }
 
@@ -743,6 +841,13 @@ namespace MapEditor.GUIElements
             set
             {
                 GlobalVisibilityTop = (value) ? Visibility.Visible : Visibility.Collapsed;
+
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ShowTop"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("GlobalVisibilityTop"));
+                }
             }
         }
 
@@ -752,14 +857,95 @@ namespace MapEditor.GUIElements
         #region Data Properties
 
         /// <summary>
+        /// Local X-Position
+        /// </summary>
+        private int _x = 0;
+
+        /// <summary>
+        /// Local Y-Position
+        /// </summary>
+        private int _y = 0;
+
+        /// <summary>
         /// The X-Position on the Map
         /// </summary>
-        public int X { get; set; }
+        public int X 
+        { 
+            get
+            {
+                return _x;
+            }
+            set
+            {
+                _x = value;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("X"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
+            }
+
+        }
 
         /// <summary>
         /// The Y-Position on the Map
         /// </summary>
-        public int Y { get; set; }
+        public int Y
+        {
+            get
+            {
+                return _y;
+            }
+            set
+            {
+                _y = value;
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Y"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// The Tooltip of the Element
+        /// </summary>
+        public string Tooltip
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+
+                if (Tile != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(Tile.ID))
+                    {
+                        builder.AppendFormat("[ID] = '{0}' - ", Tile.ID);
+                    }
+
+                    if (BottomElement != null)
+                    {
+                        builder.AppendFormat("[Bottom] = '{0}' - ", BottomElement.ID);
+                    }
+
+                    if (MiddleElement != null)
+                    {
+                        builder.AppendFormat("[Middle] = '{0}' - ", MiddleElement.ID);
+                    }
+
+                    if (TopElement != null)
+                    {
+                        builder.AppendFormat("[Top] = '{0}' - ", TopElement.ID);
+                    }
+                }
+
+                builder.AppendFormat("[Position] = {0},{1}", X, Y);
+
+                return builder.ToString();
+            }
+        }
 
         #endregion
 
@@ -771,33 +957,22 @@ namespace MapEditor.GUIElements
             //this.Width = Size;
             //this.Height = Size;
 
-            bind("GlobalSize", MapTile.WidthProperty);
-            bind("GlobalSize", MapTile.HeightProperty);
-            bind("GlobalThickness", MapTile.BorderThicknessProperty);
-            bind("GlobalBorderBrush", MapTile.BorderBrushProperty);
+            MapController.Bind(this, "GlobalSize", MapTile.WidthProperty);
+            MapController.Bind(this, "GlobalSize", MapTile.HeightProperty);
+            MapController.Bind(this, "GlobalThickness", MapTile.BorderThicknessProperty);
+            MapController.Bind(this, "GlobalBorderBrush", MapTile.BorderBrushProperty);
 
-            bind("GlobalVisibilityBottom", MapTile.VisibilityBottomProperty);
-            bind("GlobalVisibilityMiddle", MapTile.VisibilityMiddleProperty);
-            bind("GlobalVisibilityTop", MapTile.VisibilityTopProperty);
+            MapController.Bind(this, "GlobalVisibilityBottom", MapTile.VisibilityBottomProperty);
+            MapController.Bind(this, "GlobalVisibilityMiddle", MapTile.VisibilityMiddleProperty);
+            MapController.Bind(this, "GlobalVisibilityTop", MapTile.VisibilityTopProperty);
 
+            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
 
             this.Background = Brushes.Orange;
 
             ImageSource image = new BitmapImage(MapController.GetAbsoluteUri(@"graphics\terrain\grass.png"));
             this.BottomLayerImage = image;
 
-        }
-
-        /// <summary>
-        /// Add a new DataBinding
-        /// </summary>
-        /// <param name="localVar">Local Property to Bind</param>
-        /// <param name="dp">Binding to use</param>
-        private void bind(string localVar, DependencyProperty dp)
-        {
-            Binding binding = new Binding(localVar);
-            binding.Source = this;
-            this.SetBinding(dp, binding);
         }
 
 
@@ -810,11 +985,14 @@ namespace MapEditor.GUIElements
         {
             MapTile output = new MapTile();
             output.Tile = input;
-            
-            return output;
 
+            return output;
         }
 
 
+        /// <summary>
+        /// Notify of Property Changed
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -37,6 +37,7 @@ namespace MapEditor.GUIElements
         public static void SetCommand(DependencyObject obj, CommandState value)
         {
             obj.SetValue(CommandProperty, value);
+            
         }
 
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
@@ -68,6 +69,23 @@ namespace MapEditor.GUIElements
             set
             {
                 SetCommand(this, value);
+
+                triggerPropertyChanged("Command");
+            }
+        }
+
+        /// <summary>
+        /// The Tooltip of the Element
+        /// </summary>
+        public string Tooltip
+        {
+            get
+            {
+                StringBuilder builder = new StringBuilder();
+
+                builder.Append("Command");                
+
+                return builder.ToString();
             }
         }
 
@@ -78,6 +96,8 @@ namespace MapEditor.GUIElements
             this.Width = MapTile.GlobalSize;
             this.Height = MapTile.GlobalSize;
 
+
+            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
         }
 
     }

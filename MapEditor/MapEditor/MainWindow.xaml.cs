@@ -102,7 +102,8 @@ namespace MapEditor
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            controller.LoadConfig("./map/");
+            controller.LoadConfig("./map/", "./prefabs/");
+            controller.LoadMap("./map/map2.json");
 
         }
 
