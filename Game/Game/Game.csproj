@@ -21,7 +21,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>2</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="compile.bat" />
     <None Include="graphics\animations\pichu\sleep\sleep.pdn" />
     <None Include="graphics\animations\pichu\stand-down\stand-down.pdn" />
     <None Include="graphics\animations\pichu\stand-left\stand-left.pdn" />
@@ -98,8 +99,16 @@
     <Content Include="graphics\terrain\ledge_right.png" />
     <Content Include="index.html" />
     <Content Include="js\jquery-2.1.0.min.js" />
+    <Content Include="js\renderer.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="jquery.d.ts" />
+    <TypeScriptCompile Include="renderer.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>tsc --out "$(ProjectDir)js/renderer.js" "$(ProjectDir)renderer.ts"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

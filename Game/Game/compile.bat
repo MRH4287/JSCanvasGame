@@ -1,0 +1,1 @@
+tsc --out js/renderer.js renderer.ts
