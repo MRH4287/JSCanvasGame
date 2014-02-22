@@ -33,7 +33,9 @@
                 <MenuItem Header="Open _Config" Click="LoadDefaultConfigMenu" />
                 <MenuItem Header="Search Config _Base Folder" Click="LoadConfigMenu" />
                 <Separator/>
-                <MenuItem Header="Open Map" Click="OpenMap" />
+                <MenuItem Header="_New Map" Click="NewMap" />
+                <MenuItem Header="_Open Map" Click="OpenMap" />
+                <MenuItem Header="_Save Map" Click="SaveMap" />
                 
             </MenuItem>
         </Menu>

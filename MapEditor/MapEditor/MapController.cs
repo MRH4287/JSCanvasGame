@@ -258,6 +258,28 @@ namespace MapEditor
         }
 
 
+        public void createMap(int width, int height)
+        {
+            MapHolder.Children.Clear();
+
+            for (int y = 0; y < height; y++)
+            {
+                LinkedList<Tile> tiles = new LinkedList<Tile>();
+
+                for (int x = 0; x < width; x++)
+                {
+                    var tile = new Tile();
+                    tile[ElementLevel.Bottom] = Elements["grass"];
+                    
+                    tiles.AddLast(tile);
+                }
+
+                addRow(tiles, y);
+            }
+
+
+        }
+
         /// <summary>
         /// Adds a Row of <see cref="Tile" /> instances to the Map 
         /// </summary>

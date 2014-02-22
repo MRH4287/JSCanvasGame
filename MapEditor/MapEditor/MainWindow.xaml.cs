@@ -1,6 +1,7 @@
 ﻿using MapEditor.GUIElements;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -155,6 +156,38 @@ namespace MapEditor
 
             }
 
+        }
+
+        private void SaveMap(object sender, RoutedEventArgs e)
+        {
+            var dialoge = new System.Windows.Forms.SaveFileDialog();
+            dialoge.Filter = "Json-File|*.json";
+            if (dialoge.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var text = controller.Serialize();
+
+                using (StreamWriter stream = File.CreateText(dialoge.FileName))
+                {
+                    stream.Write(text);
+                }
+
+            }
+
+
+        }
+
+        private void NewMap(object sender, RoutedEventArgs e)
+        {
+            if (controller.Elements == null)
+            {
+                var res = MessageBox.Show("No config loaded. Load default Config?", "Load default Config?", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    LoadDefaultConfigMenu(sender, e);
+                }
+            }
+
+            controller.createMap(30, 10);
         }
 
     }
