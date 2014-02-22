@@ -50,11 +50,11 @@ class Renderer
         }
     };
 
-    private _width: Number = 0;
-    private _height: Number = 0;
+    private _width: number = 0;
+    private _height: number = 0;
 
-    private _staticWidth: Number = 0;
-    private _staticHeight: Number = 0;
+    private _staticWidth: number = 0;
+    private _staticHeight: number = 0;
     private _staticRendered: boolean = false;
 
     private _elements = {};
@@ -97,7 +97,7 @@ class Renderer
     }
 
 
-        private _initLayer = function ()
+    private _initLayer()
     {
 
         var self = this;
@@ -116,7 +116,7 @@ class Renderer
 
     // ---- Config Handler ----
 
-        private _loadConfig = function ()
+    private _loadConfig()
     {
         this._elements = {};
 
@@ -134,7 +134,7 @@ class Renderer
 
     }
 
-    private _loadMap = function ()
+    private _loadMap()
     {
         this._log("Load Map from path:", this._config.mapPath);
 
@@ -162,7 +162,7 @@ class Renderer
 
     }
 
-    private _updateTile = function (tile)
+    private _updateTile(tile)
     {
         if ((tile.BottomElementID !== undefined) && (tile.BottomElementID != null) && (tile.BottomElementID != ""))
         {
@@ -204,7 +204,7 @@ class Renderer
         return tile;
     }
 
-    private _renderMap = function (callback)
+    private _renderMap(callback)
     {
         //this._log("Map rendering ...");
 
@@ -264,7 +264,7 @@ class Renderer
 
     }
 
-    private _renderDynamic = function ()
+    private _renderDynamic()
     {
         /*
         _clear(_layer.PlayerLayer.ctx);
@@ -276,7 +276,7 @@ class Renderer
     }
 
 
-        private _render = function ()
+    private _render()
     {
         var self: Renderer = this;
 
@@ -320,7 +320,7 @@ class Renderer
 
     // -------------
 
-    public test = function (offset)
+    public test(offset)
     {
 
 
@@ -334,7 +334,7 @@ class Renderer
 
 
     // --- Draw Functions ----
-    private _clear = function (ctx: CanvasRenderingContext2D)
+    private _clear(ctx: CanvasRenderingContext2D)
     {
         /*ctx.rect(0, 0, _width, _height);
         ctx.fillStyle = 'green';
@@ -345,7 +345,7 @@ class Renderer
 
 
 
-    private _addTile = function (tile, x, y, ignoreOutOfSight, readyCallback)
+    private _addTile(tile, x, y, ignoreOutOfSight, readyCallback)
     {
         //_log("Render Tile: ", tile);
 
@@ -462,7 +462,7 @@ class Renderer
         };
     }
 
-    private _addImage = function (ctx, src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
+    private _addImage(ctx, src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
     {
         // _log("Add Image '" + src + "' at: ", { x: x, y: y });
 
@@ -516,7 +516,7 @@ class Renderer
 
     // --- Helper Functions ----
 
-    private _getFile = function (url, callback, dataType)
+    private _getFile(url, callback?, dataType?)
     {
         var async = (!(typeof (callback) == "undefined"));
         dataType = (typeof (dataType) == "undefined") ? "json" : dataType;
@@ -545,7 +545,7 @@ class Renderer
         return tempResult;
     }
 
-    private _log = function (message, objects)
+    private _log(message, objects)
     {
         if (this._config.debug)
         {
@@ -553,7 +553,7 @@ class Renderer
         }
     }
 
-    private _info = function (message, objects)
+    private _info(message, objects)
     {
         if (this._config.debug)
         {
@@ -561,7 +561,7 @@ class Renderer
         }
     }
 
-    private _warn = function (message, objects)
+    private _warn(message, objects)
     {
         if (this._config.debug)
         {
@@ -569,7 +569,7 @@ class Renderer
         }
     }
 
-    private _error = function (message, objects)
+    private _error(message, objects)
     {
         if (this._config.debug)
         {

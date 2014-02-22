@@ -98,16 +98,19 @@
     <Content Include="graphics\terrain\ledge_left.png" />
     <Content Include="graphics\terrain\ledge_right.png" />
     <Content Include="index.html" />
+    <Content Include="js\eventHandler.js" />
     <Content Include="js\jquery-2.1.0.min.js" />
     <Content Include="js\renderer.js" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="eventHandler.ts" />
     <TypeScriptCompile Include="jquery.d.ts" />
     <TypeScriptCompile Include="renderer.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>tsc --out "$(ProjectDir)js/renderer.js" "$(ProjectDir)renderer.ts"</PreBuildEvent>
+    <PreBuildEvent>tsc --out "$(ProjectDir)js/eventHandler.js" "$(ProjectDir)\eventHandler.ts"
+tsc --out "$(ProjectDir)js/renderer.js" "$(ProjectDir)renderer.ts"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
