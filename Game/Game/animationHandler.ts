@@ -42,13 +42,11 @@ class AnimationHandler
         var el = $(this.canvas);
         this.width = el.width();
         this.height = el.height();
-
-        this.preloadImage("pichu", "graphics/animations/pichu.png");
     }
 
     public test()
     {
-        
+        this.preloadImage("pichu", "graphics/animations/pichu.png");
 
         var self = this;
         //ForceRerender

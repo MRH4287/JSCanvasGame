@@ -6,8 +6,8 @@
         width: 800,
         height: 300,
         tileSize: 25,
-        elementsPath: "map/elements.json",
-        mapPath: "map/map2.json",
+        elementsPath: "data/elements.json",
+        mapPath: "data/map2.json",
         showBlocking: true
     };
 

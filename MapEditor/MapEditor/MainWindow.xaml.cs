@@ -103,8 +103,8 @@ namespace MapEditor
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            controller.LoadConfig("./map/", "./prefabs/");
-            controller.LoadMap("./map/map2.json");
+            controller.LoadConfig("./data/", "./prefabs/");
+            controller.LoadMap("./data/map2.json");
 
         }
 
@@ -126,14 +126,14 @@ namespace MapEditor
 
             if (open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                controller.LoadConfig(open.SelectedPath + "/map/", open.SelectedPath + "/prefabs/");
+                controller.LoadConfig(open.SelectedPath + "/data/", open.SelectedPath + "/prefabs/");
 
             }
         }
 
         private void LoadDefaultConfigMenu(object sender, RoutedEventArgs e)
         {
-            controller.LoadConfig("./map/", "./prefabs/");
+            controller.LoadConfig("./data/", "./prefabs/");
         }
 
         private void OpenMap(object sender, RoutedEventArgs e)
