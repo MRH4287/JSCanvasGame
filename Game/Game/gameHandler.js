@@ -28,27 +28,43 @@ var GameHandler = (function () {
         return tempResult;
     };
 
-    GameHandler.prototype.log = function (message, objects) {
+    GameHandler.prototype.log = function (message) {
+        var optionalParams = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            optionalParams[_i] = arguments[_i + 1];
+        }
         if (this.config.debug) {
-            console.log(message, objects);
+            console.log(message, optionalParams);
         }
     };
 
-    GameHandler.prototype.info = function (message, objects) {
+    GameHandler.prototype.info = function (message) {
+        var optionalParams = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            optionalParams[_i] = arguments[_i + 1];
+        }
         if (this.config.debug) {
-            console.info(message, objects);
+            console.info(message, optionalParams);
         }
     };
 
-    GameHandler.prototype.warn = function (message, objects) {
+    GameHandler.prototype.warn = function (message) {
+        var optionalParams = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            optionalParams[_i] = arguments[_i + 1];
+        }
         if (this.config.debug) {
-            console.warn(message, objects);
+            console.warn(message, optionalParams);
         }
     };
 
-    GameHandler.prototype.error = function (message, objects) {
+    GameHandler.prototype.error = function (message) {
+        var optionalParams = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            optionalParams[_i] = arguments[_i + 1];
+        }
         if (this.config.debug) {
-            console.error(message, objects);
+            console.error(message, optionalParams);
         }
     };
     return GameHandler;

@@ -22,8 +22,8 @@ var EventHandler = (function () {
 
     EventHandler.prototype.callEvent = function (event, sender, arguments) {
         this.calledEvents.push(event);
-        console.log("Event Called: ", event);
 
+        //console.log("Event Called: ", event);
         if ((this.events === undefined) || (this.events[event] === undefined)) {
             //console.warn("EventHandler - No Event called '" + event + "' found!");
             return false;

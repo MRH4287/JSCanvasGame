@@ -41,7 +41,7 @@ class EventHandler
     public callEvent(event: string, sender: any, arguments: any)
     {
         this.calledEvents.push(event);
-        console.log("Event Called: ", event);
+        //console.log("Event Called: ", event);
 
         if ((this.events === undefined) || (this.events[event] === undefined))
         {

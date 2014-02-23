@@ -363,6 +363,11 @@
     }
 
 
+    this.getTileSize = function()
+    {
+        return _config.tileSize;
+    }
+
 
     // --- Draw Functions ----
     var _clear = function (ctx)

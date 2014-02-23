@@ -5,6 +5,7 @@ interface Renderer
     getAnimationLayer(): RendererLayer;
     getPlayerLayer(): RendererLayer;
     clearRenderContext(ctx: CanvasRenderingContext2D): void;
+    getTileSize(): number;
 }
 
 interface RendererLayer

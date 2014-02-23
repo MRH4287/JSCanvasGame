@@ -9,7 +9,7 @@ class GameHandler
 
 
     // Global Helper Functions:
-    public getFile(url: string, callback: (any) => void, dataType?: string)
+    public getFile(url: string, callback?: (any) => void, dataType?: string): any
     {
         var async = (!(typeof (callback) == "undefined"));
         dataType = (typeof (dataType) == "undefined") ? "json" : dataType;
@@ -38,35 +38,35 @@ class GameHandler
         return tempResult;
     }
 
-    public log(message: any, objects: any)
+    public log(message?: any, ...optionalParams: any[]): void
     {
         if (this.config.debug)
         {
-            console.log(message, objects);
+            console.log(message, optionalParams);
         }
     }
 
-    public info(message: any, objects: any)
+    public info(message?: any, ...optionalParams: any[]): void
     {
         if (this.config.debug)
         {
-            console.info(message, objects);
+            console.info(message, optionalParams);
         }
     }
 
-    public warn(message: any, objects: any)
+    public warn(message?: any, ...optionalParams: any[]): void
     {
         if (this.config.debug)
         {
-            console.warn(message, objects);
+            console.warn(message, optionalParams);
         }
     }
 
-    public error(message: any, objects: any)
+    public error(message?: any, ...optionalParams: any[]): void
     {
         if (this.config.debug)
         {
-            console.error(message, objects);
+            console.error(message, optionalParams);
         }
     }
 

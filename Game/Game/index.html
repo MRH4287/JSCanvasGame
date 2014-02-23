@@ -26,7 +26,8 @@
 
         var animation = new AnimationHandler({
             eventHandler: eventHandler,
-            renderer: render
+            renderer: render,
+            gameHandler: gameHandler
         });
 
         animation.setLayer(render.getAnimationLayer());
@@ -62,6 +63,7 @@
             }, 10);
 
             render.test(0);
+            animation.test();
         });
 
 
