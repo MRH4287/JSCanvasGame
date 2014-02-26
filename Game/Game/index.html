@@ -16,21 +16,14 @@
     <canvas id="canvas"></canvas>
     <script>
 
-        var gameHandler = new GameHandler();
-        var eventHandler = new EventHandler();
-
-        var render = new Renderer($("#canvas")[0], gameHandler, eventHandler,
-            {
-                
-            });
-
-        var animation = new AnimationHandler({
-            eventHandler: eventHandler,
-            renderer: render,
-            gameHandler: gameHandler
+        var gameHandler = new GameHandler({
+            verbose: false
         });
+        var eventHandler = new EventHandler(gameHandler);
+        var render = new Renderer($("#canvas")[0], gameHandler);
+        gameHandler.setRenderer(render);
 
-        animation.setLayer(render.getAnimationLayer());
+        gameHandler.init();
 
 
         var run = false;
@@ -62,8 +55,11 @@
                 }
             }, 10);
 
-            render.test(0);
-            animation.test();
+            window.setTimeout(function ()
+            {
+                render.test(0);
+            }, 150);
+            //animation.test();
         });
 
 

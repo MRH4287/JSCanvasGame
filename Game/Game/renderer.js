@@ -1,5 +1,6 @@
-﻿function Renderer(__canvas, __gameHandler, __eventHandler, __config)
+﻿function Renderer(__canvas, __gameHandler)
 {
+    /*
     // Default Config
     var _config = {
         debug: true,
@@ -10,6 +11,7 @@
         mapPath: "data/map2.json",
         showBlocking: true
     };
+    */
 
     // Variables
     var _canvas;
@@ -54,6 +56,8 @@
     var _staticHeight = 0;
     var _staticRendered = false;
 
+    // Todo: ---
+    // Auslagern zum Game Manager ---
     var _elements = {};
     var _map = [];
 
@@ -70,13 +74,6 @@
 
     var _init = function ()
     {
-        _eventHandler = __eventHandler;
-        if (_eventHandler === undefined)
-        {
-            console.warn("Third Argument of Renderer is undefined.");
-            return;
-        }
-
         _gameHandler = __gameHandler;
         if (_gameHandler === undefined)
         {
@@ -84,10 +81,23 @@
             return;
         }
 
+        //_gameHandler.setRenderer(this);
+
+        _eventHandler = _gameHandler.eventHandler;
+        if (_eventHandler === undefined)
+        {
+            console.warn("Third Argument of Renderer is undefined.");
+            return;
+        }
+
+
+
         _eventHandler.callEvent("renderPreInit", this, null);
 
         _canvas = __canvas;
-        _config = $.extend(_config, __config);
+        //_config = $.extend(_config, __config);
+
+        _config = _gameHandler.config;
 
         _width = _config.width;
         _height = _config.height;
@@ -98,8 +108,6 @@
             .attr("height", _height);
 
 
-        _loadConfig();
-        _loadMap();
 
         _eventHandler.addEventListener("forceRerender", function ()
         {
@@ -139,8 +147,9 @@
 
     // ---- Config Handler ----
 
-    var _loadConfig = function ()
+    this.setConfig = function(elements)
     {
+        /*
         _eventHandler.callEvent("renderPreConfigLoad", this, null);
 
         _log("Load Config from path: ", _config.elementsPath);
@@ -155,34 +164,37 @@
         _log("Element Definitions loaded: ", _elements);
 
         _eventHandler.callEvent("renderPostConfigLoad", this, null);
+        */
+
+        _elements = elements;
+
     }
 
-    var _loadMap = function ()
+    this.initMap = function (sizeX, sizeY)
     {
-        _eventHandler.callEvent("renderPreMapLoad", this, null);
-
-        _log("Load Map from path:", _config.mapPath);
-
-        var result = _getFile(_config.mapPath);
-
-        for (y = 0; y < result.length; y++)
-        {
-            var collom = result[y];
-
-            for (x = 0; x < collom.length; x++)
-            {
-                result[y][x] = _updateTile(result[y][x]);
-            }
-
-        }
-        _map = result;
-
-        _staticHeight = _map.length * _config.tileSize;
-        _staticWidth = _map[0].length * _config.tileSize;
+        _staticHeight = sizeY * _config.tileSize;
+        _staticWidth = sizeX * _config.tileSize;
 
         _initLayer();
+    }
 
-        _log("Map Loaded: ", _map);
+    this.setMap = function (map)
+    {
+        
+        _eventHandler.callEvent("renderPreMapLoad", this, null);
+
+        if ((_staticHeight == 0) || (_staticWidth == 0))
+        {
+            _gameHandler.error("The function 'initMap' has to be called before the SetMap function!");
+            return;
+        }
+
+
+        _map = map;
+
+        
+
+        _log("Renderer Map Loaded: ", _map);
 
         _eventHandler.callEvent("renderPostMapLoad", this, null);
     }
@@ -363,7 +375,7 @@
     }
 
 
-    this.getTileSize = function()
+    this.getTileSize = function ()
     {
         return _config.tileSize;
     }
@@ -376,10 +388,13 @@
         ctx.fillStyle = 'green';
         ctx.fill();*/
 
-        ctx.clearRect(0, 0, _staticWidth, _staticHeight);
+        if (ctx !== undefined)
+        {
+            ctx.clearRect(0, 0, _staticWidth, _staticHeight);
+        }
     }
 
-    this.clearRenderContext = function(ctx)
+    this.clearRenderContext = function (ctx)
     {
         _clear(ctx);
     }
@@ -389,6 +404,7 @@
     {
         //_log("Render Tile: ", tile);
 
+        
         var bottom = tile.BottomElement;
         var middle = tile.MiddleElement;
         var top = tile.TopElement;
@@ -420,15 +436,15 @@
         }
 
 
-        if (bottom !== undefined)
+        if ((bottom !== undefined) && ((bottom.Dynamic === undefined) || (!bottom.Dynamic)))
         {
             _addImage(_layer.BottomStaticLayer.ctx, bottom.ImageURI, x, y, undefined, undefined, callback("bottom"), ignoreOutOfSight);
         }
-        if (middle !== undefined)
+        if ((middle !== undefined) && ((middle.Dynamic === undefined) || (!middle.Dynamic)))
         {
             _addImage(_layer.MiddleStaticLayer.ctx, middle.ImageURI, x, y, undefined, undefined, callback("middle"), ignoreOutOfSight);
         }
-        if (top !== undefined)
+        if ((top !== undefined) && ((top.Dynamic === undefined) || (!top.Dynamic)))
         {
             _addImage(_layer.TopStaticLayer.ctx, top.ImageURI, x, y, undefined, undefined, callback("top"), ignoreOutOfSight);
         }
@@ -607,7 +623,7 @@
     {
         _gameHandler.info(message, objects);
     }
-    
+
     var _warm = function (message, objects)
     {
         _gameHandler.warn(message, objects);

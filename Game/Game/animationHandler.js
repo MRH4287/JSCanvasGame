@@ -1,32 +1,89 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="eventHandler.ts" />
 /// <reference path="gameHandler.ts" />
-/// <reference path="renderer.d.ts" />
+/// <reference path="interfaces.ts" />
 var AnimationHandler = (function () {
-    function AnimationHandler(data) {
-        this.animations = {};
+    function AnimationHandler(gameHandler, layer) {
         this.playableAnimations = {};
-        this.eventHandler = data.eventHandler;
-        this.spriteContainer = {};
-        this.renderer = data.renderer;
-        this.gameHandler = data.gameHandler;
+        this.eventHandler = gameHandler.eventHandler;
+        this.renderer = gameHandler.renderer;
+        this.gameHandler = gameHandler;
+
+        //gameHandler.setAnimationHandler(this);
+        this.layer = layer;
 
         var self = this;
         this.eventHandler.addEventListener("render", function () {
-            self.renderAnimations();
+            self.renderAnimations(self);
+        });
+
+        this.eventHandler.addEventListener("postTileUpdate", function (sender, tile) {
+            self.tileUpdate(tile);
         });
     }
     AnimationHandler.prototype.setLayer = function (layer) {
+        this.gameHandler.log("Animation: Layer set ... ", layer);
+
         this.canvas = layer.canvas;
         this.ctx = layer.ctx;
 
         var el = $(this.canvas);
         this.width = el.width();
         this.height = el.height();
+
+        console.log("Animation Handler: ", this);
+    };
+
+    AnimationHandler.prototype.tileUpdate = function (tile) {
+        var dynamic = false;
+
+        var def = null;
+        var defLayer = null;
+
+        //this.gameHandler.log("Got Tile to update: (X: " + tile.XCoord + ", Y: " + tile.YCoord +") ", tile);
+        if ((tile.BottomElement !== undefined) && (tile.BottomElement.Dynamic !== undefined) && (tile.BottomElement.Dynamic == true)) {
+            dynamic = true;
+            def = tile.BottomElement;
+            defLayer = 0;
+        }
+        if ((tile.MiddleElement !== undefined) && (tile.MiddleElement.Dynamic !== undefined) && (tile.MiddleElement.Dynamic == true)) {
+            if (dynamic) {
+                this.gameHandler.warn("Only one Animation per Tile possible!", tile.MiddleElement.AnimationContainer);
+                this.gameHandler.info("Alread set: ", def.AnimationContainer);
+            } else {
+                dynamic = true;
+                def = tile.MiddleElement;
+                defLayer = 1;
+            }
+        }
+        if ((tile.TopElement !== undefined) && (tile.TopElement.Dynamic !== undefined) && (tile.TopElement.Dynamic == true)) {
+            if (dynamic) {
+                this.gameHandler.warn("Only one Animation per Tile possible!", tile.TopElement.AnimationContainer);
+                this.gameHandler.info("Alread set: ", def.AnimationContainer);
+            } else {
+                dynamic = true;
+                def = tile.TopElement;
+                defLayer = 2;
+            }
+        }
+
+        if (dynamic) {
+            if (def.Level == this.layer) {
+                this.gameHandler.log("Load Animation for item: ", tile);
+
+                var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" + tile.ID;
+
+                this.gameHandler.log(this.gameHandler.animations);
+
+                tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
+            } else {
+                this.gameHandler.log("Ignore Dynamic Element .. not in the same layer ...");
+            }
+        }
     };
 
     AnimationHandler.prototype.test = function () {
-        this.loadAnimation("data/animations/pichu.json");
+        this.gameHandler.loadAnimation("data/animations/pichu.json");
 
         this.addAnimation("test", "pichu", "sleep", 6, 6);
 
@@ -41,7 +98,11 @@ var AnimationHandler = (function () {
     };
 
     AnimationHandler.prototype.addAnimation = function (ElementID, containerName, startAnimation, x, y) {
-        var container = this.animations[containerName];
+        this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
+        this.gameHandler.log("Default Animation: ", startAnimation);
+        this.gameHandler.log({ "X": x, " Y": y });
+
+        var container = this.gameHandler.animations[containerName];
         var animation = container.Animations[startAnimation];
 
         var element = {
@@ -55,7 +116,8 @@ var AnimationHandler = (function () {
         this.playableAnimations[ElementID] = element;
 
         this.playAnimation(ElementID, startAnimation);
-        // TODO: Add Timed Event for Animation!
+
+        return element;
     };
 
     AnimationHandler.prototype.getNewAnimationInstance = function (input) {
@@ -80,12 +142,18 @@ var AnimationHandler = (function () {
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
         if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0)) {
+            this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
+
             var self = this;
             this.eventHandler.addTimer(timerName, function () {
                 //self.gameHandler.log("Timer Event for: ", timerName);
                 self.animationStep(container);
             }, newAnimation.Speed);
+        } else {
+            this.gameHandler.log("Satic Animation applied ....");
         }
+
+        this.eventHandler.callEvent("forceRerender", this, null);
     };
 
     AnimationHandler.prototype.stopAnimation = function (elementID) {
@@ -97,9 +165,10 @@ var AnimationHandler = (function () {
 
         // Remove Timer for Animation:
         var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
-        if (this.eventHandler.containesKey(timerName)) {
-            this.eventHandler.stopTimer(timerName);
-        }
+
+        this.eventHandler.stopTimer(timerName);
+
+        container.Animation = null;
     };
 
     AnimationHandler.prototype.animationStep = function (animation) {
@@ -136,25 +205,6 @@ var AnimationHandler = (function () {
         this.eventHandler.callEvent("forceRerender", this, null);
     };
 
-    AnimationHandler.prototype.loadAnimation = function (path) {
-        var data = this.gameHandler.getFile(path);
-
-        var container = {
-            ID: data.ID,
-            ImageURI: data.ImageURI,
-            Animations: {}
-        };
-
-        for (var i = 0; i < data.Animations.length; i++) {
-            var anim = data.Animations[i];
-            container.Animations[anim.ID] = anim;
-        }
-
-        this.animations[data.ID] = container;
-        this.preloadImage(data.ID, data.ImageURI);
-        //console.log(this.animations);
-    };
-
     AnimationHandler.prototype.getPosition = function (x, y) {
         var tileSize = this.renderer.getTileSize();
         var result = {
@@ -165,27 +215,25 @@ var AnimationHandler = (function () {
         return result;
     };
 
-    AnimationHandler.prototype.renderAnimations = function () {
-        this.renderer.clearRenderContext(this.ctx);
+    AnimationHandler.prototype.renderAnimations = function (self) {
+        if (self.ctx == null) {
+            self.gameHandler.warn("Animation: No render Context found!", self);
+
+            return;
+        }
+
+        self.eventHandler.callEvent("animationsPreRender", self, null);
+
+        self.renderer.clearRenderContext(self.ctx);
 
         // Debug Code:
         //this.drawImage("pichu", 4, 5, 32, 32, 0, 0, 32, 32);
-        var self = this;
-        $.each(this.playableAnimations, function (id, el) {
+        $.each(self.playableAnimations, function (id, el) {
             var pos = self.getPosition(el.X, el.Y);
             self.renderAninmation(el.AnimationContainer, el.Animation, pos.x, pos.y);
         });
-        /*
-        if (this.animations["pichu"] !== undefined)
-        {
-        this.gameHandler.log("Drawing Animation ...");
-        
-        
-        
-        var anim: InternalAnimationContainer = this.animations["pichu"];
-        this.renderAninmation(anim, anim.Animations["sleep"], pos.x, pos.y);
-        }
-        */
+
+        self.eventHandler.callEvent("animationsPostRender", self, null);
     };
 
     AnimationHandler.prototype.renderAninmation = function (container, animation, x, y) {
@@ -207,30 +255,13 @@ var AnimationHandler = (function () {
         this.drawImage(imageID, imageX, imageY, animation.ImageWidth, animation.ImageHeight, xPos, yPos, width, height);
     };
 
-    AnimationHandler.prototype.preloadImage = function (name, path) {
-        var self = this;
-        this.loadImage(path, function (result) {
-            self.spriteContainer[name] = result;
-        });
-    };
-
-    AnimationHandler.prototype.loadImage = function (path, callback) {
-        var imageObj = new Image();
-
-        imageObj.onload = function () {
-            callback(imageObj);
-        };
-
-        imageObj.src = path;
-    };
-
     AnimationHandler.prototype.drawImage = function (name, offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight) {
-        if (this.spriteContainer[name] === undefined) {
+        if (this.gameHandler.spriteContainer[name] === undefined) {
             console.warn("No sprite with name '" + name + "' was found!");
             return;
         }
 
-        this.ctx.drawImage(this.spriteContainer[name], offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight);
+        this.ctx.drawImage(this.gameHandler.spriteContainer[name], offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight);
     };
     return AnimationHandler;
 })();

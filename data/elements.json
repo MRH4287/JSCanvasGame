@@ -51,5 +51,20 @@
 		"Level": 2,
 		"Passable": true,
 		"ImageURI": "graphics/objects/tree_top.png"	
+	},
+	{
+		"ID": "Pichu",
+		"Name": "Pichu (Dynamic)",
+		"Level": 1,
+		"Passable": false,
+		"Speed": 1.0,
+		"Flags": [
+			"player"
+		],
+		"ImageURI": "graphics/dynamic/pichu.png",
+		"Dynamic": true,
+		"AnimationDefinition": "data/animations/pichu.json",
+		"AnimationContainer": "pichu",
+		"DefaultAnimation": "sleep"
 	}
 ]

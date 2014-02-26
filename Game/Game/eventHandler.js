@@ -1,10 +1,15 @@
 /// <reference path="jquery.d.ts" />
-
+/// <reference path="animationHandler.ts" />
+/// <reference path="gameHandler.ts" />
+/// <reference path="interfaces.ts" />
 var EventHandler = (function () {
-    function EventHandler() {
+    function EventHandler(gameHandler) {
         this.events = {};
         this.calledEvents = [];
+        this.gameHandler = null;
         this.timedEvents = {};
+        this.gameHandler = gameHandler;
+        gameHandler.setEventHandler(this);
     }
     EventHandler.prototype.addEventListener = function (event, callback) {
         if (this.events === undefined) {
@@ -23,8 +28,13 @@ var EventHandler = (function () {
     EventHandler.prototype.callEvent = function (event, sender, arguments) {
         this.calledEvents.push(event);
 
-        //console.log("Event Called: ", event);
-        if ((this.events === undefined) || (this.events[event] === undefined)) {
+        var unheared = ((this.events === undefined) || (this.events[event] === undefined));
+
+        if (this.gameHandler.config.verbose) {
+            console.log("Event Called: ", { name: event, sender: sender, arguments: arguments, heared: !unheared });
+        }
+
+        if (unheared) {
             //console.warn("EventHandler - No Event called '" + event + "' found!");
             return false;
         }
@@ -56,6 +66,8 @@ var EventHandler = (function () {
                 data.callback(sender, arguments);
 
                 window.setTimeout(triggerEvent, intervall);
+            } else {
+                delete self.timedEvents[name];
             }
         };
 

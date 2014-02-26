@@ -65,6 +65,36 @@ namespace MapEditor.Elements
         public string ImageURI { get; set; }
 
         /// <summary>
+        /// The Events fired by this Tile
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public List<KeyValuePair<string, string>> Events = null;
+
+        /// <summary>
+        /// Is this Element Dynamic? Does it contains animations.
+        /// </summary>
+        [DataMember(IsRequired=false)]
+        public bool Dynamic = false;
+
+        /// <summary>
+        /// The Path to the Definition of the Animation File
+        /// </summary>
+        [DataMember(IsRequired=false)]
+        public string AnimationDefinition = null;
+
+        /// <summary>
+        /// The name of the Animation Container
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public string AnimationContainer = null;
+
+        /// <summary>
+        /// The default Animation to play
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public string DefaultAnimation = null;
+
+        /// <summary>
         /// The Uri Instance to the Image
         /// </summary>
         public Uri ImagePath

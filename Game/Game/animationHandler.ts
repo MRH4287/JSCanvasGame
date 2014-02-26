@@ -1,7 +1,7 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="eventHandler.ts" />
 /// <reference path="gameHandler.ts" />
-/// <reference path="renderer.d.ts" />
+/// <reference path="interfaces.ts" />
 
 class AnimationHandler
 {
@@ -15,44 +15,126 @@ class AnimationHandler
     private width: number;
     private height: number;
 
-    private spriteContainer: { [id: string]: HTMLElement };
-    private animations: { [id: string]: InternalAnimationContainer } = {};
+    // The Layer this Animation Handler listens on ...
+    private layer: number;
 
-    private playableAnimations: { [id: string]: PlayableAnimation } = {};
+    public playableAnimations: { [id: string]: PlayableAnimation } = {};
 
-
-    constructor(data: {
-        eventHandler: EventHandler;
-        renderer: Renderer;
-        gameHandler: GameHandler;
-    })
+    constructor(gameHandler: GameHandler, layer: number)
     {
-        this.eventHandler = data.eventHandler;
-        this.spriteContainer = {};
-        this.renderer = data.renderer;
-        this.gameHandler = data.gameHandler;
+        this.eventHandler = gameHandler.eventHandler;
+        this.renderer = gameHandler.renderer;
+        this.gameHandler = gameHandler;
+
+        //gameHandler.setAnimationHandler(this);
+
+
+        this.layer = layer;
 
         var self = this;
         this.eventHandler.addEventListener("render", function ()
         {
-            self.renderAnimations();
+            self.renderAnimations(self);
         });
+
+        this.eventHandler.addEventListener("postTileUpdate", function (sender, tile)
+        {
+            self.tileUpdate(tile);
+        });
+
 
     }
 
     public setLayer(layer: RendererLayer)
     {
+        this.gameHandler.log("Animation: Layer set ... ", layer);
+
         this.canvas = layer.canvas;
         this.ctx = layer.ctx;
 
         var el = $(this.canvas);
         this.width = el.width();
         this.height = el.height();
+
+
+
+        console.log("Animation Handler: ", this);
     }
+
+
+
+    private tileUpdate(tile: Tile)
+    {
+        var dynamic: boolean = false;
+
+        var def: ElementDefinition = null;
+        var defLayer: number = null;
+
+        //this.gameHandler.log("Got Tile to update: (X: " + tile.XCoord + ", Y: " + tile.YCoord +") ", tile);
+
+        if ((tile.BottomElement !== undefined) && (tile.BottomElement.Dynamic !== undefined) && (tile.BottomElement.Dynamic == true))
+        {
+            dynamic = true;
+            def = tile.BottomElement;
+            defLayer = 0;
+        }
+        if ((tile.MiddleElement !== undefined) && (tile.MiddleElement.Dynamic !== undefined) && (tile.MiddleElement.Dynamic == true))
+        {
+            if (dynamic)
+            {
+                this.gameHandler.warn("Only one Animation per Tile possible!", tile.MiddleElement.AnimationContainer);
+                this.gameHandler.info("Alread set: ", def.AnimationContainer);
+            }
+            else
+            {
+                dynamic = true;
+                def = tile.MiddleElement;
+                defLayer = 1;
+            }
+        }
+        if ((tile.TopElement !== undefined) && (tile.TopElement.Dynamic !== undefined) && (tile.TopElement.Dynamic == true))
+        {
+            if (dynamic)
+            {
+                this.gameHandler.warn("Only one Animation per Tile possible!", tile.TopElement.AnimationContainer);
+                this.gameHandler.info("Alread set: ", def.AnimationContainer);
+            }
+            else
+            {
+                dynamic = true;
+                def = tile.TopElement;
+                defLayer = 2;
+            }
+        }
+
+
+        if (dynamic) // && )
+        {
+            if (def.Level == this.layer)
+            {
+                this.gameHandler.log("Load Animation for item: ", tile);
+
+                var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" +tile.ID;
+
+                this.gameHandler.log(this.gameHandler.animations);
+
+                tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
+                
+            }
+            else
+            {
+                this.gameHandler.log("Ignore Dynamic Element .. not in the same layer ...");
+            }
+        }
+
+
+
+    }
+
 
     public test()
     {
-        this.loadAnimation("data/animations/pichu.json");
+        this.gameHandler.loadAnimation("data/animations/pichu.json");
 
         this.addAnimation("test", "pichu", "sleep", 6, 6);
 
@@ -69,9 +151,13 @@ class AnimationHandler
 
     }
 
-    public addAnimation(ElementID: string, containerName: string, startAnimation: string, x: number, y: number)
+    public addAnimation(ElementID: string, containerName: string, startAnimation: string, x: number, y: number): PlayableAnimation
     {
-        var container: InternalAnimationContainer = this.animations[containerName];
+        this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
+        this.gameHandler.log("Default Animation: ", startAnimation);
+        this.gameHandler.log({"X": x, " Y": y });
+
+        var container: InternalAnimationContainer = this.gameHandler.animations[containerName];
         var animation: Animation = container.Animations[startAnimation];
 
         var element: PlayableAnimation =
@@ -86,9 +172,8 @@ class AnimationHandler
         this.playableAnimations[ElementID] = element;
 
         this.playAnimation(ElementID, startAnimation);
-        // TODO: Add Timed Event for Animation!
 
-
+        return element;
     }
 
     private getNewAnimationInstance(input: Animation): Animation
@@ -119,6 +204,7 @@ class AnimationHandler
 
         if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0))
         {
+            this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
 
             var self = this;
             this.eventHandler.addTimer(timerName, function ()
@@ -129,6 +215,13 @@ class AnimationHandler
 
             }, newAnimation.Speed);
         }
+        else
+        {
+            this.gameHandler.log("Satic Animation applied ....");
+        }
+
+        this.eventHandler.callEvent("forceRerender", this, null);
+
     }
 
     private stopAnimation(elementID: string)
@@ -142,10 +235,10 @@ class AnimationHandler
 
         // Remove Timer for Animation:
         var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
-        if (this.eventHandler.containesKey(timerName))
-        {
-            this.eventHandler.stopTimer(timerName);
-        }
+
+        this.eventHandler.stopTimer(timerName);
+
+        container.Animation = null;
     }
 
     private animationStep(animation: PlayableAnimation)
@@ -195,35 +288,13 @@ class AnimationHandler
         {
             anim.AnimationState = state;
         }
-        
+
         this.eventHandler.callEvent("forceRerender", this, null);
 
     }
 
 
-    private loadAnimation(path)
-    {
-        var data: AnimationContainer = <AnimationContainer>this.gameHandler.getFile(path);
 
-        var container: InternalAnimationContainer =
-            {
-                ID: data.ID,
-                ImageURI: data.ImageURI,
-                Animations: {}
-            };
-
-        for (var i = 0; i < data.Animations.length; i++)
-        {
-            var anim = data.Animations[i];
-            container.Animations[anim.ID] = anim;
-        }
-
-        this.animations[data.ID] = container;
-        this.preloadImage(data.ID, data.ImageURI);
-
-
-        //console.log(this.animations);
-    }
 
     private getPosition(x: number, y: number): { x: number; y: number }
     {
@@ -238,31 +309,30 @@ class AnimationHandler
     }
 
 
-    private renderAnimations()
+    private renderAnimations(self)
     {
-        this.renderer.clearRenderContext(this.ctx);
+        if (self.ctx == null)
+        {
+            self.gameHandler.warn("Animation: No render Context found!", self);
+
+            return;
+        }
+
+        self.eventHandler.callEvent("animationsPreRender", self, null);
+
+        self.renderer.clearRenderContext(self.ctx);
 
         // Debug Code:
         //this.drawImage("pichu", 4, 5, 32, 32, 0, 0, 32, 32);
 
-        var self = this;
-        $.each(this.playableAnimations, function (id: string, el: PlayableAnimation) 
+
+        $.each(self.playableAnimations, function (id: string, el: PlayableAnimation) 
         {
             var pos = self.getPosition(el.X, el.Y);
             self.renderAninmation(el.AnimationContainer, el.Animation, pos.x, pos.y);
         });
 
-        /*
-        if (this.animations["pichu"] !== undefined)
-        {
-            this.gameHandler.log("Drawing Animation ...");
-
-           
-
-            var anim: InternalAnimationContainer = this.animations["pichu"];
-            this.renderAninmation(anim, anim.Animations["sleep"], pos.x, pos.y);
-        }
-        */
+        self.eventHandler.callEvent("animationsPostRender", self, null);
 
     }
 
@@ -289,107 +359,20 @@ class AnimationHandler
 
     }
 
-    private preloadImage(name: string, path: string)
-    {
-        var self = this;
-        this.loadImage(path, function (result)
-        {
-            self.spriteContainer[name] = result;
-        });
-    }
 
-    private loadImage(path: string, callback: (HTMLElement) => void)
-    {
-        var imageObj = new Image();
-
-        imageObj.onload = function ()
-        {
-            callback(imageObj);
-        };
-
-        imageObj.src = path;
-
-    }
 
 
     private drawImage(name: string, offsetX: number, offsetY: number, width?: number, height?: number, canvasOffsetX?: number, canvasOffsetY?: number, canvasImageWidth?: number, canvasImageHeight?: number)
     {
-        if (this.spriteContainer[name] === undefined)
+        if (this.gameHandler.spriteContainer[name] === undefined)
         {
             console.warn("No sprite with name '" + name + "' was found!");
             return;
         }
 
-        this.ctx.drawImage(this.spriteContainer[name], offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight);
+        this.ctx.drawImage(this.gameHandler.spriteContainer[name], offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight);
     }
 
 
 }
 
-interface PlayableAnimation
-{
-    ID: string;
-    AnimationContainer: InternalAnimationContainer;
-    Animation: Animation;
-    X: number;
-    Y: number;
-}
-
-interface Animation
-{
-    // The ID of the Aninamtion
-    ID: string;
-    // How many Images are in this Animation
-    ImageCount: number;
-    // X-Coordinate of the first frame
-    StartX: number;
-    // Y-Coordinate of the firsr frame
-    StartY: number;
-    // The Height of a Frame
-    ImageHeight: number;
-    // The Width of a Frame
-    ImageWidth: number;
-    // The factor the tileSize is multiplied to get the height
-    DisplayHeight: number;
-    // The factor the tileSize is multiplied to get the width
-    DisplayWidth: number;
-    // The X-Distance between two Frames
-    OffsetX: number;
-    // The Y-Distance between two Frames
-    OffsetY: number;
-    // The X-Offset from the Start of the Tile
-    DisplayOffsetX: number;
-    // The Y-Offset from the Start of the Tile
-    DisplayOffsetY: number;
-    // The Speed the Animation runs
-    Speed: number;
-    // Reverse Animation on End
-    ReverseOnEnd: boolean;
-    //Is the Animation on Reverse
-    IsReverse: boolean;
-    // Loop the Animation on End
-    Loop: boolean;
-    // The Current displayed Frame of the Animation
-    AnimationState: number;
-}
-
-
-interface AnimationContainer
-{
-    // The ID of the Animation Container
-    ID: string;
-    // The Path to the Spritesheet
-    ImageURI: string;
-    //The Animations of this Container
-    Animations: Animation[]
-}
-
-interface InternalAnimationContainer
-{
-    // The ID of the Animation Container
-    ID: string;
-    // The Path to the Spritesheet
-    ImageURI: string;
-    //The Animations of this Container
-    Animations: { [id: string]: Animation };
-}

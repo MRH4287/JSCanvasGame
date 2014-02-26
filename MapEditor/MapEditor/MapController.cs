@@ -297,8 +297,8 @@ namespace MapEditor
                 tile.MouseMove += tile_MouseMove;
                 tile.MouseUp += tile_MouseUp;
 
-                tile.X = x;
-                tile.Y = YIndex;
+                tile.X = x + 1;
+                tile.Y = YIndex + 1;
             }
 
 

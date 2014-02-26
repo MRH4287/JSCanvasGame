@@ -1,18 +1,15 @@
 /// <reference path="jquery.d.ts" />
-
-interface EventData
-{
-    callbacks:
-    {
-        (sender: any, arguments: any): void;
-    }[]
-}
+/// <reference path="animationHandler.ts" />
+/// <reference path="gameHandler.ts" />
+/// <reference path="interfaces.ts" />
 
 
 class EventHandler
 {
     private events: { [id: string]: EventData } = {};
     private calledEvents: string[] = [];
+
+    private gameHandler: GameHandler = null;
 
     private timedEvents: {
         [id: string]: {
@@ -21,7 +18,14 @@ class EventHandler
         }
     } = {};
 
-    public addEventListener(event: string, callback: () => void)
+    constructor(gameHandler: GameHandler)
+    {
+        this.gameHandler = gameHandler;
+        gameHandler.setEventHandler(this);
+    }
+
+
+    public addEventListener(event: string, callback: (sender: any, arguments: any) => void)
     {
         if (this.events === undefined)
         {
@@ -41,9 +45,16 @@ class EventHandler
     public callEvent(event: string, sender: any, arguments: any)
     {
         this.calledEvents.push(event);
-        //console.log("Event Called: ", event);
 
-        if ((this.events === undefined) || (this.events[event] === undefined))
+        var unheared = ((this.events === undefined) || (this.events[event] === undefined));
+
+        if (this.gameHandler.config.verbose)
+        {
+            console.log("Event Called: ", { name: event, sender: sender, arguments: arguments, heared: !unheared });
+        }
+
+
+        if (unheared)
         {
             //console.warn("EventHandler - No Event called '" + event + "' found!");
 
@@ -84,6 +95,10 @@ class EventHandler
                 data.callback(sender, arguments);
 
                 window.setTimeout(triggerEvent, intervall);
+            }
+            else
+            {
+                delete self.timedEvents[name];
             }
         };
 
