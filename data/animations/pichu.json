@@ -20,7 +20,9 @@
 			"ReverseOnEnd": false,
 			"IsReverse": false,
 			"Loop": false,
-			"AnimationState": 0
+			"AnimationState": 0,
+			// Use Group @ to force extra Group for every Element
+			"AnimationGroup": null
 		},
 		{
 			"ID": "walk-up",
@@ -39,7 +41,8 @@
 			"ReverseOnEnd": false,
 			"IsReverse": false,
 			"Loop": true,
-			"AnimationState": 0
+			"AnimationState": 0,
+			"AnimationGroup": null
 		},
 		{
 			"ID": "sleep",
@@ -58,7 +61,8 @@
 			"ReverseOnEnd": false,
 			"IsReverse": false,
 			"Loop": true,
-			"AnimationState": 1
+			"AnimationState": 1,
+			"AnimationGroup": null
 		}
 	]
 

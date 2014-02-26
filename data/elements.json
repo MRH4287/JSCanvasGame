@@ -19,7 +19,11 @@
 		"Flags": [
 			"green", "soft"
 		],
-		"ImageURI": "graphics/terrain/flowers.png"	
+		"ImageURI": "graphics/terrain/flowers.png",
+		"Dynamic": true,
+		"AnimationDefinition": "data/animations/flower.json",
+		"AnimationContainer": "flower",
+		"DefaultAnimation": "default"
 	},
 	{
 		"ID": "bush",

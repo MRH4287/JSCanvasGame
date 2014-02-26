@@ -1,0 +1,31 @@
+{
+	"ID": "flower",
+	"ImageURI": "graphics/animations/flower.png",
+	"Animations":
+	[
+		{
+			"ID": "default",
+			"ImageCount": 4,
+			"StartX": 0,
+			"StartY": 2,
+			"ImageHeight": 16,
+			"ImageWidth": 16,
+			"DisplayHeight": 1,
+			"DisplayWidth": 1,
+			"OffsetX": 18,
+			"OffsetY": 0,
+			"DisplayOffsetX": 0,
+			"DisplayOffsetY": 0,
+			"Speed": 1000,
+			"ReverseOnEnd": false,
+			"IsReverse": false,
+			"Loop": true,
+			"AnimationState": 0,
+			"AnimationGroup": "flower"
+		}
+	]
+
+
+
+
+}
