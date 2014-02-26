@@ -105,6 +105,8 @@ interface Animation
     Loop: boolean;
     // The Current displayed Frame of the Animation
     AnimationState: number;
+    // The Animation Group of that Element
+    AnimationGroup: string;
 }
 
 
@@ -115,7 +117,7 @@ interface AnimationContainer
     // The Path to the Spritesheet
     ImageURI: string;
     //The Animations of this Container
-    Animations: Animation[]
+    Animations: Animation[];
 }
 
 interface InternalAnimationContainer

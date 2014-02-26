@@ -37,6 +37,12 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="data\animations\flower.json" />
+    <None Include="data\animations\pichu.json" />
+    <None Include="data\elements.json" />
+    <None Include="data\map.json" />
+    <None Include="data\map2.json" />
+    <None Include="data\pika.json" />
     <None Include="graphics\animations\pichu\sleep\sleep.pdn" />
     <None Include="graphics\animations\pichu\stand-down\stand-down.pdn" />
     <None Include="graphics\animations\pichu\stand-left\stand-left.pdn" />
@@ -53,9 +59,6 @@
     <None Include="graphics\animations\strich\winken4.pdn" />
     <None Include="graphics\animations\strich\winken5.pdn" />
     <None Include="graphics\animations\strich\winken6.pdn" />
-    <None Include="map\elements.json" />
-    <None Include="map\map.json" />
-    <None Include="map\map2.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="graphics\animations\pichu.png" />

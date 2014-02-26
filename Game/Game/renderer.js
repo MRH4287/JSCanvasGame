@@ -294,8 +294,15 @@
                     continue;
                 }
 
+                var last = ((collom == _map.length - 1) && (element == _map[collom].length - 1));
 
-                _addTile(_map[collom][element], xOffset, yOffset, false, ((collom == _map.length - 1) && (element == _map[collom].length - 1)) ? okCallback : undefined);
+                if (last)
+                {
+                    window.setTimeout(okCallback, 100);
+
+                }
+
+                _addTile(_map[collom][element], xOffset, yOffset, false, (last) ? okCallback : undefined);
             }
 
 

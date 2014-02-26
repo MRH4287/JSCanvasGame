@@ -20,6 +20,9 @@ class AnimationHandler
 
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
 
+
+    private animationGroups: { [id: string]: any[] } = {};
+
     constructor(gameHandler: GameHandler, layer: number)
     {
         this.eventHandler = gameHandler.eventHandler;
@@ -171,7 +174,16 @@ class AnimationHandler
 
         this.playableAnimations[ElementID] = element;
 
-        this.playAnimation(ElementID, startAnimation);
+        if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == ""))
+        {
+            animation.AnimationGroup = "group-" + ElementID;
+        }
+        else if (animation.AnimationGroup == "@")
+        {
+            animation.AnimationGroup = "group-"+Math.random()+Math.random();
+        }
+
+        this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
 
         return element;
     }
@@ -181,7 +193,7 @@ class AnimationHandler
         return <Animation>jQuery.extend({}, input);
     }
 
-    private playAnimation(elementID: string, animation: string)
+    private playAnimation(elementID: string, animation: string, group: string)
     {
         var container: PlayableAnimation = this.playableAnimations[elementID];
 
@@ -197,23 +209,48 @@ class AnimationHandler
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+        var timerName = "anim-" + container.ID + "-" + group;
 
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
 
+        if ((group === undefined) || (group == null) || (group == ""))
+        {
+            group = "group-" + Math.random();
+        }
+
+        this.gameHandler.log("Animation Group: ", group);
+
         if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0))
         {
-            this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
-
             var self = this;
-            this.eventHandler.addTimer(timerName, function ()
+
+            if (this.animationGroups[group] === undefined)
             {
-                //self.gameHandler.log("Timer Event for: ", timerName);
+                this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
 
+                this.animationGroups[group] = []
+
+                
+                this.eventHandler.addTimer(timerName, function ()
+                {
+                    for (var i = 0; i < self.animationGroups[group].length; i++)
+                    {
+                        self.animationGroups[group][i]();
+                    }
+
+                    self.eventHandler.callEvent("forceRerender", this, null);
+
+
+                }, newAnimation.Speed);
+
+            }
+
+            this.animationGroups[group].push(function ()
+            {
                 self.animationStep(container);
+            });
 
-            }, newAnimation.Speed);
         }
         else
         {
@@ -289,7 +326,6 @@ class AnimationHandler
             anim.AnimationState = state;
         }
 
-        this.eventHandler.callEvent("forceRerender", this, null);
 
     }
 
@@ -338,6 +374,11 @@ class AnimationHandler
 
     private renderAninmation(container: InternalAnimationContainer, animation: Animation, x: number, y: number)
     {
+        if (animation == null)
+        {
+            return;
+        }
+
         var imageID = container.ID;
 
         var imageX = animation.StartX + (animation.OffsetX) * animation.AnimationState;

@@ -5,6 +5,7 @@
 var AnimationHandler = (function () {
     function AnimationHandler(gameHandler, layer) {
         this.playableAnimations = {};
+        this.animationGroups = {};
         this.eventHandler = gameHandler.eventHandler;
         this.renderer = gameHandler.renderer;
         this.gameHandler = gameHandler;
@@ -115,7 +116,11 @@ var AnimationHandler = (function () {
 
         this.playableAnimations[ElementID] = element;
 
-        this.playAnimation(ElementID, startAnimation);
+        if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == "")) {
+            animation.AnimationGroup = "group-" + ElementID;
+        }
+
+        this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
 
         return element;
     };
@@ -124,7 +129,7 @@ var AnimationHandler = (function () {
         return jQuery.extend({}, input);
     };
 
-    AnimationHandler.prototype.playAnimation = function (elementID, animation) {
+    AnimationHandler.prototype.playAnimation = function (elementID, animation, group) {
         var container = this.playableAnimations[elementID];
 
         if ((container.Animation != null) && (container.Animation.ID == animation)) {
@@ -137,18 +142,36 @@ var AnimationHandler = (function () {
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+        var timerName = "anim-" + container.ID + "-" + group;
 
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
-        if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0)) {
-            this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
+        if ((group === undefined) || (group == null) || (group == "")) {
+            group = "group-" + Math.random();
+        }
 
+        this.gameHandler.log("Animation Group: ", group);
+
+        if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0)) {
             var self = this;
-            this.eventHandler.addTimer(timerName, function () {
-                //self.gameHandler.log("Timer Event for: ", timerName);
+
+            if (this.animationGroups[group] === undefined) {
+                this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
+
+                this.animationGroups[group] = [];
+
+                this.eventHandler.addTimer(timerName, function () {
+                    for (var i = 0; i < self.animationGroups[group].length; i++) {
+                        self.animationGroups[group][i]();
+                    }
+
+                    self.eventHandler.callEvent("forceRerender", this, null);
+                }, newAnimation.Speed);
+            }
+
+            this.animationGroups[group].push(function () {
                 self.animationStep(container);
-            }, newAnimation.Speed);
+            });
         } else {
             this.gameHandler.log("Satic Animation applied ....");
         }
@@ -201,8 +224,6 @@ var AnimationHandler = (function () {
         } else {
             anim.AnimationState = state;
         }
-
-        this.eventHandler.callEvent("forceRerender", this, null);
     };
 
     AnimationHandler.prototype.getPosition = function (x, y) {
@@ -237,6 +258,10 @@ var AnimationHandler = (function () {
     };
 
     AnimationHandler.prototype.renderAninmation = function (container, animation, x, y) {
+        if (animation == null) {
+            return;
+        }
+
         var imageID = container.ID;
 
         var imageX = animation.StartX + (animation.OffsetX) * animation.AnimationState;

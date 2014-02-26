@@ -28,7 +28,7 @@ var GameHandler = (function () {
     };
 
     GameHandler.prototype.initAnimationContainer = function () {
-        this.playerAnimationHander = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
+        this.playerAnimationHandler = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
     };
 
     GameHandler.prototype.createAnimationHandler = function (level, layer) {

@@ -22,7 +22,7 @@ class GameHandler
     public eventHandler: EventHandler;
     public renderer: Renderer;
 
-    public playerAnimationHander: AnimationHandler;
+    public playerAnimationHandler: AnimationHandler;
 
 
     public spriteContainer: { [id: string]: HTMLElement };
@@ -51,7 +51,7 @@ class GameHandler
 
     private initAnimationContainer()
     {
-        this.playerAnimationHander = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
+        this.playerAnimationHandler = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
 
     }
 
