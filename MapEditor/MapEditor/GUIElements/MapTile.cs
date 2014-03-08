@@ -18,7 +18,7 @@ namespace MapEditor.GUIElements
     /// <summary>
     /// The Element that is rendered to the Map
     /// </summary>
-    class MapTile : ContentControl, INotifyPropertyChanged
+    public class MapTile : ContentControl, INotifyPropertyChanged
     {
         /// <summary>
         /// The global Size
@@ -554,7 +554,7 @@ namespace MapEditor.GUIElements
                 {
                     if (_tile[ElementLevel.Bottom] != null)
                     {
-                        BottomLayerImage = new BitmapImage(_tile[ElementLevel.Bottom].ImagePath);
+                        BottomLayerImage = _tile[ElementLevel.Bottom].ImageSource;
                     }
                     else
                     {
@@ -563,7 +563,7 @@ namespace MapEditor.GUIElements
 
                     if (_tile[ElementLevel.Middle] != null)
                     {
-                        MiddleLayerImage = new BitmapImage(_tile[ElementLevel.Middle].ImagePath);
+                        MiddleLayerImage = _tile[ElementLevel.Middle].ImageSource;
                     }
                     else
                     {
@@ -572,7 +572,7 @@ namespace MapEditor.GUIElements
 
                     if (_tile[ElementLevel.Top] != null)
                     {
-                        TopLayerImage = new BitmapImage(_tile[ElementLevel.Top].ImagePath);
+                        TopLayerImage = _tile[ElementLevel.Top].ImageSource;
                     }
                     else
                     {
@@ -620,7 +620,7 @@ namespace MapEditor.GUIElements
 
                 if (value != null)
                 {
-                    this.BottomLayerImage = new BitmapImage(value.ImagePath);
+                    this.BottomLayerImage = value.ImageSource;
                 }
                 else
                 {
@@ -663,7 +663,7 @@ namespace MapEditor.GUIElements
 
                 if (value != null)
                 {
-                    this.MiddleLayerImage = new BitmapImage(value.ImagePath);
+                    this.MiddleLayerImage = value.ImageSource;
                 }
                 else
                 {
@@ -706,7 +706,7 @@ namespace MapEditor.GUIElements
 
                 if (value != null)
                 {
-                    this.TopLayerImage = new BitmapImage(value.ImagePath);
+                    this.TopLayerImage = value.ImageSource;
                 }
                 else
                 {
@@ -850,7 +850,7 @@ namespace MapEditor.GUIElements
                 }
             }
         }
-
+        
 
         #endregion
 
@@ -953,19 +953,29 @@ namespace MapEditor.GUIElements
         /// Constructor of the MapTile Class
         /// </summary>
         public MapTile()
+            : this(true)
         {
-            //this.Width = Size;
-            //this.Height = Size;
 
-            MapController.Bind(this, "GlobalSize", MapTile.WidthProperty);
-            MapController.Bind(this, "GlobalSize", MapTile.HeightProperty);
-            MapController.Bind(this, "GlobalThickness", MapTile.BorderThicknessProperty);
-            MapController.Bind(this, "GlobalBorderBrush", MapTile.BorderBrushProperty);
+        }
 
-            MapController.Bind(this, "GlobalVisibilityBottom", MapTile.VisibilityBottomProperty);
-            MapController.Bind(this, "GlobalVisibilityMiddle", MapTile.VisibilityMiddleProperty);
-            MapController.Bind(this, "GlobalVisibilityTop", MapTile.VisibilityTopProperty);
+        /// <summary>
+        /// Constructor of the MapTile Class
+        /// </summary>
+        public MapTile(bool bindToGlobal)
+        {
+            if (bindToGlobal)
+            {
+                //this.Width = Size;
+                //this.Height = Size;
+                MapController.Bind(this, "GlobalSize", MapTile.WidthProperty);
+                MapController.Bind(this, "GlobalSize", MapTile.HeightProperty);
+                MapController.Bind(this, "GlobalThickness", MapTile.BorderThicknessProperty);
+                MapController.Bind(this, "GlobalBorderBrush", MapTile.BorderBrushProperty);
 
+                MapController.Bind(this, "GlobalVisibilityBottom", MapTile.VisibilityBottomProperty);
+                MapController.Bind(this, "GlobalVisibilityMiddle", MapTile.VisibilityMiddleProperty);
+                MapController.Bind(this, "GlobalVisibilityTop", MapTile.VisibilityTopProperty);
+            }
             MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
 
             this.Background = Brushes.Orange;
@@ -974,6 +984,8 @@ namespace MapEditor.GUIElements
             this.BottomLayerImage = image;
 
         }
+
+        
 
 
         /// <summary>

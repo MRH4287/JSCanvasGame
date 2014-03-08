@@ -9,7 +9,7 @@ namespace MapEditor.Elements
     /// <summary>
     /// The "Hight" of an Element wothin a Tile
     /// </summary>
-    enum ElementLevel : int
+    public enum ElementLevel : int
     {
         /// <summary>
         /// Floor Level. Player walks over it.

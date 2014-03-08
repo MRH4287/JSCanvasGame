@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace MapEditor.GUIElements.Base
 {
-    abstract class Selectable : ContentControl, INotifyPropertyChanged
+    public abstract class Selectable : ContentControl, INotifyPropertyChanged
     {
         #region Dependencie Properties
 

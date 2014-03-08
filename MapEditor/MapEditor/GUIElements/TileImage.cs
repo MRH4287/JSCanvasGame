@@ -12,23 +12,56 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor.GUIElements
 {
-    class TileImage : SelectableImage 
+    class TileImage : SelectableImage
     {
-        private ElementDefinition _element = null;
+        public static ElementDefinition GetElement(DependencyObject obj)
+        {
+            return (ElementDefinition)obj.GetValue(ElementProperty);
+        }
 
-        public ElementDefinition Element 
+        public static void SetElement(DependencyObject obj, ElementDefinition value)
+        {
+            obj.SetValue(ElementProperty, value);
+
+            var self = obj as TileImage;
+            if (self != null)
+            {
+
+                self.triggerPropertyChanged("Element");
+                self.triggerPropertyChanged("TileImageSource");
+                self.triggerPropertyChanged("Tooltip");
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for Element.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ElementProperty =
+            DependencyProperty.RegisterAttached("Element", typeof(ElementDefinition), typeof(TileImage), new PropertyMetadata(null));
+
+
+
+        public ImageSource TileImageSource
         {
             get
             {
-                return _element;
+                if (this.Element == null)
+                {
+                    return null;
+                }
+
+                return this.Element.ImageSource;
+            }
+        }
+
+        public ElementDefinition Element
+        {
+            get
+            {
+                return GetElement(this);
             }
 
             set
             {
-                _element = value;
-
-                triggerPropertyChanged("Element");
-                triggerPropertyChanged("Tooltip");
+                SetElement(this, value);
             }
         }
 
@@ -63,11 +96,13 @@ namespace MapEditor.GUIElements
             : this()
         {
             this.Element = def;
-            this.ImageSource = new BitmapImage(def.ImagePath);
 
+            MapController.Bind(this, "Tooltip", TileImage.ToolTipProperty);
+            MapController.Bind(this, "TileImageSource", TileImage.ImageSourceProperty);
 
-            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
+            this.triggerPropertyChanged("TileImageSource");
         }
+
 
 
     }

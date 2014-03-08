@@ -1,0 +1,50 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:GUIElements="clr-namespace:MapEditor.GUIElements" x:Class="MapEditor.ElementDefinitionSelect"
+        Title="ElementDefinitionSelect" Height="304" Width="440" Initialized="Window_Initialized">
+    <Window.Resources>
+        <DataTemplate x:Key="ElementDefinitionListStyle">
+            <Grid Height="34" Width="376">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="63"/>
+                    <ColumnDefinition Width="127"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="1" HorizontalAlignment="Center" Height="34" VerticalAlignment="Top" Width="34" >
+                    <Image Source="{Binding ImageSource}"></Image>
+                </Border>
+                <Label Content="{Binding ID}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Label Content="{Binding Name}" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="38"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="432">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFDAC7C7" Offset="0"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="63"/>
+                <ColumnDefinition Width="127"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="22"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Preview" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="26" Margin="6,3,5,3" Width="52"/>
+            <Label Content="ID" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="1" Height="26" Margin="57,3,48,3" Width="22" />
+            <Label Content="Display Name" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="2" Height="26" Margin="48,3,90,3" Width="82"/>
+        </Grid>
+        <ListBox HorizontalAlignment="Left" Margin="0,10" Grid.Row="1" Width="422" x:Name="ElementList" ItemTemplate="{DynamicResource ElementDefinitionListStyle}" MouseDoubleClick="ElementList_MouseDoubleClick"/>
+
+    </Grid>
+</Window>

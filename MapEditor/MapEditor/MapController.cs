@@ -18,7 +18,7 @@ namespace MapEditor
     /// <summary>
     /// The Class used for controlling the Map-Editor
     /// </summary>
-    class MapController
+    public class MapController
     {
         /// <summary>
         /// The Element containing all MapTiles
@@ -385,8 +385,8 @@ namespace MapEditor
         /// <param name="destination">The Position to draw</param>
         private void drawPrefab(Prefab def, MapTile destination)
         {
-            var localX = destination.X;
-            var localY = destination.Y;
+            var localX = destination.X - 1;
+            var localY = destination.Y - 1;
 
             var map = getMapTileData();
 
@@ -754,12 +754,25 @@ namespace MapEditor
         /// <summary>
         /// Add a new DataBinding
         /// </summary>
+        /// <param name="target">The Target of the Binding</param>
         /// <param name="localVar">Local Property to Bind</param>
         /// <param name="dp">Binding to use</param>
         public static void Bind(ContentControl target, string localVar, DependencyProperty dp)
         {
+            Bind(target, target, localVar, dp);
+        }
+
+        /// <summary>
+        /// Add a new DataBinding
+        /// </summary>
+        /// <param name="target">The Target og the binding</param>
+        /// <param name="bindingSource">The source of the Binding</param>
+        /// <param name="localVar">Local Property to Bind</param>
+        /// <param name="dp">Binding to use</param>
+        public static void Bind(ContentControl target, object bindingSource, string localVar, DependencyProperty dp)
+        {
             Binding binding = new Binding(localVar);
-            binding.Source = target;
+            binding.Source = bindingSource;
             target.SetBinding(dp, binding);
         }
 

@@ -12,7 +12,7 @@ namespace MapEditor.Elements
     /// Predefined Structure used to draw
     /// </summary>
     [DataContract]
-    class Prefab
+    public class Prefab
     {
         /// <summary>
         /// The unique ID of that Prefab
@@ -97,7 +97,7 @@ namespace MapEditor.Elements
     /// Element that should be placed to the Map
     /// </summary>
     [DataContract]
-    class PrefabElement
+    public class PrefabElement
     {
         /// <summary>
         /// The X Offset from the Clicked Position 

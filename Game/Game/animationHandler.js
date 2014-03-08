@@ -118,6 +118,8 @@ var AnimationHandler = (function () {
 
         if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == "")) {
             animation.AnimationGroup = "group-" + ElementID;
+        } else if (animation.AnimationGroup == "@") {
+            animation.AnimationGroup = "group-" + Math.random() + Math.random();
         }
 
         this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);

@@ -34,6 +34,32 @@ class GameHandler
     constructor(config: any)
     {
         this.config = $.extend(this.config, config);
+
+        var self = this;
+        $(document).keydown(function (event)
+        {
+            self.onkeydown(event);
+        });
+
+    }
+
+
+    private onkeydown(event: JQueryKeyEventObject)
+    {
+        this.log(event);
+        // Keycodes:
+        /*
+            39 - right
+            37 - left
+            38 - up
+            40 - down
+            13 - return
+            32 - space
+            27 - escape
+        */
+
+
+
     }
 
     public init()

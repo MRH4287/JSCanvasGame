@@ -16,7 +16,16 @@ var GameHandler = (function () {
         this.elements = {};
         this.animations = {};
         this.config = $.extend(this.config, config);
+
+        var self = this;
+        $(document).keydown(function (event) {
+            self.onkeydown(event);
+        });
     }
+    GameHandler.prototype.onkeydown = function (event) {
+        this.log(event);
+    };
+
     GameHandler.prototype.init = function () {
         this.loadConfig();
         this.initAnimations();

@@ -38,6 +38,11 @@
                 <MenuItem Header="_Save Map" Click="SaveMap" />
                 
             </MenuItem>
+            <MenuItem Header="Editor">
+                <MenuItem Header="Element Definitions" Click="ShowElementDisplay" />
+                <MenuItem Header="Edit Animations" Click="ShowAnimationEdit" />
+
+            </MenuItem>
         </Menu>
         <ScrollViewer Margin="10,10,0,0" HorizontalScrollBarVisibility="Visible" Grid.Row="1" Grid.RowSpan="1">
             <StackPanel x:Name="MapHolder" Background="#FFACB9F1">

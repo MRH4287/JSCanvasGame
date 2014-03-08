@@ -1,0 +1,152 @@
+﻿<Window x:Class="MapEditor.AnimationEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MapEditor.Converter"
+        Title="AnimationEdit" Height="694.875" Width="652">
+    <Window.Resources>
+        <local:IntToStringValueConverter x:Key="converter" />
+        <local:DoubleToStringValueConverter x:Key="doubleConverter" />
+        <DataTemplate x:Key="AnimationsListItemTemlate">
+            <Grid Width="138" Height="27">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="25*"/>
+                </Grid.RowDefinitions>
+                <Label Content="{Binding ID}" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="259*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="356*"/>
+        </Grid.RowDefinitions>
+        <Menu IsMainMenu="True" IsEnabled="True"  >
+            <MenuItem Header="_File">
+                <MenuItem Header="Open" Click="OpenFile"></MenuItem>
+                <MenuItem Header="Save" Click="Save" />
+            </MenuItem>
+        </Menu>
+
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,0,0,10" CornerRadius="5">
+            <ScrollViewer PanningMode="Both">
+                <Canvas x:Name="ImageCanvas">
+                    <Image Canvas.Left="0" Canvas.Right="0" x:Name="TileImage" />
+                    <Canvas x:Name="DrawingCanvas" Height="Auto" Width="Auto">
+
+                    </Canvas>
+                </Canvas>
+            </ScrollViewer>
+        </Border>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="44*"/>
+                <ColumnDefinition Width="108*"/>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="96*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="ID" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Height="26" Width="22"/>
+            <Label Content="Image" Grid.Column="2" HorizontalAlignment="Left" Margin="20,7,0,0" VerticalAlignment="Top" Height="26" Width="57"/>
+            <TextBox x:Name="IDInput" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Top" Width="196"/>
+            <TextBox x:Name="ImageInput" Grid.Column="3" HorizontalAlignment="Left" Height="23" Margin="10,7,0,0" TextWrapping="Wrap" Text="{Binding ImageURI}" VerticalAlignment="Top" Width="177"/>
+            <Button Content="..." Grid.Column="4" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="30" Height="22"/>
+        </Grid>
+        <Grid Margin="0,10,0,0" Grid.Row="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="152*"/>
+                <RowDefinition Height="21*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="193*"/>
+                <ColumnDefinition Width="451*"/>
+            </Grid.ColumnDefinitions>
+            <ListBox x:Name="AnimationList" Margin="10" ItemTemplate="{DynamicResource AnimationsListItemTemlate}"/>
+            <ScrollViewer Grid.Column="1" Grid.RowSpan="2">
+                <Grid  x:Name="AnimationContainer" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="431">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                        <RowDefinition Height="29*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="111*"/>
+                        <ColumnDefinition Width="320*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Content="ID" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="26"  />
+                    <TextBox x:Name="AnimID" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding ID}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="1" Content="ImageCount" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="26" Width="74" />
+                    <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=ImageCount, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="2" Content="StartX" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=StartX, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="3" Content="StartY" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=StartY, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="4" Content="ImageHeight" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=ImageHeight, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="5" Content="ImageWidth" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=ImageWidth, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="6" Content="Display Height" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=DisplayHeight, Converter={StaticResource doubleConverter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="7" Content="Display Width" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="7" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=DisplayWidth, Converter={StaticResource doubleConverter}}" VerticalAlignment="Center" Width="196"/>
+                    <Label Grid.Row="8" Content="OffsetX" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="8" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=OffsetX, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+                    <Label Grid.Row="9" Content="OffsetY" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    <TextBox Grid.Row="9" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=OffsetY, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+                    <Label Grid.Row="10" Content="Display Offset X" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="10" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=DisplayOffsetX, Converter={StaticResource doubleConverter}}" VerticalAlignment="Center" Width="196"/>
+                    <Label Grid.Row="11" Content="Display Offset Y" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="11" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=DisplayOffsetY, Converter={StaticResource doubleConverter}}" VerticalAlignment="Center" Width="196"/>
+                    <Label Grid.Row="12" Content="Speed" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="12" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=Speed, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+                    <Label Grid.Row="13" Content="Reverse On End" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <CheckBox Grid.Row="13" Grid.Column="1" HorizontalAlignment="Center" Height="23" IsChecked="{Binding ReverseOnEnd}" Content="Yes" />
+
+                    <Label Grid.Row="14" Content="Is Reverse" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <CheckBox Grid.Row="14" Grid.Column="1" HorizontalAlignment="Center" Height="23" IsChecked="{Binding IsReverse}" Content="Yes" />
+
+                    <Label Grid.Row="15" Content="Loop" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <CheckBox Grid.Row="15" Grid.Column="1" HorizontalAlignment="Center" Height="23" IsChecked="{Binding Loop}" Content="Yes" />
+
+                    <Label Grid.Row="16" Content="Animation State" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="16" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding  Path=AnimationState, Converter={StaticResource converter}}" VerticalAlignment="Center" Width="196"/>
+
+
+                    <Label Grid.Row="17" Content="Animation Group" Grid.Column="0" HorizontalAlignment="Center"  VerticalAlignment="Center"/>
+                    <TextBox Grid.Row="17" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" Text="{Binding AnimationGroup}" VerticalAlignment="Center" Width="196"/>
+
+
+                </Grid>
+            </ScrollViewer>
+            <Button Content="Add" HorizontalAlignment="Left" Height="22" Margin="10,0,0,0" VerticalAlignment="Top" Width="45" Grid.Row="1" Click="Button_Click"/>
+            <Button Content="Copy" HorizontalAlignment="Left" Height="22" Margin="60,0,0,0" VerticalAlignment="Top" Width="45" Grid.Row="1" Click="CopyClick"/>
+        </Grid>
+
+    </Grid>
+</Window>

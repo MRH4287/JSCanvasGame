@@ -11,7 +11,7 @@ namespace MapEditor.Elements
     /// The Tile Definition in the Map
     /// </summary>
     [DataContract]
-    class Tile
+    public class Tile
     {
 
         /// <summary>

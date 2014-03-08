@@ -1,4 +1,5 @@
-﻿using MapEditor.GUIElements;
+﻿using MapEditor.Elements;
+using MapEditor.GUIElements;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,6 +24,9 @@ namespace MapEditor
     public partial class MainWindow : Window
     {
         MapController controller;
+
+        private ElementDefinitionSelect elementDefSelectWindow = null;
+        private AnimationEdit animationEdit = null;
 
         public MainWindow()
         {
@@ -147,13 +151,16 @@ namespace MapEditor
                 }
             }
 
-            var open = new System.Windows.Forms.OpenFileDialog();
-            open.Filter = "Json-File|*.json";
-
-            if (open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (controller.Elements != null)
             {
-                controller.LoadMap(open.FileName);
+                var open = new System.Windows.Forms.OpenFileDialog();
+                open.Filter = "Json-File|*.json";
 
+                if (open.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    controller.LoadMap(open.FileName);
+
+                }
             }
 
         }
@@ -186,8 +193,57 @@ namespace MapEditor
                     LoadDefaultConfigMenu(sender, e);
                 }
             }
+            if (controller.Elements != null)
+            {
+                controller.createMap(30, 10);
+            }
+        }
 
-            controller.createMap(30, 10);
+        private void ShowElementDisplay(object sender, RoutedEventArgs e)
+        {
+            if (controller.Elements == null)
+            {
+                var res = MessageBox.Show("No config loaded. Load default Config?", "Load default Config?", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    LoadDefaultConfigMenu(sender, e);
+                }
+            }
+
+            if (controller.Elements != null)
+            {
+
+                if (elementDefSelectWindow != null)
+                {
+                    if (elementDefSelectWindow.IsVisible)
+                    {
+                        elementDefSelectWindow.Hide();
+                        elementDefSelectWindow = null;
+                    }
+                }
+
+                elementDefSelectWindow = new ElementDefinitionSelect(controller.Elements);
+                elementDefSelectWindow.Show();
+
+            }
+
+        }
+
+        private void ShowAnimationEdit(object sender, RoutedEventArgs e)
+        {
+            if (animationEdit != null)
+            {
+                if (animationEdit.IsVisible)
+                {
+                    animationEdit.Hide();
+                    animationEdit = null;
+                }
+            }
+
+            animationEdit = new AnimationEdit();
+            animationEdit.Show();
+
+
         }
 
     }

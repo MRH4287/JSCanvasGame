@@ -1,10 +1,13 @@
 ﻿using MapEditor.GUIElements;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MapEditor.Elements
 {
@@ -12,7 +15,7 @@ namespace MapEditor.Elements
     /// Definition of an Element
     /// </summary>
     [DataContract]
-    class ElementDefinition
+    public class ElementDefinition
     {
         /// <summary>
         /// Constructor of the Element
@@ -56,7 +59,7 @@ namespace MapEditor.Elements
         /// The Flags for this Element
         /// </summary>
         [DataMember(IsRequired = false)]
-        public LinkedList<String> Flags = new LinkedList<string>();
+        public ObservableCollection<String> Flags = new ObservableCollection<string>();
 
         /// <summary>
         /// The Path to the Image File
@@ -73,26 +76,26 @@ namespace MapEditor.Elements
         /// <summary>
         /// Is this Element Dynamic? Does it contains animations.
         /// </summary>
-        [DataMember(IsRequired=false)]
+        [DataMember(IsRequired = false)]
         public bool Dynamic = false;
 
         /// <summary>
         /// The Path to the Definition of the Animation File
         /// </summary>
-        [DataMember(IsRequired=false)]
-        public string AnimationDefinition = null;
+        [DataMember(IsRequired = false)]
+        public string AnimationDefinition { get; set; }
 
         /// <summary>
         /// The name of the Animation Container
         /// </summary>
         [DataMember(IsRequired = false)]
-        public string AnimationContainer = null;
+        public string AnimationContainer { get; set; }
 
         /// <summary>
         /// The default Animation to play
         /// </summary>
         [DataMember(IsRequired = false)]
-        public string DefaultAnimation = null;
+        public string DefaultAnimation { get; set; }
 
         /// <summary>
         /// The Uri Instance to the Image
@@ -103,6 +106,18 @@ namespace MapEditor.Elements
             {
                 return MapController.GetAbsoluteUri(ImageURI);
             }
+        }
+
+        /// <summary>
+        /// Image Source
+        /// </summary>
+        public ImageSource ImageSource
+        {
+            get
+            {
+                return new BitmapImage(ImagePath);
+            }
+
         }
 
         /// <summary>
