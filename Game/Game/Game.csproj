@@ -109,12 +109,11 @@
     <TypeScriptCompile Include="gameHandler.ts" />
     <TypeScriptCompile Include="jquery.d.ts" />
     <TypeScriptCompile Include="interfaces.ts" />
+    <TypeScriptCompile Include="playerManager.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>tsc "$(ProjectDir)\eventHandler.ts"
-tsc "$(ProjectDir)\animationHandler.ts"
-tsc "$(ProjectDir)\gameHandler.ts"</PreBuildEvent>
+    <PreBuildEvent>tsc "$(ProjectDir)\gameHandler.ts"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -9,6 +9,7 @@
     <script src="renderer.js"></script>
     <script src="eventHandler.js"></script>
     <script src="animationHandler.js"></script>
+    <script src="playerManager.js"></script>
 </head>
 <body>
     <div class="output"></div>
@@ -17,7 +18,8 @@
     <script>
 
         var gameHandler = new GameHandler({
-            verbose: false
+            verbose: false,
+            initStaticAnimations: true
         });
         var eventHandler = new EventHandler(gameHandler);
         var render = new Renderer($("#canvas")[0], gameHandler);

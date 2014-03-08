@@ -2,6 +2,12 @@
 /// <reference path="eventHandler.ts" />
 /// <reference path="interfaces.ts" />
 
+
+/// <reference path="animationHandler.ts" />
+/// <reference path="playerManager.ts" />
+
+
+
 class GameHandler
 {
     public config =
@@ -13,7 +19,9 @@ class GameHandler
         elementsPath: "data/elements.json",
         mapPath: "data/map2.json",
         showBlocking: true,
-        verbose: false
+        verbose: false,
+        initStaticAnimations: true,
+        playStaticAnimations: true
     };
 
     public map: Tile[][];
@@ -22,8 +30,13 @@ class GameHandler
     public eventHandler: EventHandler;
     public renderer: Renderer;
 
-    public playerAnimationHandler: AnimationHandler;
 
+    public bottomAnimationHandler: AnimationHandler;
+    public middleAnimationHandler: AnimationHandler;
+    public topAnimationHandler: AnimationHandler;
+
+    public playerAnimationHandler: AnimationHandler;
+    public playerManager: PlayerManager;
 
     public spriteContainer: { [id: string]: HTMLElement };
     public animations: { [id: string]: InternalAnimationContainer } = {};
@@ -35,55 +48,41 @@ class GameHandler
     {
         this.config = $.extend(this.config, config);
 
-        var self = this;
-        $(document).keydown(function (event)
-        {
-            self.onkeydown(event);
-        });
-
     }
 
-
-    private onkeydown(event: JQueryKeyEventObject)
-    {
-        this.log(event);
-        // Keycodes:
-        /*
-            39 - right
-            37 - left
-            38 - up
-            40 - down
-            13 - return
-            32 - space
-            27 - escape
-        */
-
-
-
-    }
 
     public init()
     {
+        this.eventHandler.callEvent("preInit", this, null);
+
         this.loadConfig();
         this.initAnimations();
 
+        
         var self = this;
         window.setTimeout(function ()
         {
             self.loadMap();
 
+            this.eventHandler.callEvent("postInit", this, null);
         }, 100);
+
+        
     }
 
     private initAnimationContainer()
     {
-        this.playerAnimationHandler = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
+        this.bottomAnimationHandler = this.createAnimationHandler(0, this.renderer.getBottomAnimationLayer());
+        this.middleAnimationHandler = this.createAnimationHandler(1, this.renderer.getMiddleAnimationLayer());
+        this.topAnimationHandler = this.createAnimationHandler(2, this.renderer.getTopAnimationLayer());
+        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
 
+        this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
     }
 
-    private createAnimationHandler(level: number, layer: RendererLayer): AnimationHandler
+    private createAnimationHandler(level: number, layer: RendererLayer, staticName?: string): AnimationHandler
     {
-        var handler: AnimationHandler = new AnimationHandler(this, level);
+        var handler: AnimationHandler = new AnimationHandler(this, level, staticName);
         handler.setLayer(layer);
 
         return handler;

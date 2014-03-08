@@ -20,11 +20,19 @@ class AnimationHandler
 
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
 
-
     private animationGroups: { [id: string]: any[] } = {};
 
-    constructor(gameHandler: GameHandler, layer: number)
+    private UseAnimationGroups: boolean = true;
+    private staticName: string = null;
+
+    constructor(gameHandler: GameHandler, layer: number, staticName?: string)
     {
+        if (staticName !== undefined)
+        {
+            this.UseAnimationGroups = false;
+            this.staticName = staticName;
+        }
+
         this.eventHandler = gameHandler.eventHandler;
         this.renderer = gameHandler.renderer;
         this.gameHandler = gameHandler;
@@ -37,12 +45,18 @@ class AnimationHandler
         var self = this;
         this.eventHandler.addEventListener("render", function ()
         {
-            self.renderAnimations(self);
+            if (self.gameHandler.config.playStaticAnimations)
+            {
+                self.renderAnimations(self);
+            }
         });
 
         this.eventHandler.addEventListener("postTileUpdate", function (sender, tile)
         {
-            self.tileUpdate(tile);
+            if (self.gameHandler.config.initStaticAnimations)
+            {
+                self.tileUpdate(tile);
+            }
         });
 
 
@@ -117,12 +131,12 @@ class AnimationHandler
             {
                 this.gameHandler.log("Load Animation for item: ", tile);
 
-                var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" +tile.ID;
+                var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" + tile.ID;
 
                 this.gameHandler.log(this.gameHandler.animations);
 
                 tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
-                
+
             }
             else
             {
@@ -158,7 +172,7 @@ class AnimationHandler
     {
         this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
         this.gameHandler.log("Default Animation: ", startAnimation);
-        this.gameHandler.log({"X": x, " Y": y });
+        this.gameHandler.log({ "X": x, " Y": y });
 
         var container: InternalAnimationContainer = this.gameHandler.animations[containerName];
         var animation: Animation = container.Animations[startAnimation];
@@ -180,7 +194,7 @@ class AnimationHandler
         }
         else if (animation.AnimationGroup == "@")
         {
-            animation.AnimationGroup = "group-"+Math.random()+Math.random();
+            animation.AnimationGroup = "group-" + Math.random() + Math.random();
         }
 
         this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
@@ -193,7 +207,7 @@ class AnimationHandler
         return <Animation>jQuery.extend({}, input);
     }
 
-    private playAnimation(elementID: string, animation: string, group: string)
+    public playAnimation(elementID: string, animation: string, group: string)
     {
         var container: PlayableAnimation = this.playableAnimations[elementID];
 
@@ -209,7 +223,11 @@ class AnimationHandler
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = "anim-" + container.ID + "-" + group;
+        var timerName = (this.UseAnimationGroups) ? ("anim-" + container.ID + "-" + group) : this.staticName;
+        if (!this.UseAnimationGroups)
+        {
+            group = this.staticName;
+        }
 
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
@@ -219,7 +237,10 @@ class AnimationHandler
             group = "group-" + Math.random();
         }
 
-        this.gameHandler.log("Animation Group: ", group);
+        if (this.gameHandler.config.verbose)
+        {
+            this.gameHandler.log("Animation Group: ", group);
+        }
 
         if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0))
         {
@@ -231,7 +252,7 @@ class AnimationHandler
 
                 this.animationGroups[group] = []
 
-                
+
                 this.eventHandler.addTimer(timerName, function ()
                 {
                     for (var i = 0; i < self.animationGroups[group].length; i++)
@@ -254,33 +275,65 @@ class AnimationHandler
         }
         else
         {
-            this.gameHandler.log("Satic Animation applied ....");
+            if (this.gameHandler.config.verbose)
+            {
+                this.gameHandler.log("Satic Animation applied ....");
+            }
         }
 
         this.eventHandler.callEvent("forceRerender", this, null);
 
     }
 
-    private stopAnimation(elementID: string)
+    public stopAnimation(elementID: string)
     {
-        var container: PlayableAnimation = this.playableAnimations[elementID];
-
-        if (container.Animation == null)
+        if (this.UseAnimationGroups)
         {
-            return;
+
+            var container: PlayableAnimation = this.playableAnimations[elementID];
+
+            if (container.Animation == null)
+            {
+                return;
+            }
+
+            // Remove Timer for Animation:
+            var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+
+            this.eventHandler.stopTimer(timerName);
+
+            container.Animation = null;
+        }
+        else
+        {
+            var timerName = this.staticName;
+            var group = this.staticName;
+
+            this.eventHandler.stopTimer(timerName);
+            var container: PlayableAnimation = this.playableAnimations[elementID];
+
+            container.Animation = null;
+
+            this.animationGroups[group] = undefined;
+
         }
 
-        // Remove Timer for Animation:
-        var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
-
-        this.eventHandler.stopTimer(timerName);
-
-        container.Animation = null;
     }
 
     private animationStep(animation: PlayableAnimation)
     {
+        if (animation == null)
+        {
+            return;
+        }
+
         var anim: Animation = animation.Animation;
+
+        if (anim == null)
+        {
+            return;
+        }
+
         var state: number = anim.AnimationState;
 
         state += (anim.IsReverse) ? -1 : 1;

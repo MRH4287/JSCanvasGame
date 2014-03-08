@@ -53,6 +53,10 @@ var EventHandler = (function () {
     };
 
     EventHandler.prototype.addTimer = function (name, callback, intervall, sender, arguments) {
+        if (this.timedEvents[name] !== undefined) {
+            this.stopTimer(name);
+        }
+
         this.timedEvents[name] = {
             run: true,
             callback: callback
@@ -62,7 +66,7 @@ var EventHandler = (function () {
         var triggerEvent = function () {
             var data = self.timedEvents[name];
 
-            if (data.run) {
+            if ((data !== undefined) && (data.run)) {
                 data.callback(sender, arguments);
 
                 window.setTimeout(triggerEvent, intervall);

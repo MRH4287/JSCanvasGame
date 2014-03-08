@@ -79,6 +79,11 @@ class EventHandler
 
     public addTimer(name: string, callback: (sender: any, arguments: any) => void, intervall: number, sender?: any, arguments?: any)
     {
+        if (this.timedEvents[name] !== undefined)
+        {
+            this.stopTimer(name);
+        }
+
 
         this.timedEvents[name] = {
             run: true,
@@ -90,7 +95,7 @@ class EventHandler
         {
             var data = self.timedEvents[name];
 
-            if (data.run)
+            if ((data !== undefined) && (data.run))
             {
                 data.callback(sender, arguments);
 

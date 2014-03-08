@@ -1,6 +1,8 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="eventHandler.ts" />
 /// <reference path="interfaces.ts" />
+/// <reference path="animationHandler.ts" />
+/// <reference path="playerManager.ts" />
 var GameHandler = (function () {
     function GameHandler(config) {
         this.config = {
@@ -11,37 +13,39 @@ var GameHandler = (function () {
             elementsPath: "data/elements.json",
             mapPath: "data/map2.json",
             showBlocking: true,
-            verbose: false
+            verbose: false,
+            initStaticAnimations: true,
+            playStaticAnimations: true
         };
         this.elements = {};
         this.animations = {};
         this.config = $.extend(this.config, config);
-
-        var self = this;
-        $(document).keydown(function (event) {
-            self.onkeydown(event);
-        });
     }
-    GameHandler.prototype.onkeydown = function (event) {
-        this.log(event);
-    };
-
     GameHandler.prototype.init = function () {
+        this.eventHandler.callEvent("preInit", this, null);
+
         this.loadConfig();
         this.initAnimations();
 
         var self = this;
         window.setTimeout(function () {
             self.loadMap();
+
+            this.eventHandler.callEvent("postInit", this, null);
         }, 100);
     };
 
     GameHandler.prototype.initAnimationContainer = function () {
-        this.playerAnimationHandler = this.createAnimationHandler(1, this.renderer.getPlayerLayer());
+        this.bottomAnimationHandler = this.createAnimationHandler(0, this.renderer.getBottomAnimationLayer());
+        this.middleAnimationHandler = this.createAnimationHandler(1, this.renderer.getMiddleAnimationLayer());
+        this.topAnimationHandler = this.createAnimationHandler(2, this.renderer.getTopAnimationLayer());
+        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
+
+        this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
     };
 
-    GameHandler.prototype.createAnimationHandler = function (level, layer) {
-        var handler = new AnimationHandler(this, level);
+    GameHandler.prototype.createAnimationHandler = function (level, layer, staticName) {
+        var handler = new AnimationHandler(this, level, staticName);
         handler.setLayer(layer);
 
         return handler;

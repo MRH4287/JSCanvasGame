@@ -27,7 +27,17 @@
                     canvas: null,
                     ctx: null
                 },
+            BottomAnimationLayer:
+                {
+                    canvas: null,
+                    ctx: null
+                },
             MiddleStaticLayer:
+                {
+                    canvas: null,
+                    ctx: null
+                },
+            MiddleAnimationLayer:
                 {
                     canvas: null,
                     ctx: null
@@ -37,12 +47,12 @@
                     canvas: null,
                     ctx: null
                 },
-            AnimationLayer:
+            TopStaticLayer:
                 {
                     canvas: null,
                     ctx: null
                 },
-            TopStaticLayer:
+            TopAnimationLayer:
                 {
                     canvas: null,
                     ctx: null
@@ -147,7 +157,7 @@
 
     // ---- Config Handler ----
 
-    this.setConfig = function(elements)
+    this.setConfig = function (elements)
     {
         /*
         _eventHandler.callEvent("renderPreConfigLoad", this, null);
@@ -180,7 +190,7 @@
 
     this.setMap = function (map)
     {
-        
+
         _eventHandler.callEvent("renderPreMapLoad", this, null);
 
         if ((_staticHeight == 0) || (_staticWidth == 0))
@@ -192,7 +202,7 @@
 
         _map = map;
 
-        
+
 
         _log("Renderer Map Loaded: ", _map);
 
@@ -330,11 +340,13 @@
 
             // Combine Layer:
             _bufferCtx.drawImage(_layer.BottomStaticLayer.canvas, 0, 0);
+            _bufferCtx.drawImage(_layer.BottomAnimationLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.MiddleStaticLayer.canvas, 0, 0);
+            _bufferCtx.drawImage(_layer.MiddleAnimationLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.PlayerLayer.canvas, 0, 0);
-            _bufferCtx.drawImage(_layer.AnimationLayer.canvas, 0, 0);
+            _bufferCtx.drawImage(_layer.MiddleAnimationLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.TopStaticLayer.canvas, 0, 0);
-
+            _bufferCtx.drawImage(_layer.TopAnimationLayer.canvas, 0, 0);
 
             window.setTimeout(function ()
             {
@@ -371,9 +383,19 @@
         _render();
     }
 
-    this.getAnimationLayer = function ()
+    this.getBottomAnimationLayer = function()
     {
-        return _layer.AnimationLayer;
+        return _layer.BottomAnimationLayer;
+    }
+
+    this.getMiddleAnimationLayer = function ()
+    {
+        return _layer.MiddleAnimationLayer;
+    }
+
+    this.getTopAnimationLayer = function ()
+    {
+        return _layer.TopAnimationLayer;
     }
 
     this.getPlayerLayer = function ()
@@ -411,7 +433,7 @@
     {
         //_log("Render Tile: ", tile);
 
-        
+
         var bottom = tile.BottomElement;
         var middle = tile.MiddleElement;
         var top = tile.TopElement;

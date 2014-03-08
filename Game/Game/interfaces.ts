@@ -2,7 +2,9 @@ interface Renderer
 {
     test(offset: number): void;
 
-    getAnimationLayer(): RendererLayer;
+    getBottomAnimationLayer(): RendererLayer;
+    getMiddleAnimationLayer(): RendererLayer;
+    getTopAnimationLayer(): RendererLayer;
     getPlayerLayer(): RendererLayer;
     clearRenderContext(ctx: CanvasRenderingContext2D): void;
     getTileSize(): number;

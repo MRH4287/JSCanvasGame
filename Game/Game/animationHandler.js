@@ -3,9 +3,16 @@
 /// <reference path="gameHandler.ts" />
 /// <reference path="interfaces.ts" />
 var AnimationHandler = (function () {
-    function AnimationHandler(gameHandler, layer) {
+    function AnimationHandler(gameHandler, layer, staticName) {
         this.playableAnimations = {};
         this.animationGroups = {};
+        this.UseAnimationGroups = true;
+        this.staticName = null;
+        if (staticName !== undefined) {
+            this.UseAnimationGroups = false;
+            this.staticName = staticName;
+        }
+
         this.eventHandler = gameHandler.eventHandler;
         this.renderer = gameHandler.renderer;
         this.gameHandler = gameHandler;
@@ -15,11 +22,15 @@ var AnimationHandler = (function () {
 
         var self = this;
         this.eventHandler.addEventListener("render", function () {
-            self.renderAnimations(self);
+            if (self.gameHandler.config.playStaticAnimations) {
+                self.renderAnimations(self);
+            }
         });
 
         this.eventHandler.addEventListener("postTileUpdate", function (sender, tile) {
-            self.tileUpdate(tile);
+            if (self.gameHandler.config.initStaticAnimations) {
+                self.tileUpdate(tile);
+            }
         });
     }
     AnimationHandler.prototype.setLayer = function (layer) {
@@ -144,7 +155,10 @@ var AnimationHandler = (function () {
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = "anim-" + container.ID + "-" + group;
+        var timerName = (this.UseAnimationGroups) ? ("anim-" + container.ID + "-" + group) : this.staticName;
+        if (!this.UseAnimationGroups) {
+            group = this.staticName;
+        }
 
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
@@ -152,7 +166,9 @@ var AnimationHandler = (function () {
             group = "group-" + Math.random();
         }
 
-        this.gameHandler.log("Animation Group: ", group);
+        if (this.gameHandler.config.verbose) {
+            this.gameHandler.log("Animation Group: ", group);
+        }
 
         if ((newAnimation.ImageCount > 0) && (newAnimation.Speed > 0)) {
             var self = this;
@@ -175,29 +191,52 @@ var AnimationHandler = (function () {
                 self.animationStep(container);
             });
         } else {
-            this.gameHandler.log("Satic Animation applied ....");
+            if (this.gameHandler.config.verbose) {
+                this.gameHandler.log("Satic Animation applied ....");
+            }
         }
 
         this.eventHandler.callEvent("forceRerender", this, null);
     };
 
     AnimationHandler.prototype.stopAnimation = function (elementID) {
-        var container = this.playableAnimations[elementID];
+        if (this.UseAnimationGroups) {
+            var container = this.playableAnimations[elementID];
 
-        if (container.Animation == null) {
-            return;
+            if (container.Animation == null) {
+                return;
+            }
+
+            // Remove Timer for Animation:
+            var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+
+            this.eventHandler.stopTimer(timerName);
+
+            container.Animation = null;
+        } else {
+            var timerName = this.staticName;
+            var group = this.staticName;
+
+            this.eventHandler.stopTimer(timerName);
+            var container = this.playableAnimations[elementID];
+
+            container.Animation = null;
+
+            this.animationGroups[group] = undefined;
         }
-
-        // Remove Timer for Animation:
-        var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
-
-        this.eventHandler.stopTimer(timerName);
-
-        container.Animation = null;
     };
 
     AnimationHandler.prototype.animationStep = function (animation) {
+        if (animation == null) {
+            return;
+        }
+
         var anim = animation.Animation;
+
+        if (anim == null) {
+            return;
+        }
+
         var state = anim.AnimationState;
 
         state += (anim.IsReverse) ? -1 : 1;
