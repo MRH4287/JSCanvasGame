@@ -12,8 +12,8 @@
             <ColumnDefinition Width="273*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Ok" HorizontalAlignment="Left" Margin="96,10,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Grid.Row="1" Height="22" Click="Button_Click_1"/>
-        <Button Content="Abbrechen" HorizontalAlignment="Left" Margin="188,10,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Grid.Row="1" Height="22" Click="Button_Click"/>
-        <Label Content="Eingabe" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Height="31" Width="52"/>
+        <Button Content="Cancel" HorizontalAlignment="Left" Margin="188,10,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Grid.Row="1" Height="22" Click="Button_Click"/>
+        <Label Content="Input" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" Height="31" Width="52"/>
         <TextBox x:Name="InputText" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,9,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" KeyDown="TextInput_KeyDown"/>
 
     </Grid>

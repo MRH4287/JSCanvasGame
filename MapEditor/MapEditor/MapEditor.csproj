@@ -66,6 +66,7 @@
     <Compile Include="DoubleToStringValueConverter.cs" />
     <Compile Include="Elements\Animation.cs" />
     <Compile Include="IntToStringValueConverter.cs" />
+    <Compile Include="Taskstring.cs" />
     <Compile Include="TextInput.xaml.cs">
       <DependentUpon>TextInput.xaml</DependentUpon>
     </Compile>

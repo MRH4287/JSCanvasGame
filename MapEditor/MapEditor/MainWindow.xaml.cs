@@ -117,9 +117,12 @@ namespace MapEditor
             this.MapHolder.Children.Clear();
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private async void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            controller.Serialize();
+
+            var text = await MapEditor.TextInput.Display("Insert Map Size. Comma Seperated for X and Y", "30,30");
+
+            MessageBox.Show(text);
 
         }
 
@@ -183,7 +186,7 @@ namespace MapEditor
 
         }
 
-        private void NewMap(object sender, RoutedEventArgs e)
+        private async void NewMap(object sender, RoutedEventArgs e)
         {
             if (controller.Elements == null)
             {
@@ -195,7 +198,18 @@ namespace MapEditor
             }
             if (controller.Elements != null)
             {
-                controller.createMap(30, 10);
+                try
+                {
+                    var size = await MapEditor.TextInput.Display("Insert Map Size. Comma Seperated for X and Y", "30,30");
+
+                    var sizeSplit = size.Split(',');
+
+
+                    controller.createMap(int.Parse(sizeSplit[0]), int.Parse(sizeSplit[1]));
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("Error in Map Creation: " + ex.Message);
+                }
             }
         }
 

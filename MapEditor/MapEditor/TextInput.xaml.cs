@@ -21,12 +21,26 @@ namespace MapEditor
     {
         Action<string> Callback = null;
 
-        public TextInput(Action<string> callback)
+        public static Task<string> Display(string title = "Text Input", string defaultText = "")
         {
-            this.Callback = callback;
 
+            var t = new TaskCompletionSource<string>();
+
+            var input = new TextInput(s => t.TrySetResult(s), title, defaultText);
+            input.Show();
+
+            return t.Task;
+
+        }
+
+        public TextInput(Action<string> callback, string title = "Text Input", string defaultText = "")
+        {
             InitializeComponent();
 
+            this.Callback = callback;
+            this.Title = title;
+
+            this.InputText.Text = defaultText;
             this.InputText.Focus();
 
         }
