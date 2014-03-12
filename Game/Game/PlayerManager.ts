@@ -39,6 +39,8 @@ class PlayerManager
     private playerState: PlayerState = PlayerState.Standing;
     private moveDirection: WalkDirection = WalkDirection.None;
 
+    private lastAction: number = Date.now();
+
 
    // Keycodes:
     /*
@@ -307,10 +309,14 @@ class PlayerManager
             self.KeysDown[event.keyCode] = true;
 
             self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
+
+            self.lastAction = Date.now();
         })
             .keyup(function (event)
             {
                 self.KeysDown[event.keyCode] = false;
+
+                self.lastAction = Date.now();
             });
 
         this.gameHandler.eventHandler.addTimedTrigger("playerManagerInputCheck", "PlayerManagerInputCheck", 500, this, null);
@@ -345,6 +351,23 @@ class PlayerManager
             }
         });
 
+
+        this.gameHandler.eventHandler.addTimedTrigger("playerLastActivityCheck", "PlayerLastActivityCheck", 60000, this, null);
+
+        this.gameHandler.eventHandler.addEventListener("PlayerLastActivityCheck", function (sender, args)
+        {
+            var currentTime = Date.now();
+
+            var diff = currentTime - self.lastAction;
+
+            //console.log("CheckDiff: ", diff);
+
+            if (diff > 30000)
+            {
+                self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
+            }
+
+        });
 
 
     }
