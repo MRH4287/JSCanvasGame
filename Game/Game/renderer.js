@@ -344,7 +344,6 @@
             _bufferCtx.drawImage(_layer.MiddleStaticLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.MiddleAnimationLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.PlayerLayer.canvas, 0, 0);
-            _bufferCtx.drawImage(_layer.MiddleAnimationLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.TopStaticLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.TopAnimationLayer.canvas, 0, 0);
 

@@ -14,6 +14,7 @@ var WalkDirection;
     WalkDirection[WalkDirection["Down"] = 1] = "Down";
     WalkDirection[WalkDirection["Left"] = 2] = "Left";
     WalkDirection[WalkDirection["Right"] = 3] = "Right";
+    WalkDirection[WalkDirection["None"] = 4] = "None";
 })(WalkDirection || (WalkDirection = {}));
 
 var PlayerManager = (function () {
@@ -22,8 +23,15 @@ var PlayerManager = (function () {
             X: 0,
             Y: 0
         };
+        this.targetPosition = {
+            X: 0,
+            Y: 0
+        };
+        this.playerSpeed = 0.7;
+        this.updatesPerSecond = 10;
         this.playerElementName = "player";
         this.playerState = 0 /* Standing */;
+        this.moveDirection = 4 /* None */;
         // Keycodes:
         /*
         39 - right
@@ -49,6 +57,138 @@ var PlayerManager = (function () {
             self.init();
         });
     }
+    PlayerManager.prototype.test = function () {
+        this.initMove(3 /* Right */);
+        //this.initMove(WalkDirection.Left);
+        //this.initMove(WalkDirection.Up);
+        //this.initMove(WalkDirection.Down);
+    };
+
+    PlayerManager.prototype.initMove = function (direction, callback) {
+        if (this.playerState == 1 /* Walking */) {
+            this.gameHandler.log("Player is already walking");
+            return;
+        }
+
+        var walkOffset = {
+            X: 0,
+            Y: 0
+        };
+        var animation = "stand";
+
+        switch (direction) {
+            case 3 /* Right */:
+                walkOffset.X = 1;
+                animation = "walk-right";
+                break;
+
+            case 2 /* Left */:
+                walkOffset.X = -1 * 1;
+                animation = "walk-left";
+                break;
+
+            case 0 /* Up */:
+                walkOffset.Y = -1 * 1;
+                animation = "walk-up";
+                break;
+
+            case 1 /* Down */:
+                walkOffset.Y = 1;
+                animation = "walk-down";
+                break;
+        }
+
+        var target = {
+            X: this.position.X + walkOffset.X,
+            Y: this.position.Y + walkOffset.Y
+        };
+
+        this.gameHandler.log("Want to move to: ", target);
+        this.gameHandler.log("Play Animation: ", animation);
+
+        if (this.gameHandler.isCoordPassable(target.X, target.Y)) {
+            var offsetPerUpdate = (1 / this.playerSpeed) / this.updatesPerSecond;
+            var intervall = (1 / this.updatesPerSecond) * 1000;
+
+            this.targetPosition = target;
+
+            this.playerState = 1 /* Walking */;
+
+            // Start Animation:
+            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+
+            var self = this;
+            this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function () {
+                self.moveFinishedCallback();
+
+                if (callback !== undefined) {
+                    callback();
+                }
+            });
+        } else {
+            this.gameHandler.log("Target not passable: ", target);
+        }
+    };
+
+    PlayerManager.prototype.moveFinishedCallback = function () {
+        this.playerAnimation.playAnimation(this.playerElementName, "stand", "");
+        this.playerState = 0 /* Standing */;
+    };
+
+    PlayerManager.prototype.positionUpdateStep = function (self, direction, offsetPerUpdate, intervall, callback) {
+        var walkOffset = {
+            X: 0,
+            Y: 0
+        };
+
+        switch (direction) {
+            case 3 /* Right */:
+                walkOffset.X = offsetPerUpdate;
+                break;
+
+            case 2 /* Left */:
+                walkOffset.X = -1 * offsetPerUpdate;
+                break;
+
+            case 0 /* Up */:
+                walkOffset.Y = -1 * offsetPerUpdate;
+                break;
+
+            case 1 /* Down */:
+                walkOffset.Y = offsetPerUpdate;
+                break;
+        }
+
+        //self.gameHandler.log("Walk Offset: ", walkOffset);
+        var newPosition = {
+            X: self.position.X + walkOffset.X,
+            Y: self.position.Y + walkOffset.Y
+        };
+
+        var normalizedPosition = {
+            X: Math.round(newPosition.X),
+            Y: Math.round(newPosition.Y)
+        };
+
+        if ((((direction == 3 /* Right */) && (newPosition.X > self.targetPosition.X)) || ((direction == 2 /* Left */) && (newPosition.X < self.targetPosition.X)) || ((direction == 0 /* Up */) && (newPosition.Y < self.targetPosition.Y)) || ((direction == 1 /* Down */) && (newPosition.Y > self.targetPosition.Y)))) {
+            self.position = normalizedPosition;
+            self.playerAnimation.setPosition(self.playerElementName, normalizedPosition.X, normalizedPosition.Y);
+            console.log("Movement done!");
+
+            if (callback !== undefined) {
+                callback();
+            }
+        } else {
+            self.position = newPosition;
+            self.playerAnimation.setPosition(self.playerElementName, newPosition.X, newPosition.Y);
+
+            //console.log("Position updated: ", newPosition);
+            window.setTimeout(function () {
+                self.positionUpdateStep(self, direction, offsetPerUpdate, intervall, callback);
+            }, intervall);
+        }
+    };
+
     PlayerManager.prototype.init = function () {
         var self = this;
 

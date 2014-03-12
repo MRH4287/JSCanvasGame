@@ -287,6 +287,17 @@ class GameHandler
         return tile;
     }
 
+    public getTileAtPos(x: number, y: number): Tile
+    {
+        return this.map[y - 1][x - 1];
+    }
+
+    public isCoordPassable(x: number, y: number): boolean
+    {
+        var tile = this.getTileAtPos(x, y);
+
+        return tile.Passable;
+    }
 
 
     // ---------------------------------------

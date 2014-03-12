@@ -203,6 +203,14 @@ var GameHandler = (function () {
         return tile;
     };
 
+    GameHandler.prototype.getTileAtPos = function (x, y) {
+        return this.map[y - 1][x - 1];
+    };
+
+    GameHandler.prototype.isCoordPassable = function (x, y) {
+        return this.getTileAtPos(x, y).Passable;
+    };
+
     // ---------------------------------------
     // Global Helper Functions:
     GameHandler.prototype.getFile = function (url, callback, dataType) {

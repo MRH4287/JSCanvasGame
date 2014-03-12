@@ -46,6 +46,15 @@ var AnimationHandler = (function () {
         console.log("Animation Handler: ", this);
     };
 
+    AnimationHandler.prototype.setPosition = function (elementName, x, y) {
+        if (this.playableAnimations[elementName] !== undefined) {
+            this.playableAnimations[elementName].X = x;
+            this.playableAnimations[elementName].Y = y;
+
+            this.eventHandler.callEvent("forceRerender", this, null);
+        }
+    };
+
     AnimationHandler.prototype.tileUpdate = function (tile) {
         var dynamic = false;
 

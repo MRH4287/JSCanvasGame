@@ -78,7 +78,16 @@ class AnimationHandler
         console.log("Animation Handler: ", this);
     }
 
+    public setPosition(elementName: string, x: number, y: number)
+    {
+        if (this.playableAnimations[elementName] !== undefined)
+        {
+            this.playableAnimations[elementName].X = x;
+            this.playableAnimations[elementName].Y = y;
 
+            this.eventHandler.callEvent("forceRerender", this, null);
+        }
+    }
 
     private tileUpdate(tile: Tile)
     {
