@@ -190,15 +190,15 @@ namespace MapEditor.Elements
             var passable = true;
             if (this[ElementLevel.Bottom] != null)
             {
-                passable = passable || this[ElementLevel.Bottom].Passable;
+                passable = passable && this[ElementLevel.Bottom].Passable;
             }
             if (this[ElementLevel.Middle] != null)
             {
-                passable = passable || this[ElementLevel.Middle].Passable;
+                passable = passable && this[ElementLevel.Middle].Passable;
             }
             if (this[ElementLevel.Top] != null)
             {
-                passable = passable || this[ElementLevel.Top].Passable;
+                passable = passable && this[ElementLevel.Top].Passable;
             }
 
 

@@ -31,7 +31,7 @@ class PlayerManager
         Y: 0
     }
 
-    private playerSpeed: number = 0.7;
+    private playerSpeed: number = 1.2;
     private updatesPerSecond: number = 10;
 
 
@@ -99,6 +99,7 @@ class PlayerManager
             Y: 0
         };
         var animation = "stand";
+        var idleAnimation = "stand";
 
 
         switch (direction)
@@ -106,24 +107,30 @@ class PlayerManager
             case WalkDirection.Right:
                 walkOffset.X = 1;
                 animation = "walk-right";
+                idleAnimation = "stand-right";
                 break;
 
             case WalkDirection.Left:
                 walkOffset.X = -1 * 1;
                 animation = "walk-left";
+                idleAnimation = "stand-left";
                 break;
 
             case WalkDirection.Up:
                 walkOffset.Y = -1 * 1;
                 animation = "walk-up";
+                idleAnimation = "stand-up";
                 break;
 
             case WalkDirection.Down:
                 walkOffset.Y = 1;
                 animation = "walk-down";
+                idleAnimation = "stand";
                 break;
 
         }
+
+        this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
 
         var target = {
             X: this.position.X + walkOffset.X,
@@ -139,7 +146,7 @@ class PlayerManager
             var intervall = (1 / this.updatesPerSecond) * 1000; // 1 sec / updatesPerSecond
 
             this.targetPosition = target;
-
+            this.moveDirection = direction;
 
             this.playerState = PlayerState.Walking;
 
@@ -166,7 +173,31 @@ class PlayerManager
 
     private moveFinishedCallback()
     {
-        this.playerAnimation.playAnimation(this.playerElementName, "stand", "");
+        var animation = "stand";
+
+
+        switch (this.moveDirection)
+        {
+            case WalkDirection.Right:
+                animation = "stand-right";
+                break;
+
+            case WalkDirection.Left:
+                animation = "stand-left";
+                break;
+
+            case WalkDirection.Up:
+                animation = "stand-up";
+                break;
+
+            case WalkDirection.Down:
+                animation = "stand";
+                break;
+
+        }
+
+
+        this.playerAnimation.playAnimation(this.playerElementName, animation, "");
         this.playerState = PlayerState.Standing;
     }
 
@@ -262,19 +293,19 @@ class PlayerManager
             switch (event.keyCode)
             {
                 case self.Keys.up:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-up", "");
+                    self.initMove(WalkDirection.Up);
                     break;
 
                 case self.Keys.right:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-right", "");
+                    self.initMove(WalkDirection.Right);
                     break;
 
                 case self.Keys.down:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand", "");
+                    self.initMove(WalkDirection.Down);
                     break;
 
                 case self.Keys.left:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-left", "");
+                    self.initMove(WalkDirection.Left);
                     break;
 
                 case self.Keys.action:

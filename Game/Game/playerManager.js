@@ -27,7 +27,7 @@ var PlayerManager = (function () {
             X: 0,
             Y: 0
         };
-        this.playerSpeed = 0.7;
+        this.playerSpeed = 1.2;
         this.updatesPerSecond = 10;
         this.playerElementName = "player";
         this.playerState = 0 /* Standing */;
@@ -75,28 +75,35 @@ var PlayerManager = (function () {
             Y: 0
         };
         var animation = "stand";
+        var idleAnimation = "stand";
 
         switch (direction) {
             case 3 /* Right */:
                 walkOffset.X = 1;
                 animation = "walk-right";
+                idleAnimation = "stand-right";
                 break;
 
             case 2 /* Left */:
                 walkOffset.X = -1 * 1;
                 animation = "walk-left";
+                idleAnimation = "stand-left";
                 break;
 
             case 0 /* Up */:
                 walkOffset.Y = -1 * 1;
                 animation = "walk-up";
+                idleAnimation = "stand-up";
                 break;
 
             case 1 /* Down */:
                 walkOffset.Y = 1;
                 animation = "walk-down";
+                idleAnimation = "stand";
                 break;
         }
+
+        this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
 
         var target = {
             X: this.position.X + walkOffset.X,
@@ -111,6 +118,7 @@ var PlayerManager = (function () {
             var intervall = (1 / this.updatesPerSecond) * 1000;
 
             this.targetPosition = target;
+            this.moveDirection = direction;
 
             this.playerState = 1 /* Walking */;
 
@@ -131,7 +139,27 @@ var PlayerManager = (function () {
     };
 
     PlayerManager.prototype.moveFinishedCallback = function () {
-        this.playerAnimation.playAnimation(this.playerElementName, "stand", "");
+        var animation = "stand";
+
+        switch (this.moveDirection) {
+            case 3 /* Right */:
+                animation = "stand-right";
+                break;
+
+            case 2 /* Left */:
+                animation = "stand-left";
+                break;
+
+            case 0 /* Up */:
+                animation = "stand-up";
+                break;
+
+            case 1 /* Down */:
+                animation = "stand";
+                break;
+        }
+
+        this.playerAnimation.playAnimation(this.playerElementName, animation, "");
         this.playerState = 0 /* Standing */;
     };
 
@@ -204,19 +232,19 @@ var PlayerManager = (function () {
 
             switch (event.keyCode) {
                 case self.Keys.up:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-up", "");
+                    self.initMove(0 /* Up */);
                     break;
 
                 case self.Keys.right:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-right", "");
+                    self.initMove(3 /* Right */);
                     break;
 
                 case self.Keys.down:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand", "");
+                    self.initMove(1 /* Down */);
                     break;
 
                 case self.Keys.left:
-                    self.playerAnimation.playAnimation(self.playerElementName, "stand-left", "");
+                    self.initMove(2 /* Left */);
                     break;
 
                 case self.Keys.action:

@@ -208,7 +208,9 @@ var GameHandler = (function () {
     };
 
     GameHandler.prototype.isCoordPassable = function (x, y) {
-        return this.getTileAtPos(x, y).Passable;
+        var tile = this.getTileAtPos(x, y);
+
+        return tile.Passable;
     };
 
     // ---------------------------------------
