@@ -155,7 +155,7 @@ var AnimationHandler = (function () {
         var container = this.playableAnimations[elementID];
 
         if ((container.Animation != null) && (container.Animation.ID == animation)) {
-            this.gameHandler.warn("Animation '" + animation + "' is allready running for '" + elementID + "'");
+            // this.gameHandler.warn("Animation '" + animation + "' is allready running for '" + elementID + "'");
             return;
         }
 

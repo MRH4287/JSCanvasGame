@@ -27,7 +27,7 @@ var PlayerManager = (function () {
             X: 0,
             Y: 0
         };
-        this.playerSpeed = 1.2;
+        this.playerSpeed = 0.5;
         this.updatesPerSecond = 10;
         this.playerElementName = "player";
         this.playerState = 0 /* Standing */;
@@ -49,6 +49,7 @@ var PlayerManager = (function () {
             down: 40,
             action: 13
         };
+        this.KeysDown = {};
         this.gameHandler = gameHandler;
         this.playerAnimation = animationHandler;
 
@@ -64,8 +65,9 @@ var PlayerManager = (function () {
         //this.initMove(WalkDirection.Down);
     };
 
-    PlayerManager.prototype.initMove = function (direction, callback) {
-        if (this.playerState == 1 /* Walking */) {
+    PlayerManager.prototype.initMove = function (direction, initialCall, callback) {
+        if (typeof initialCall === "undefined") { initialCall = true; }
+        if ((this.playerState == 1 /* Walking */) && initialCall) {
             this.gameHandler.log("Player is already walking");
             return;
         }
@@ -103,16 +105,17 @@ var PlayerManager = (function () {
                 break;
         }
 
-        this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
+        if (initialCall) {
+            this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
+        }
 
         var target = {
             X: this.position.X + walkOffset.X,
             Y: this.position.Y + walkOffset.Y
         };
 
-        this.gameHandler.log("Want to move to: ", target);
-        this.gameHandler.log("Play Animation: ", animation);
-
+        //this.gameHandler.log("Want to move to: ", target);
+        //this.gameHandler.log("Play Animation: ", animation);
         if (this.gameHandler.isCoordPassable(target.X, target.Y)) {
             var offsetPerUpdate = (1 / this.playerSpeed) / this.updatesPerSecond;
             var intervall = (1 / this.updatesPerSecond) * 1000;
@@ -123,7 +126,9 @@ var PlayerManager = (function () {
             this.playerState = 1 /* Walking */;
 
             // Start Animation:
-            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            if (initialCall) {
+                this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            }
 
             var self = this;
             this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function () {
@@ -135,32 +140,43 @@ var PlayerManager = (function () {
             });
         } else {
             this.gameHandler.log("Target not passable: ", target);
+            this.playerState = 0 /* Standing */;
         }
     };
 
     PlayerManager.prototype.moveFinishedCallback = function () {
         var animation = "stand";
 
+        var walkAgain = false;
+
         switch (this.moveDirection) {
             case 3 /* Right */:
                 animation = "stand-right";
+                walkAgain = this.keyDown(this.Keys.right);
                 break;
 
             case 2 /* Left */:
                 animation = "stand-left";
+                walkAgain = this.keyDown(this.Keys.left);
                 break;
 
             case 0 /* Up */:
                 animation = "stand-up";
+                walkAgain = this.keyDown(this.Keys.up);
                 break;
 
             case 1 /* Down */:
                 animation = "stand";
+                walkAgain = this.keyDown(this.Keys.down);
                 break;
         }
 
-        this.playerAnimation.playAnimation(this.playerElementName, animation, "");
-        this.playerState = 0 /* Standing */;
+        if (!walkAgain) {
+            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            this.playerState = 0 /* Standing */;
+        } else {
+            this.initMove(this.moveDirection, false);
+        }
     };
 
     PlayerManager.prototype.positionUpdateStep = function (self, direction, offsetPerUpdate, intervall, callback) {
@@ -201,8 +217,8 @@ var PlayerManager = (function () {
         if ((((direction == 3 /* Right */) && (newPosition.X > self.targetPosition.X)) || ((direction == 2 /* Left */) && (newPosition.X < self.targetPosition.X)) || ((direction == 0 /* Up */) && (newPosition.Y < self.targetPosition.Y)) || ((direction == 1 /* Down */) && (newPosition.Y > self.targetPosition.Y)))) {
             self.position = normalizedPosition;
             self.playerAnimation.setPosition(self.playerElementName, normalizedPosition.X, normalizedPosition.Y);
-            console.log("Movement done!");
 
+            //console.log("Movement done!");
             if (callback !== undefined) {
                 callback();
             }
@@ -226,32 +242,38 @@ var PlayerManager = (function () {
 
         this.initPlayer(self);
 
-        // Bind Events here .. etc.
         $(document).keydown(function (event) {
-            self.playerAnimation.stopAnimation(self.playerElementName);
+            self.KeysDown[event.keyCode] = true;
 
-            switch (event.keyCode) {
-                case self.Keys.up:
+            self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
+        }).keyup(function (event) {
+            self.KeysDown[event.keyCode] = false;
+        });
+
+        this.gameHandler.eventHandler.addTimedTrigger("playerManagerInputCheck", "PlayerManagerInputCheck", 500, this, null);
+
+        this.gameHandler.eventHandler.addEventListener("PlayerManagerInputCheck", function (sender, args) {
+            //self.gameHandler.log("Check for Input ...", self.KeysDown);
+            if (self.playerState == 0 /* Standing */) {
+                if (self.keyDown(self.Keys.up)) {
                     self.initMove(0 /* Up */);
-                    break;
-
-                case self.Keys.right:
-                    self.initMove(3 /* Right */);
-                    break;
-
-                case self.Keys.down:
+                } else if (self.keyDown(self.Keys.down)) {
                     self.initMove(1 /* Down */);
-                    break;
-
-                case self.Keys.left:
+                } else if (self.keyDown(self.Keys.left)) {
                     self.initMove(2 /* Left */);
-                    break;
-
-                case self.Keys.action:
+                } else if (self.keyDown(self.Keys.right)) {
+                    self.initMove(3 /* Right */);
+                } else if (self.keyDown(self.Keys.action)) {
                     self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
-                    break;
+                }
             }
         });
+    };
+
+    PlayerManager.prototype.keyDown = function (key) {
+        var value = this.KeysDown[key];
+
+        return ((value !== undefined) && (value));
     };
 
     PlayerManager.prototype.initPlayer = function (self) {

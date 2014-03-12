@@ -210,6 +210,11 @@ var GameHandler = (function () {
     GameHandler.prototype.isCoordPassable = function (x, y) {
         var tile = this.getTileAtPos(x, y);
 
+        if (tile == undefined) {
+            this.warn("Tile not found: ", [x, y]);
+            return false;
+        }
+
         return tile.Passable;
     };
 

@@ -31,7 +31,7 @@ class PlayerManager
         Y: 0
     }
 
-    private playerSpeed: number = 1.2;
+    private playerSpeed: number = 0.5;
     private updatesPerSecond: number = 10;
 
 
@@ -61,6 +61,7 @@ class PlayerManager
 
     }
 
+    private KeysDown: { [index: number]: boolean } = {};
 
 
     constructor(gameHandler: GameHandler, animationHandler: AnimationHandler)
@@ -86,9 +87,9 @@ class PlayerManager
 
     }
 
-    private initMove(direction: WalkDirection, callback?: () => any)
+    private initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any)
     {
-        if (this.playerState == PlayerState.Walking)
+        if ((this.playerState == PlayerState.Walking) && initialCall)
         {
             this.gameHandler.log("Player is already walking");
             return;
@@ -130,15 +131,18 @@ class PlayerManager
 
         }
 
-        this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
+        if (initialCall)
+        {
+            this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
+        }
 
         var target = {
             X: this.position.X + walkOffset.X,
             Y: this.position.Y + walkOffset.Y
         };
 
-        this.gameHandler.log("Want to move to: ", target);
-        this.gameHandler.log("Play Animation: ", animation);
+        //this.gameHandler.log("Want to move to: ", target);
+        //this.gameHandler.log("Play Animation: ", animation);
 
         if (this.gameHandler.isCoordPassable(target.X, target.Y))
         {
@@ -151,7 +155,10 @@ class PlayerManager
             this.playerState = PlayerState.Walking;
 
             // Start Animation:
-            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            if (initialCall)
+            {
+                this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            }
 
             var self = this;
             this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function ()
@@ -167,6 +174,8 @@ class PlayerManager
         else
         {
             this.gameHandler.log("Target not passable: ", target);
+            this.playerState = PlayerState.Standing;
+
         }
     }
 
@@ -175,30 +184,41 @@ class PlayerManager
     {
         var animation = "stand";
 
+        var walkAgain = false;
 
         switch (this.moveDirection)
         {
             case WalkDirection.Right:
                 animation = "stand-right";
+                walkAgain = this.keyDown(this.Keys.right);
                 break;
 
             case WalkDirection.Left:
                 animation = "stand-left";
+                walkAgain = this.keyDown(this.Keys.left);
                 break;
 
             case WalkDirection.Up:
                 animation = "stand-up";
+                walkAgain = this.keyDown(this.Keys.up);
                 break;
 
             case WalkDirection.Down:
                 animation = "stand";
+                walkAgain = this.keyDown(this.Keys.down);
                 break;
 
         }
 
-
-        this.playerAnimation.playAnimation(this.playerElementName, animation, "");
-        this.playerState = PlayerState.Standing;
+        if (!walkAgain)
+        {
+            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            this.playerState = PlayerState.Standing;
+        }
+        else
+        {
+            this.initMove(this.moveDirection, false);
+        }   
     }
 
 
@@ -241,7 +261,7 @@ class PlayerManager
             Y: Math.round(newPosition.Y)
         };
 
-        if  ( //((normalizedPosition.X == self.targetPosition.X) && (normalizedPosition.Y == self.targetPosition.Y)) ||
+        if ( //((normalizedPosition.X == self.targetPosition.X) && (normalizedPosition.Y == self.targetPosition.Y)) ||
             (((direction == WalkDirection.Right) && (newPosition.X > self.targetPosition.X)) ||
             ((direction == WalkDirection.Left) && (newPosition.X < self.targetPosition.X)) ||
             ((direction == WalkDirection.Up) && (newPosition.Y < self.targetPosition.Y)) ||
@@ -249,7 +269,7 @@ class PlayerManager
         {
             self.position = normalizedPosition;
             self.playerAnimation.setPosition(self.playerElementName, normalizedPosition.X, normalizedPosition.Y);
-            console.log("Movement done!");
+            //console.log("Movement done!");
 
             if (callback !== undefined)
             {
@@ -260,7 +280,7 @@ class PlayerManager
         else
         {
             self.position = newPosition;
-            self.playerAnimation.setPosition(self.playerElementName, newPosition.X, newPosition.Y); 
+            self.playerAnimation.setPosition(self.playerElementName, newPosition.X, newPosition.Y);
             //console.log("Position updated: ", newPosition);
 
             window.setTimeout(function ()
@@ -282,42 +302,59 @@ class PlayerManager
 
         this.initPlayer(self);
 
-
-        // Bind Events here .. etc.
         $(document).keydown(function (event)
         {
+            self.KeysDown[event.keyCode] = true;
 
-
-            self.playerAnimation.stopAnimation(self.playerElementName);
-
-            switch (event.keyCode)
+            self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
+        })
+            .keyup(function (event)
             {
-                case self.Keys.up:
+                self.KeysDown[event.keyCode] = false;
+            });
+
+        this.gameHandler.eventHandler.addTimedTrigger("playerManagerInputCheck", "PlayerManagerInputCheck", 500, this, null);
+
+        this.gameHandler.eventHandler.addEventListener("PlayerManagerInputCheck", function (sender, args)
+        {
+            //self.gameHandler.log("Check for Input ...", self.KeysDown);
+
+            if (self.playerState == PlayerState.Standing)
+            {
+                if (self.keyDown(self.Keys.up))
+                {
                     self.initMove(WalkDirection.Up);
-                    break;
-
-                case self.Keys.right:
-                    self.initMove(WalkDirection.Right);
-                    break;
-
-                case self.Keys.down:
+                }
+                else if (self.keyDown(self.Keys.down))
+                {
                     self.initMove(WalkDirection.Down);
-                    break;
-
-                case self.Keys.left:
+                }
+                else if (self.keyDown(self.Keys.left))
+                {
                     self.initMove(WalkDirection.Left);
-                    break;
-
-                case self.Keys.action:
+                }
+                else if (self.keyDown(self.Keys.right))
+                {
+                    self.initMove(WalkDirection.Right);
+                }
+                else if (self.keyDown(self.Keys.action))
+                {
                     self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
-                    break;
-
+                }
 
             }
-
         });
 
 
+
+    }
+
+    private keyDown(key: number): boolean
+    {
+        var value = this.KeysDown[key];
+
+
+        return ((value !== undefined) && (value));
     }
 
     private initPlayer(self: PlayerManager)
