@@ -10,7 +10,11 @@ interface Renderer
     getTileSize(): number;
     setMap(map: Tile[][]);
     initMap(sizeX: number, sizeY: number);
-    setConfig( elements: {[id: string]: ElementDefinition } );
+    setConfig(elements: { [id: string]: ElementDefinition });
+    setOffset(offset: { X: number; Y: number });
+    getMapSize(): {
+        X: number; Y: number
+    }
 }
 
 interface RendererLayer

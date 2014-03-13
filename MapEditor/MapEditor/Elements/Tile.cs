@@ -67,7 +67,7 @@ namespace MapEditor.Elements
                         break;
                 }
 
-                updatePassable();
+                updateElement();
             }
         }
 
@@ -185,24 +185,68 @@ namespace MapEditor.Elements
         /// <summary>
         /// Updates the Passable Attribute
         /// </summary>
-        private void updatePassable()
+        private void updateElement()
         {
+            if (this.Flags == null)
+            {
+                this.Flags = new LinkedList<string>();
+            }
+
             var passable = true;
             if (this[ElementLevel.Bottom] != null)
             {
                 passable = passable && this[ElementLevel.Bottom].Passable;
+
+                if ((this[ElementLevel.Bottom].Flags != null) && (this[ElementLevel.Bottom].Flags.Count > 0))
+                {
+                    foreach (var item in this[ElementLevel.Bottom].Flags)
+                    {
+                        if (!this.Flags.Contains(item))
+                        {
+                            this.Flags.AddLast(item);
+                        }
+                    }
+
+                }
             }
             if (this[ElementLevel.Middle] != null)
             {
                 passable = passable && this[ElementLevel.Middle].Passable;
+
+                if ((this[ElementLevel.Middle].Flags != null) && (this[ElementLevel.Middle].Flags.Count > 0))
+                {
+                    foreach (var item in this[ElementLevel.Middle].Flags)
+                    {
+                        if (!this.Flags.Contains(item))
+                        {
+                            this.Flags.AddLast(item);
+                        }
+                    }
+
+                }
             }
             if (this[ElementLevel.Top] != null)
             {
                 passable = passable && this[ElementLevel.Top].Passable;
+
+                if ((this[ElementLevel.Top].Flags != null) && (this[ElementLevel.Top].Flags.Count > 0))
+                {
+                    foreach (var item in this[ElementLevel.Top].Flags)
+                    {
+                        if (!this.Flags.Contains(item))
+                        {
+                            this.Flags.AddLast(item);
+                        }
+                    }
+
+                }
             }
 
 
             this.Passable = passable;
+
+
+
         }
 
     }

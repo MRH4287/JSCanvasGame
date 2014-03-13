@@ -5,8 +5,7 @@
 
 /// <reference path="animationHandler.ts" />
 /// <reference path="playerManager.ts" />
-
-
+/// <reference path="windowManager.ts" />
 
 class GameHandler
 {
@@ -37,11 +36,16 @@ class GameHandler
 
     public playerAnimationHandler: AnimationHandler;
     public playerManager: PlayerManager;
+    public windowManager: WindowManager;
+
 
     public spriteContainer: { [id: string]: HTMLElement };
     public animations: { [id: string]: InternalAnimationContainer } = {};
 
 
+    private tileIDIndex: { [index: string]: Tile } = {};
+    private tileFlagIndex: { [index: string]: Tile[] } = {};
+    private elementsFlagIndex: { [index: string]: ElementDefinition[] } = {};
 
 
     constructor(config: any)
@@ -50,18 +54,18 @@ class GameHandler
 
     }
 
-
     public init()
     {
         this.eventHandler.callEvent("preInit", this, null);
 
         this.loadConfig();
         this.initAnimations();
-
+        this.windowManager = new WindowManager(this);
         
         var self = this;
         window.setTimeout(function ()
         {
+            // Init Animation Container is called in loadMap
             self.loadMap();
 
             this.eventHandler.callEvent("postInit", this, null);
@@ -180,6 +184,20 @@ class GameHandler
         $.each(result, function (_, el)
         {
             self.elements[el.ID] = el;
+
+            if (self.elements[el.ID].Flags !== undefined)
+            {
+                $.each(self.elements[el.ID].Flags, function (_, flag)
+                {
+                    if (self.elementsFlagIndex[flag] === undefined)
+                    {
+                        self.elementsFlagIndex[flag] = [];
+                    }
+
+                    self.elementsFlagIndex[flag].push(el);
+                });
+            }
+
         });
 
         this.log("Element Definitions loaded: ", this.elements);
@@ -281,6 +299,26 @@ class GameHandler
             }
         }
 
+        if (tile.ID !== undefined)
+        {
+            this.tileIDIndex[tile.ID] = tile;
+        }
+
+        var self = this;
+        if (tile.Flags !== undefined)
+        {
+            $.each(tile.Flags, function (_, flag)
+            {
+                if (self.tileFlagIndex[flag] === undefined)
+                {
+                    self.tileFlagIndex[flag] = [];
+                }
+
+                self.tileFlagIndex[flag].push(tile);
+            });
+        }
+
+
         this.eventHandler.callEvent("postTileUpdate", this, tile);
 
 
@@ -303,6 +341,30 @@ class GameHandler
         }
 
         return tile.Passable;
+    }
+
+    public getElementByID(ID: string): ElementDefinition
+    {
+        return this.elements[ID];
+    }
+
+    public getElementsByFlagName(Flag: string): ElementDefinition[]
+    {
+        var list = this.elementsFlagIndex[Flag];
+
+        return (list !== undefined) ? list : [];
+    }
+
+    public getTileByID(ID: string): Tile
+    {
+        return this.tileIDIndex[ID];
+    }
+
+    public getTilesByFlagName(Flag: string): Tile[]
+    {
+        var list = this.tileFlagIndex[Flag];
+
+        return (list !== undefined) ? list : [];
     }
 
 

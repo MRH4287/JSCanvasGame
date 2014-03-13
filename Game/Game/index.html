@@ -10,6 +10,7 @@
     <script src="eventHandler.js"></script>
     <script src="animationHandler.js"></script>
     <script src="playerManager.js"></script>
+    <script src="windowManager.js"></script>
 </head>
 <body>
     <div class="output"></div>
@@ -20,7 +21,9 @@
         var gameHandler = new GameHandler({
             verbose: false,
             initStaticAnimations: true,
-            mapPath: "data/test.json",
+            mapPath: "data/lakeMap.json",
+            width: 600,
+            height: 400
         });
         var eventHandler = new EventHandler(gameHandler);
         var render = new Renderer($("#canvas")[0], gameHandler);
@@ -37,7 +40,7 @@
 
         $(document).ready(function ()
         {
-
+            /*
             window.setInterval(function ()
             {
                 if (run)
@@ -54,7 +57,7 @@
                         moveOffset *= -1;
                     }
 
-                    render.test(offset);
+                    render.setOffset(offset);
                 }
             }, 10);
 
@@ -63,6 +66,7 @@
                 //render.test(0);
             }, 150);
             //animation.test();
+            */
         });
 
 

@@ -271,6 +271,8 @@ class PlayerManager
         {
             self.position = normalizedPosition;
             self.playerAnimation.setPosition(self.playerElementName, normalizedPosition.X, normalizedPosition.Y);
+
+            self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, normalizedPosition);
             //console.log("Movement done!");
 
             if (callback !== undefined)
@@ -283,6 +285,8 @@ class PlayerManager
         {
             self.position = newPosition;
             self.playerAnimation.setPosition(self.playerElementName, newPosition.X, newPosition.Y);
+            self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, newPosition);
+
             //console.log("Position updated: ", newPosition);
 
             window.setTimeout(function ()
@@ -301,6 +305,15 @@ class PlayerManager
         // Add Player to the Game:
         this.position.X = 6;
         this.position.Y = 6;
+
+        // Get Player Tile:
+        var tiles: Tile[] = this.gameHandler.getTilesByFlagName("player");
+        if (tiles.length != 0)
+        {
+            this.position.X = tiles[0].XCoord;
+            this.position.Y = tiles[0].YCoord;
+        }
+
 
         this.initPlayer(self);
 
@@ -385,6 +398,7 @@ class PlayerManager
         self.gameHandler.loadAnimation("data/animations/pichu.json");
         self.playerAnimation.addAnimation(this.playerElementName, "pichu", "stand", this.position.X, this.position.Y);
 
+        self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
 
 

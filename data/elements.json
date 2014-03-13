@@ -57,18 +57,171 @@
 		"ImageURI": "graphics/objects/tree_top.png"	
 	},
 	{
-		"ID": "Pichu",
-		"Name": "Pichu (Dynamic)",
-		"Level": 1,
+		"ID": "grass-ledge-horizontal-left",
+		"Name": "Ledge Left",
+		"Level": 0,
 		"Passable": false,
+		"Speed": 0.0,
+		"ImageURI": "graphics/terrain/ledge_left.png"	
+	},
+	{
+		"ID": "grass-ledge-horizontal-middle",
+		"Name": "Ledge Middle",
+		"Level": 0,
+		"Passable": false,
+		"Speed": 0.3,
+		"Flags": [
+			"ledge", "horizontal"
+		],
+		"ImageURI": "graphics/terrain/ledge.png"	
+	},
+	{
+		"ID": "grass-ledge-horizontal-right",
+		"Name": "Lidge Right",
+		"Level": 0,
+		"Passable": false,
+		"Speed": 0.0,
+		"ImageURI": "graphics/terrain/ledge_right.png"	
+	},
+	{
+		"ID": "water_still_bottom_left",
+		"Name": "Still Water (Bottom Left)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_bottom_left.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_bottom_middle",
+		"Name": "Still Water (Bottom middle)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_bottom_middle.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_bottom_right",
+		"Name": "Still Water (Bottom Right)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_bottom_right.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_middle",
+		"Name": "Still Water (Middle)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_middle.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_middle_left",
+		"Name": "Still Water (Middle Left)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_middle_left.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_middle_right",
+		"Name": "Still Water (Middle Right)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_middle_right.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_top_right",
+		"Name": "Still Water (Top Right)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_top_right.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_top_left",
+		"Name": "Still Water (Top Left)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_top_left.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_top_middle",
+		"Name": "Still Water (Top Middle)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_top_middle.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_corner_bottom_left",
+		"Name": "Still Water (Corner Bottom Left)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_corner_bottom_left.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_corner_bottom_right",
+		"Name": "Still Water (Corner Bottom Right)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_corner_bottom_right.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_corner_top_left",
+		"Name": "Still Water (Corner Top Left)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_corner_top_left.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "water_still_corner_top_right",
+		"Name": "Still Water (Corner Top Right)",
+		"Level": 0,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/water_still_corner_top_right.png",
+		"Flags": [
+			"water", "swimable"
+		]
+	},
+	{
+		"ID": "PlayerSpawn",
+		"Name": "Player Spawn",
+		"Level": 1,
+		"Passable": true,
 		"Speed": 1.0,
 		"Flags": [
-			"player"
+			"player", "editorElement"
 		],
-		"ImageURI": "graphics/dynamic/pichu.png",
-		"Dynamic": true,
-		"AnimationDefinition": "data/animations/pichu.json",
-		"AnimationContainer": "pichu",
-		"DefaultAnimation": "sleep"
+		"ImageURI": "graphics/dynamic/pichu.png"	
 	}
 ]

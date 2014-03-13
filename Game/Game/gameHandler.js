@@ -3,6 +3,7 @@
 /// <reference path="interfaces.ts" />
 /// <reference path="animationHandler.ts" />
 /// <reference path="playerManager.ts" />
+/// <reference path="windowManager.ts" />
 var GameHandler = (function () {
     function GameHandler(config) {
         this.config = {
@@ -19,6 +20,9 @@ var GameHandler = (function () {
         };
         this.elements = {};
         this.animations = {};
+        this.tileIDIndex = {};
+        this.tileFlagIndex = {};
+        this.elementsFlagIndex = {};
         this.config = $.extend(this.config, config);
     }
     GameHandler.prototype.init = function () {
@@ -26,9 +30,11 @@ var GameHandler = (function () {
 
         this.loadConfig();
         this.initAnimations();
+        this.windowManager = new WindowManager(this);
 
         var self = this;
         window.setTimeout(function () {
+            // Init Animation Container is called in loadMap
             self.loadMap();
 
             this.eventHandler.callEvent("postInit", this, null);
@@ -120,6 +126,16 @@ var GameHandler = (function () {
 
         $.each(result, function (_, el) {
             self.elements[el.ID] = el;
+
+            if (self.elements[el.ID].Flags !== undefined) {
+                $.each(self.elements[el.ID].Flags, function (_, flag) {
+                    if (self.elementsFlagIndex[flag] === undefined) {
+                        self.elementsFlagIndex[flag] = [];
+                    }
+
+                    self.elementsFlagIndex[flag].push(el);
+                });
+            }
         });
 
         this.log("Element Definitions loaded: ", this.elements);
@@ -198,6 +214,21 @@ var GameHandler = (function () {
             }
         }
 
+        if (tile.ID !== undefined) {
+            this.tileIDIndex[tile.ID] = tile;
+        }
+
+        var self = this;
+        if (tile.Flags !== undefined) {
+            $.each(tile.Flags, function (_, flag) {
+                if (self.tileFlagIndex[flag] === undefined) {
+                    self.tileFlagIndex[flag] = [];
+                }
+
+                self.tileFlagIndex[flag].push(tile);
+            });
+        }
+
         this.eventHandler.callEvent("postTileUpdate", this, tile);
 
         return tile;
@@ -216,6 +247,26 @@ var GameHandler = (function () {
         }
 
         return tile.Passable;
+    };
+
+    GameHandler.prototype.getElementByID = function (ID) {
+        return this.elements[ID];
+    };
+
+    GameHandler.prototype.getElementsByFlagName = function (Flag) {
+        var list = this.elementsFlagIndex[Flag];
+
+        return (list !== undefined) ? list : [];
+    };
+
+    GameHandler.prototype.getTileByID = function (ID) {
+        return this.tileIDIndex[ID];
+    };
+
+    GameHandler.prototype.getTilesByFlagName = function (Flag) {
+        var list = this.tileFlagIndex[Flag];
+
+        return (list !== undefined) ? list : [];
     };
 
     // ---------------------------------------

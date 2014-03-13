@@ -312,7 +312,7 @@
 
                 }
 
-                _addTile(_map[collom][element], xOffset, yOffset, false, (last) ? okCallback : undefined);
+                _addTile(_map[collom][element], xOffset, yOffset, (last) ? okCallback : undefined);
             }
 
 
@@ -372,14 +372,14 @@
 
     // -------------
 
-    this.test = function (offset)
+    this.setOffset = function (offset)
     {
 
 
-        _offset.x = offset;
-        _offset.y = 0;
+        _offset.x = offset.X;
+        _offset.y = offset.Y;
 
-        _render();
+        //_render();
     }
 
     this.getBottomAnimationLayer = function()
@@ -408,6 +408,16 @@
         return _config.tileSize;
     }
 
+    this.getMapSize = function()
+    {
+        return {
+            X: _staticWidth,
+            Y: _staticHeight
+        }
+
+
+    }
+
 
     // --- Draw Functions ----
     var _clear = function (ctx)
@@ -428,7 +438,7 @@
     }
 
 
-    var _addTile = function (tile, x, y, ignoreOutOfSight, readyCallback)
+    var _addTile = function (tile, x, y, readyCallback)
     {
         //_log("Render Tile: ", tile);
 
@@ -466,97 +476,42 @@
 
         if ((bottom !== undefined) && ((bottom.Dynamic === undefined) || (!bottom.Dynamic)))
         {
-            _addImage(_layer.BottomStaticLayer.ctx, bottom.ImageURI, x, y, undefined, undefined, callback("bottom"), ignoreOutOfSight);
+            _addImage(_layer.BottomStaticLayer.ctx, bottom, x, y, undefined, undefined, callback("bottom"));
         }
         if ((middle !== undefined) && ((middle.Dynamic === undefined) || (!middle.Dynamic)))
         {
-            _addImage(_layer.MiddleStaticLayer.ctx, middle.ImageURI, x, y, undefined, undefined, callback("middle"), ignoreOutOfSight);
+            _addImage(_layer.MiddleStaticLayer.ctx, middle, x, y, undefined, undefined, callback("middle"));
         }
         if ((top !== undefined) && ((top.Dynamic === undefined) || (!top.Dynamic)))
         {
-            _addImage(_layer.TopStaticLayer.ctx, top.ImageURI, x, y, undefined, undefined, callback("top"), ignoreOutOfSight);
+            _addImage(_layer.TopStaticLayer.ctx, top, x, y, undefined, undefined, callback("top"));
         }
 
-        var old = function ()
-        {
-            /*
-            var topCallback = function ()
-            {
-                if ((_config.showBlocking) && (!tile.Passable))
-                {
-                    ctx.strokeStyle = "#f00";
-                    ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
-                }
-
-                if (readyCallback !== undefined)
-                {
-                    readyCallback();
-                }
-            }
-
-            var middleCallback = function ()
-            {
-                if (top != undefined)
-                {
-                    _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
-                }
-                else
-                {
-                    if ((_config.showBlocking) && (!tile.Passable))
-                    {
-                        ctx.strokeStyle = "#f00";
-                        ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
-                    }
-
-                    if (readyCallback !== undefined)
-                    {
-                        readyCallback();
-                    }
-                }
-            }
-
-            var bottomCallback = function ()
-            {
-                if (middle !== undefined)
-                {
-                    _addImage(ctx, middle.ImageURI, x, y, undefined, undefined, middleCallback, ignoreOutOfSight);
-                }
-                else if (top !== undefined)
-                {
-                    _addImage(ctx, top.ImageURI, x, y, undefined, undefined, topCallback, ignoreOutOfSight);
-                }
-                else
-                {
-                    if ((_config.showBlocking) && (!tile.Passable))
-                    {
-                        ctx.strokeStyle = "#f00";
-                        ctx.strokeRect(x, y, _config.tileSize, _config.tileSize);
-                    }
-
-                    if (readyCallback !== undefined)
-                    {
-                        readyCallback();
-                    }
-                }
-
-            }
-
-            _addImage(ctx, bottom.ImageURI, x, y, undefined, undefined, bottomCallback, ignoreOutOfSight);
-            */
-        };
+      
     }
 
-    var _addImage = function (ctx, src, x, y, width, height, imageOnLoad, ignoreOutOfSight)
+    var _addImage = function (ctx, tile, x, y, width, height, imageOnLoad)
     {
-        // _log("Add Image '" + src + "' at: ", { x: x, y: y });
+        var src = tile.ImageURI;
 
-        ignoreOutOfSight = (ignoreOutOfSight === undefined) ? false : Boolean(ignoreOutOfSight);
 
-        if (!ignoreOutOfSight && ((((x + width) < 0) && ((y + height) < 0)) || ((x > _width) && (y > _height))))
+        if (((tile.Dynamic !== undefined) && (tile.Dynamic)) ||
+            ((tile.Flags !== undefined) && (tile.Flags.indexOf("editorElement") != -1)))
         {
-            //_log("Out of sight!");
+            if (imageOnLoad !== undefined)
+            {
+                imageOnLoad({
+                    x: x,
+                    y: y,
+                    width: width,
+                    height: height,
+                    image: imageObj
+                });
+            }
+
             return;
         }
+
 
         var imageObj = new Image();
 
@@ -602,33 +557,6 @@
 
     var _getFile = function (url, callback, dataType)
     {
-        /*
-        var async = (!(typeof (callback) == "undefined"));
-        dataType = (typeof (dataType) == "undefined") ? "json" : dataType;
-
-        var tempResult = null;
-
-        $.ajax({
-            dataType: dataType,
-            url: url,
-            success: function (result)
-            {
-                if (async)
-                {
-                    callback(result);
-                }
-                else
-                {
-                    tempResult = result;
-                }
-
-            },
-            async: async
-        });
-
-
-        return tempResult;
-        */
 
         return _gameHandler.getFile(url, callback, dataType);
 
