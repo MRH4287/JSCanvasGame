@@ -40,6 +40,7 @@ class GameHandler
     public playerAnimationHandler: AnimationHandler;
     public playerManager: PlayerManager;
     public windowManager: WindowManager;
+    public npcManager: NPCHandler;
 
 
     public spriteContainer: { [id: string]: HTMLElement };
@@ -65,12 +66,13 @@ class GameHandler
         this.initAnimations();
         this.windowManager = new WindowManager(this);
         
+
         var self = this;
         window.setTimeout(function ()
         {
             // Init Animation Container is called in loadMap
             self.loadMap();
-
+ 
             this.eventHandler.callEvent("postInit", this, null);
         }, 100);
 
@@ -85,6 +87,7 @@ class GameHandler
         this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
 
         this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
+        this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
     }
 
     private createAnimationHandler(level: number, layer: RendererLayer, staticName?: string): AnimationHandler

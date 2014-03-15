@@ -57,6 +57,9 @@ var PlayerManager = (function () {
             return;
         }
 
+        // Set Last Action
+        this.lastAction = Date.now();
+
         var walkOffset = {
             X: 0,
             Y: 0
@@ -241,8 +244,6 @@ var PlayerManager = (function () {
             self.KeysDown[event.keyCode] = true;
 
             self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
-
-            self.lastAction = Date.now();
         }).keyup(function (event) {
             self.KeysDown[event.keyCode] = false;
 
@@ -263,10 +264,10 @@ var PlayerManager = (function () {
                 } else if (self.keyDown(self.Keys.right)) {
                     self.initMove(3 /* Right */);
                 } else if (self.keyDown(self.Keys.action)) {
-                    //self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
-                    // Debug:
-                    var audio = new Audio("sound/pichu!.ogg");
-                    audio.play();
+                    var now = Date.now();
+                    if ((now - self.lastAction) > 300) {
+                        self.playerAction();
+                    }
                 }
             }
         });
@@ -279,7 +280,7 @@ var PlayerManager = (function () {
             var diff = currentTime - self.lastAction;
 
             //console.log("CheckDiff: ", diff);
-            if (diff > 30000) {
+            if (diff > 120000) {
                 self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
             }
         });
@@ -296,6 +297,35 @@ var PlayerManager = (function () {
         self.playerAnimation.addAnimation(this.playerElementName, "pichu", "stand", this.position.X, this.position.Y);
 
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
+    };
+
+    PlayerManager.prototype.playerAction = function () {
+        var offset = {
+            X: this.position.X,
+            Y: this.position.Y
+        };
+
+        switch (this.moveDirection) {
+            case 3 /* Right */:
+                offset.X += 1;
+                break;
+
+            case 2 /* Left */:
+                offset.X += -1 * 1;
+                break;
+
+            case 0 /* Up */:
+                offset.Y += -1 * 1;
+                break;
+
+            case 1 /* Down */:
+                offset.Y += 1;
+                break;
+        }
+
+        this.lastAction = Date.now();
+
+        this.gameHandler.eventHandler.callEvent("PlayerAction", this, offset);
     };
     return PlayerManager;
 })();

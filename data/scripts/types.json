@@ -18,6 +18,7 @@
 { "Type": "Event", "Name": "PlaySound", "Arguments": [ { "Type": "Variable", "Name": "SoundFile"} ] }
 { "Type": "Increment", "Name": "MyVariableName" }
 { "Type": "Decrement", "Name": "MyVariableName" }
+{ "Type": "Sound", "Path": "path/to/sound.mp3" }
 
 /* Optional Target Mode */
 /* Will return Value if no Target is set ... :P */

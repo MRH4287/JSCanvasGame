@@ -2,7 +2,8 @@
 
 enum ElementTypes
 {
-    Unknown, OnEvent, SetVariable, If, Command, Event, Variable,
+    Unknown, OnEvent, SetVariable, If, Command, Event, Sound,
+    Variable,
     Increment, Decrement, Add, Sub, Mult, Div,
     Gt, Lt, Eq, Neq, GtE, LtE,
     And, Nand, Or, Nor, Not,
@@ -269,6 +270,15 @@ class ScriptHandler
 
                         this.variables[scriptNode.Target] = data;
 
+                    }
+
+                    break;
+
+                case ElementTypes.Sound:
+                    if (this.checkParam(scriptNode, "Path"))
+                    {
+                        var audio = new Audio(scriptNode.Path);
+                        audio.play();
                     }
 
                     break;

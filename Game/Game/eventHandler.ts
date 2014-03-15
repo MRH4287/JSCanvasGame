@@ -44,7 +44,7 @@ class EventHandler
 
     public callEvent(event: string, sender: any, arguments: any)
     {
-        this.calledEvents.push(event);
+        this.addEventToList(event);
 
         var unheared = ((this.events === undefined) || (this.events[event] === undefined));
 
@@ -129,4 +129,14 @@ class EventHandler
             this.timedEvents[name].run = false;
         }
     }
+
+    private addEventToList(name: string)
+    {
+        if (this.calledEvents.indexOf(name) == -1)
+        {
+            this.calledEvents.push(name);
+        }
+
+    }
+
 }

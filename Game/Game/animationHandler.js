@@ -189,7 +189,9 @@ var AnimationHandler = (function () {
             var self = this;
 
             if (this.animationGroups[group] === undefined) {
-                this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
+                if (this.gameHandler.config.verbose) {
+                    this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
+                }
 
                 this.animationGroups[group] = {};
 

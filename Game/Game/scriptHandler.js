@@ -7,45 +7,46 @@ var ElementTypes;
     ElementTypes[ElementTypes["If"] = 3] = "If";
     ElementTypes[ElementTypes["Command"] = 4] = "Command";
     ElementTypes[ElementTypes["Event"] = 5] = "Event";
-    ElementTypes[ElementTypes["Variable"] = 6] = "Variable";
-    ElementTypes[ElementTypes["Increment"] = 7] = "Increment";
-    ElementTypes[ElementTypes["Decrement"] = 8] = "Decrement";
-    ElementTypes[ElementTypes["Add"] = 9] = "Add";
-    ElementTypes[ElementTypes["Sub"] = 10] = "Sub";
-    ElementTypes[ElementTypes["Mult"] = 11] = "Mult";
-    ElementTypes[ElementTypes["Div"] = 12] = "Div";
-    ElementTypes[ElementTypes["Gt"] = 13] = "Gt";
-    ElementTypes[ElementTypes["Lt"] = 14] = "Lt";
-    ElementTypes[ElementTypes["Eq"] = 15] = "Eq";
-    ElementTypes[ElementTypes["Neq"] = 16] = "Neq";
-    ElementTypes[ElementTypes["GtE"] = 17] = "GtE";
-    ElementTypes[ElementTypes["LtE"] = 18] = "LtE";
-    ElementTypes[ElementTypes["And"] = 19] = "And";
-    ElementTypes[ElementTypes["Nand"] = 20] = "Nand";
-    ElementTypes[ElementTypes["Or"] = 21] = "Or";
-    ElementTypes[ElementTypes["Nor"] = 22] = "Nor";
-    ElementTypes[ElementTypes["Not"] = 23] = "Not";
-    ElementTypes[ElementTypes["Tile"] = 24] = "Tile";
+    ElementTypes[ElementTypes["Sound"] = 6] = "Sound";
+    ElementTypes[ElementTypes["Variable"] = 7] = "Variable";
+    ElementTypes[ElementTypes["Increment"] = 8] = "Increment";
+    ElementTypes[ElementTypes["Decrement"] = 9] = "Decrement";
+    ElementTypes[ElementTypes["Add"] = 10] = "Add";
+    ElementTypes[ElementTypes["Sub"] = 11] = "Sub";
+    ElementTypes[ElementTypes["Mult"] = 12] = "Mult";
+    ElementTypes[ElementTypes["Div"] = 13] = "Div";
+    ElementTypes[ElementTypes["Gt"] = 14] = "Gt";
+    ElementTypes[ElementTypes["Lt"] = 15] = "Lt";
+    ElementTypes[ElementTypes["Eq"] = 16] = "Eq";
+    ElementTypes[ElementTypes["Neq"] = 17] = "Neq";
+    ElementTypes[ElementTypes["GtE"] = 18] = "GtE";
+    ElementTypes[ElementTypes["LtE"] = 19] = "LtE";
+    ElementTypes[ElementTypes["And"] = 20] = "And";
+    ElementTypes[ElementTypes["Nand"] = 21] = "Nand";
+    ElementTypes[ElementTypes["Or"] = 22] = "Or";
+    ElementTypes[ElementTypes["Nor"] = 23] = "Nor";
+    ElementTypes[ElementTypes["Not"] = 24] = "Not";
+    ElementTypes[ElementTypes["Tile"] = 25] = "Tile";
 })(ElementTypes || (ElementTypes = {}));
 
 var ScriptHandler = (function () {
     function ScriptHandler(gameHandler) {
         this.typeShortcuts = {
-            ">": 13 /* Gt */,
-            "<": 14 /* Lt */,
-            "==": 15 /* Eq */,
-            "!=": 16 /* Neq */,
-            ">=": 17 /* GtE */,
-            "<=": 18 /* LtE */,
-            "&": 19 /* And */,
-            "&&": 19 /* And */,
-            "|": 21 /* Or */,
-            "||": 21 /* Or */,
-            "!": 23 /* Not */,
-            "+": 9 /* Add */,
-            "-": 10 /* Sub */,
-            "*": 11 /* Mult */,
-            "/": 12 /* Div */
+            ">": 14 /* Gt */,
+            "<": 15 /* Lt */,
+            "==": 16 /* Eq */,
+            "!=": 17 /* Neq */,
+            ">=": 18 /* GtE */,
+            "<=": 19 /* LtE */,
+            "&": 20 /* And */,
+            "&&": 20 /* And */,
+            "|": 22 /* Or */,
+            "||": 22 /* Or */,
+            "!": 24 /* Not */,
+            "+": 10 /* Add */,
+            "-": 11 /* Sub */,
+            "*": 12 /* Mult */,
+            "/": 13 /* Div */
         };
         // List of Eventhandling functions for the "onEvent" Type
         this.eventHandler = {};
@@ -124,7 +125,7 @@ var ScriptHandler = (function () {
 
                     break;
 
-                case 7 /* Increment */:
+                case 8 /* Increment */:
                     if (this.checkParam(scriptNode, "Name")) {
                         if (this.variables[scriptNode.Name] !== undefined) {
                             this.variables[scriptNode.Name] = Number(this.variables[scriptNode.Name]) + 1;
@@ -134,7 +135,7 @@ var ScriptHandler = (function () {
                     }
 
                     break;
-                case 8 /* Decrement */:
+                case 9 /* Decrement */:
                     if (this.checkParam(scriptNode, "Name")) {
                         if (this.variables[scriptNode.Name] !== undefined) {
                             this.variables[scriptNode.Name] = Number(this.variables[scriptNode.Name]) - 1;
@@ -144,7 +145,7 @@ var ScriptHandler = (function () {
                     }
 
                     break;
-                case 9 /* Add */:
+                case 10 /* Add */:
                     if (this.checkParam(scriptNode, "Values") && this.checkParam(scriptNode, "Target")) {
                         if (scriptNode.Values.length === undefined) {
                             this.gameHandler.warn("Not a valid Value Argument for Add Statement: ", scriptNode);
@@ -163,7 +164,7 @@ var ScriptHandler = (function () {
                     }
 
                     break;
-                case 10 /* Sub */:
+                case 11 /* Sub */:
                     if (this.checkParam(scriptNode, "Values") && this.checkParam(scriptNode, "Target")) {
                         if (scriptNode.Values.length === undefined) {
                             this.gameHandler.warn("Not a valid Value Argument for Sub Statement: ", scriptNode);
@@ -182,7 +183,7 @@ var ScriptHandler = (function () {
                     }
 
                     break;
-                case 11 /* Mult */:
+                case 12 /* Mult */:
                     if (this.checkParam(scriptNode, "Values") && this.checkParam(scriptNode, "Target")) {
                         if (scriptNode.Values.length === undefined) {
                             this.gameHandler.warn("Not a valid Value Argument for Mult Statement: ", scriptNode);
@@ -201,7 +202,7 @@ var ScriptHandler = (function () {
                     }
 
                     break;
-                case 12 /* Div */:
+                case 13 /* Div */:
                     if (this.checkParam(scriptNode, "Values") && this.checkParam(scriptNode, "Target")) {
                         if (scriptNode.Values.length === undefined) {
                             this.gameHandler.warn("Not a valid Value Argument for Div Statement: ", scriptNode);
@@ -217,6 +218,14 @@ var ScriptHandler = (function () {
                         }
 
                         this.variables[scriptNode.Target] = data;
+                    }
+
+                    break;
+
+                case 6 /* Sound */:
+                    if (this.checkParam(scriptNode, "Path")) {
+                        var audio = new Audio(scriptNode.Path);
+                        audio.play();
                     }
 
                     break;
@@ -339,7 +348,7 @@ var ScriptHandler = (function () {
                     }
 
                     switch (type) {
-                        case 6 /* Variable */:
+                        case 7 /* Variable */:
                             if (this.checkParam(value, "Name")) {
                                 return this.getVariable(value.Name);
                             } else {
@@ -347,7 +356,7 @@ var ScriptHandler = (function () {
                             }
                             break;
 
-                        case 15 /* Eq */:
+                        case 16 /* Eq */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Equals Statement: ", value);
@@ -364,7 +373,7 @@ var ScriptHandler = (function () {
                             }
                             break;
 
-                        case 16 /* Neq */:
+                        case 17 /* Neq */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Not Equals Statement: ", value);
@@ -382,7 +391,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 13 /* Gt */:
+                        case 14 /* Gt */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Greater Than Statement: ", value);
@@ -400,7 +409,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 14 /* Lt */:
+                        case 15 /* Lt */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Less Than Statement: ", value);
@@ -418,7 +427,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 17 /* GtE */:
+                        case 18 /* GtE */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Greater Than Equals Statement: ", value);
@@ -436,7 +445,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 18 /* LtE */:
+                        case 19 /* LtE */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Less Than Equals Statement: ", value);
@@ -454,7 +463,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 23 /* Not */:
+                        case 24 /* Not */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length !== undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Not Statement: ", value);
@@ -468,7 +477,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 19 /* And */:
+                        case 20 /* And */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for And Statement: ", value);
@@ -488,7 +497,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 20 /* Nand */:
+                        case 21 /* Nand */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Not And Statement: ", value);
@@ -508,7 +517,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 21 /* Or */:
+                        case 22 /* Or */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Or Statement: ", value);
@@ -528,7 +537,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 22 /* Nor */:
+                        case 23 /* Nor */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Not Or Statement: ", value);
@@ -548,7 +557,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 9 /* Add */:
+                        case 10 /* Add */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Add Statement: ", value);
@@ -572,7 +581,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 10 /* Sub */:
+                        case 11 /* Sub */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Sub Statement: ", value);
@@ -596,7 +605,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 11 /* Mult */:
+                        case 12 /* Mult */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Mult Statement: ", value);
@@ -619,7 +628,7 @@ var ScriptHandler = (function () {
                             }
                             break;
 
-                        case 12 /* Div */:
+                        case 13 /* Div */:
                             if (this.checkParam(value, "Values")) {
                                 if (value.Values.length === undefined) {
                                     this.gameHandler.warn("Not a valid Value Argument for Div Statement: ", value);
@@ -643,7 +652,7 @@ var ScriptHandler = (function () {
 
                             break;
 
-                        case 24 /* Tile */:
+                        case 25 /* Tile */:
                             console.error("Not Implemented yet");
 
                             break;

@@ -50,6 +50,7 @@ var GameHandler = (function () {
         this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
 
         this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
+        this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
     };
 
     GameHandler.prototype.createAnimationHandler = function (level, layer, staticName) {

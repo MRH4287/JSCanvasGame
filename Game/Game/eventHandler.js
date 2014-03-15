@@ -26,7 +26,7 @@ var EventHandler = (function () {
     };
 
     EventHandler.prototype.callEvent = function (event, sender, arguments) {
-        this.calledEvents.push(event);
+        this.addEventToList(event);
 
         var unheared = ((this.events === undefined) || (this.events[event] === undefined));
 
@@ -90,6 +90,12 @@ var EventHandler = (function () {
     EventHandler.prototype.stopTimer = function (name) {
         if (this.timedEvents[name] !== undefined) {
             this.timedEvents[name].run = false;
+        }
+    };
+
+    EventHandler.prototype.addEventToList = function (name) {
+        if (this.calledEvents.indexOf(name) == -1) {
+            this.calledEvents.push(name);
         }
     };
     return EventHandler;

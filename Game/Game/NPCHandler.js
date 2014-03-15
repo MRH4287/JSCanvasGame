@@ -9,13 +9,29 @@ var NPCHandler = (function () {
         var self = this;
 
         this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, argument) {
+            // Check if an NPC is standing on this position
             $.each(self.npcList, function (id, data) {
                 if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y)) {
                     argument.result = false;
                 }
             });
-            // Check if an NPC is standing on this position
         });
+
+        this.gameHandler.eventHandler.addEventListener("PlayerAction", function (s, argument) {
+            $.each(self.npcList, function (id, data) {
+                if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y)) {
+                    self.gameHandler.eventHandler.callEvent("PlayerNPCAction", self, {
+                        name: id,
+                        X: argument.X,
+                        Y: argument.Y
+                    });
+                }
+            });
+        });
+
+        window.setTimeout(function () {
+            self.gameHandler.eventHandler.callEvent("npcInit", self, null);
+        }, 100);
     }
     NPCHandler.prototype.addNPC = function (name, position, animationContainer, defaultAnimation, speed) {
         if (typeof speed === "undefined") { speed = 1; }
@@ -23,7 +39,6 @@ var NPCHandler = (function () {
         var data = {
             ID: name,
             Position: position,
-            CurrentAnimation: defaultAnimation,
             Target: position,
             GUID: "NPC-Animation-" + String(Math.random() * Math.random() * 10000),
             Direction: 4 /* None */,
@@ -35,6 +50,15 @@ var NPCHandler = (function () {
 
         // Start default Animation for Element:
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
+    };
+
+    NPCHandler.prototype.setAnimation = function (name, animationName) {
+        if (this.npcList[name] === undefined) {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        this.animation.playAnimation(this.npcList[name].GUID, animationName);
     };
 
     NPCHandler.prototype.setPosition = function (name, position) {
@@ -128,6 +152,7 @@ var NPCHandler = (function () {
         }
     };
 
+    /* Movement Handler */
     NPCHandler.prototype.moveFinishedCallback = function (npc) {
         var animation = "stand";
 

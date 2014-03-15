@@ -1,0 +1,27 @@
+PlayerNPCAction - {name: string; X: number; Y: number}
+PlayerAction - {X: number; Y: number; }
+CheckIsPassable - {X: number; Y: number; Tile: Tile; result: boolean }
+PlayerPositionChanged - {X: number; Y: number; }
+PlayerManagerInputCheck
+renderPreInit
+renderPostInit
+preInit
+preConfigLoad
+postConfigLoad
+preMapLoad
+preTileUpdate
+postTileUpdate
+forceRerender
+renderPreRender
+render
+animationsPreRender
+animationsPostRender
+renderPreMapRender
+renderPostMapRender
+renderPostRender
+renderPreMapLoad
+renderPostMapLoad
+postMapLoad
+postInit
+npcInit
+

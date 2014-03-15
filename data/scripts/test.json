@@ -1,17 +1,8 @@
-[{ "Type": "OnEvent", "Event": "PlayerPositionChanged", "ArgumentName": "data", "Actions":
-[
-	{
-		"Type": "Command",
-		"Name": "Log",
-		"Value": 
-		{
-			"Type": "Variable",
-			"Name": "data"
-		}		
-	 }
- ]
- },
- 
+[{ "Type": "OnEvent", "Event": "PlayerNPCAction", "ArgumentName": "data", "Actions":
+	[
+		{ "Type": "Sound", "Path": "sound/pichu!.ogg" }
+	]
+},
  {"Type": "OnEvent", "Event": "triggerTest", "Actions": 
 	[
 		{

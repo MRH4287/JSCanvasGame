@@ -19,6 +19,8 @@ class NPCHandler
 
         this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, argument)
         {
+            // Check if an NPC is standing on this position
+
             $.each(self.npcList, function (id: string, data: NPCData)
             {
                 if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y))
@@ -26,12 +28,35 @@ class NPCHandler
                     argument.result = false;
                 }
             });
+        });
 
-            // Check if an NPC is standing on this position
+        this.gameHandler.eventHandler.addEventListener("PlayerAction", function (s, argument)
+        {
+            $.each(self.npcList, function (id: string, data: NPCData)
+            {
+                if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y))
+                {
+                    self.gameHandler.eventHandler.callEvent("PlayerNPCAction", self, {
+                        name: id,
+                        X: argument.X,
+                        Y: argument.Y
+                    });
+                }
+            });
+
+
 
         });
 
+        window.setTimeout(function ()
+        {
+            self.gameHandler.eventHandler.callEvent("npcInit", self, null);
+        }, 100);
+
+        
+
     }
+
 
     public addNPC(name: string, position: { X: number; Y: number }, animationContainer: string, defaultAnimation: string, speed: number = 1)
     {
