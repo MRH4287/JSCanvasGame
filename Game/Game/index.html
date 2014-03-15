@@ -11,11 +11,18 @@
     <script src="animationHandler.js"></script>
     <script src="playerManager.js"></script>
     <script src="windowManager.js"></script>
+    <script src="scriptHandler.js"></script>
 </head>
 <body>
     <div class="output"></div>
 
     <canvas id="canvas"></canvas>
+	
+	<audio controls id="themeSound">
+		<source src="sound/theme.mp3" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	
     <script>
 
         var gameHandler = new GameHandler({
@@ -31,6 +38,7 @@
 
         gameHandler.init();
 
+        var script = new ScriptHandler(gameHandler);
 
         var run = false;
         var offset = 0;
@@ -40,6 +48,10 @@
 
         $(document).ready(function ()
         {
+            script.loadScript("data/scripts/test.json");
+
+			//document.getElementById("themeSound").play();
+		
             /*
             window.setInterval(function ()
             {

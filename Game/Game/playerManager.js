@@ -279,7 +279,10 @@ var PlayerManager = (function () {
                 } else if (self.keyDown(self.Keys.right)) {
                     self.initMove(3 /* Right */);
                 } else if (self.keyDown(self.Keys.action)) {
-                    self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
+                    //self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
+                    // Debug:
+                    var audio = new Audio("sound/pichu!.ogg");
+                    audio.play();
                 }
             }
         });

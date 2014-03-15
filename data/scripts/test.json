@@ -1,0 +1,77 @@
+[{ "Type": "OnEvent", "Event": "PlayerPositionChanged", "ArgumentName": "data", "Actions":
+[
+	{
+		"Type": "Command",
+		"Name": "Log",
+		"Value": 
+		{
+			"Type": "Variable",
+			"Name": "data"
+		}		
+	 }
+ ]
+ },
+ 
+ {"Type": "OnEvent", "Event": "triggerTest", "Actions": 
+	[
+		{
+			"Type": "SetVariable",
+			"Name": "Test",
+			"Value": 2
+		},
+		{
+			"Type": "If",
+			"Conditions":
+			{
+				"Type": "==",
+				"Values":
+				[
+					{
+						"Type": "Variable",
+						"Name": "Test"
+					},
+					{
+						"Type": "Add",
+						"Values":
+						[
+							1,
+							1
+						]
+					
+					}
+				]
+			},
+			"Then": 
+			[
+				{
+					"Type": "Command",
+					"Name": "Log",
+					"Value": 
+					[
+						"Equals!",
+						{
+						"Type": "Variable",
+						"Name": "Test"
+						}					
+					]
+				}
+			
+			],
+			"Else":
+			{
+				"Type": "Command",
+				"Name": "Log",
+				"Value": 
+				[
+					"Not Equals!",
+					{
+						"Type": "Variable",
+						"Name": "Test"
+					}	
+				]
+			}
+		
+		}
+	]
+ }
+]

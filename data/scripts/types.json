@@ -1,0 +1,28 @@
+{ "Type": "OnEvent", "Event": "onPlayerPositionChanged", "Actions":[], "ArgumentName": "arguments" }
+/* ArgumentName is optional */
+{ "Type": "SetVariable", "Name": "Test", "Value": { "Type":"Variable", "Name": "Test" } }
+{ "Type": "If", "Conditions": [
+	{
+		"Type": "==",
+		"Values": [
+			1, 
+			{
+				"Type": "Variable":
+				"Name": "StepCount"
+			}
+		]
+	}
+], "Then": [ ], "Else": [] }
+{ "Type": "Command", "Name": "Log", "Value": [ ] }
+{ "Type": "Command", "Name": "Log", {... Depends on Command ...} }
+{ "Type": "Event", "Name": "PlaySound", "Arguments": [ { "Type": "Variable", "Name": "SoundFile"} ] }
+{ "Type": "Increment", "Name": "MyVariableName" }
+{ "Type": "Decrement", "Name": "MyVariableName" }
+
+/* Optional Target Mode */
+/* Will return Value if no Target is set ... :P */
+
+{ "Type": "Add", "Target": "ThisValueWillBeOverwritten", "Values": [ ] }
+{ "Type": "Sub", "Target": "ThisValueWillBeOverwritten", "Values": [ ] }
+{ "Type": "Mult", "Target": "ThisValueWillBeOverwritten", "Values": [ ] }
+{ "Type": "Div", "Target": "ThisValueWillBeOverwritten", "Values": [ ] }

@@ -6,6 +6,7 @@
 /// <reference path="animationHandler.ts" />
 /// <reference path="playerManager.ts" />
 /// <reference path="windowManager.ts" />
+/// <reference path="scriptHandler.ts" />
 
 class GameHandler
 {

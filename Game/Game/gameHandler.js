@@ -4,6 +4,7 @@
 /// <reference path="animationHandler.ts" />
 /// <reference path="playerManager.ts" />
 /// <reference path="windowManager.ts" />
+/// <reference path="scriptHandler.ts" />
 var GameHandler = (function () {
     function GameHandler(config) {
         this.config = {

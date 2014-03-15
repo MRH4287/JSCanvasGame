@@ -110,6 +110,7 @@
     <TypeScriptCompile Include="jquery.d.ts" />
     <TypeScriptCompile Include="interfaces.ts" />
     <TypeScriptCompile Include="playerManager.ts" />
+    <TypeScriptCompile Include="scriptHandler.ts" />
     <TypeScriptCompile Include="windowManager.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
