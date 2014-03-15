@@ -73,6 +73,7 @@ interface PlayableAnimation
     Animation: Animation;
     X: number;
     Y: number;
+    AnimationGroup: string;
 }
 
 interface Animation
@@ -144,3 +145,31 @@ interface EventData
     }[]
 }
 
+enum PlayerState
+{
+    Standing, Walking
+}
+
+enum WalkDirection
+{
+    Up, Down, Left, Right, None
+}
+
+interface NPCData
+{
+    ID: string;
+    Position: {
+        X: number;
+        Y: number;
+    }
+    Target: {
+        X: number;
+        Y: number;
+    };
+    GUID: string;
+    Speed: number;
+    State: PlayerState;
+    Direction: WalkDirection;
+
+
+}

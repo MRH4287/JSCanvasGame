@@ -7,6 +7,8 @@
 /// <reference path="playerManager.ts" />
 /// <reference path="windowManager.ts" />
 /// <reference path="scriptHandler.ts" />
+/// <reference path="NPCHandler.ts" />
+
 
 class GameHandler
 {
@@ -341,7 +343,19 @@ class GameHandler
             return false;
         }
 
-        return tile.Passable;
+        var data =
+            {
+                Tile: tile,
+                X: x,
+                Y: y,
+                result: tile.Passable
+            };
+
+        this.eventHandler.callEvent("CheckIsPassable", this, data);
+
+
+        return data.result;
+
     }
 
     public getElementByID(ID: string): ElementDefinition

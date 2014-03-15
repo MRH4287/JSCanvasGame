@@ -3,16 +3,6 @@
 /// <reference path="interfaces.ts" />
 /// <reference path="animationHandler.ts" />
 
-enum PlayerState
-{
-    Standing, Walking
-}
-
-enum WalkDirection
-{
-    Up, Down, Left, Right, None
-}
-
 class PlayerManager
 {
 
@@ -78,14 +68,13 @@ class PlayerManager
         });
 
 
-    }
-
-    public test()
-    {
-        this.initMove(WalkDirection.Right);
-        //this.initMove(WalkDirection.Left);
-        //this.initMove(WalkDirection.Up);
-        //this.initMove(WalkDirection.Down);
+        this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, data)
+        {
+            if ((data.X == self.position.X) && (data.Y == self.position.Y))
+            {
+                data.result = false;
+            } 
+        });
 
     }
 

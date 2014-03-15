@@ -2,21 +2,6 @@
 /// <reference path="eventHandler.ts" />
 /// <reference path="interfaces.ts" />
 /// <reference path="animationHandler.ts" />
-var PlayerState;
-(function (PlayerState) {
-    PlayerState[PlayerState["Standing"] = 0] = "Standing";
-    PlayerState[PlayerState["Walking"] = 1] = "Walking";
-})(PlayerState || (PlayerState = {}));
-
-var WalkDirection;
-(function (WalkDirection) {
-    WalkDirection[WalkDirection["Up"] = 0] = "Up";
-    WalkDirection[WalkDirection["Down"] = 1] = "Down";
-    WalkDirection[WalkDirection["Left"] = 2] = "Left";
-    WalkDirection[WalkDirection["Right"] = 3] = "Right";
-    WalkDirection[WalkDirection["None"] = 4] = "None";
-})(WalkDirection || (WalkDirection = {}));
-
 var PlayerManager = (function () {
     function PlayerManager(gameHandler, animationHandler) {
         this.position = {
@@ -58,14 +43,13 @@ var PlayerManager = (function () {
         this.gameHandler.eventHandler.addEventListener("postInit", function (s, e) {
             self.init();
         });
-    }
-    PlayerManager.prototype.test = function () {
-        this.initMove(3 /* Right */);
-        //this.initMove(WalkDirection.Left);
-        //this.initMove(WalkDirection.Up);
-        //this.initMove(WalkDirection.Down);
-    };
 
+        this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, data) {
+            if ((data.X == self.position.X) && (data.Y == self.position.Y)) {
+                data.result = false;
+            }
+        });
+    }
     PlayerManager.prototype.initMove = function (direction, initialCall, callback) {
         if (typeof initialCall === "undefined") { initialCall = true; }
         if ((this.playerState == 1 /* Walking */) && initialCall) {

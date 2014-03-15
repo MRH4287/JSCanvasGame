@@ -5,6 +5,7 @@
 /// <reference path="playerManager.ts" />
 /// <reference path="windowManager.ts" />
 /// <reference path="scriptHandler.ts" />
+/// <reference path="NPCHandler.ts" />
 var GameHandler = (function () {
     function GameHandler(config) {
         this.config = {
@@ -247,7 +248,16 @@ var GameHandler = (function () {
             return false;
         }
 
-        return tile.Passable;
+        var data = {
+            Tile: tile,
+            X: x,
+            Y: y,
+            result: tile.Passable
+        };
+
+        this.eventHandler.callEvent("CheckIsPassable", this, data);
+
+        return data.result;
     };
 
     GameHandler.prototype.getElementByID = function (ID) {

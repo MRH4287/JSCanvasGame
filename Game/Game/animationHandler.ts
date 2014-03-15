@@ -19,8 +19,7 @@ class AnimationHandler
     private layer: number;
 
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
-
-    private animationGroups: { [id: string]: any[] } = {};
+    private animationGroups: { [id: string]: { [id: string]: { (): void } } } = {};
 
     private UseAnimationGroups: boolean = true;
     private staticName: string = null;
@@ -64,7 +63,7 @@ class AnimationHandler
 
     public setLayer(layer: RendererLayer)
     {
-        this.gameHandler.log("Animation: Layer set ... ", layer);
+        //this.gameHandler.log("Animation: Layer set ... ", layer);
 
         this.canvas = layer.canvas;
         this.ctx = layer.ctx;
@@ -75,7 +74,7 @@ class AnimationHandler
 
 
 
-        console.log("Animation Handler: ", this);
+        //console.log("Animation Handler: ", this);
     }
 
     public setPosition(elementName: string, x: number, y: number)
@@ -147,7 +146,7 @@ class AnimationHandler
                 tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
 
             }
-            else
+            else if (this.gameHandler.config.verbose)
             {
                 this.gameHandler.log("Ignore Dynamic Element .. not in the same layer ...");
             }
@@ -179,12 +178,28 @@ class AnimationHandler
 
     public addAnimation(ElementID: string, containerName: string, startAnimation: string, x: number, y: number): PlayableAnimation
     {
-        this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
-        this.gameHandler.log("Default Animation: ", startAnimation);
-        this.gameHandler.log({ "X": x, " Y": y });
+        //this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
+        //this.gameHandler.log("Default Animation: ", startAnimation);
+        //this.gameHandler.log({ "X": x, " Y": y });
 
         var container: InternalAnimationContainer = this.gameHandler.animations[containerName];
         var animation: Animation = container.Animations[startAnimation];
+
+        if (this.UseAnimationGroups)
+        {
+            if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == ""))
+            {
+                animation.AnimationGroup = "group-" + ElementID;
+            }
+            else if (animation.AnimationGroup == "@")
+            {
+                animation.AnimationGroup = "group-" + Math.random() + Math.random();
+            }
+        }
+        else
+        {
+            animation.AnimationGroup = this.staticName;
+        }
 
         var element: PlayableAnimation =
             {
@@ -192,19 +207,11 @@ class AnimationHandler
                 AnimationContainer: container,
                 X: x,
                 Y: y,
-                Animation: null
+                Animation: null,
+                AnimationGroup: animation.AnimationGroup
             };
 
         this.playableAnimations[ElementID] = element;
-
-        if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == ""))
-        {
-            animation.AnimationGroup = "group-" + ElementID;
-        }
-        else if (animation.AnimationGroup == "@")
-        {
-            animation.AnimationGroup = "group-" + Math.random() + Math.random();
-        }
 
         this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
 
@@ -216,13 +223,13 @@ class AnimationHandler
         return <Animation>jQuery.extend({}, input);
     }
 
-    public playAnimation(elementID: string, animation: string, group: string)
+    public playAnimation(elementID: string, animation: string, group?: string)
     {
         var container: PlayableAnimation = this.playableAnimations[elementID];
 
         if ((container.Animation != null) && (container.Animation.ID == animation))
         {
-           // this.gameHandler.warn("Animation '" + animation + "' is allready running for '" + elementID + "'");
+            // this.gameHandler.warn("Animation '" + animation + "' is allready running for '" + elementID + "'");
             return;
         }
 
@@ -232,7 +239,19 @@ class AnimationHandler
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = (this.UseAnimationGroups) ? ("anim-" + container.ID + "-" + group) : this.staticName;
+        if ((group === undefined) || (group == null) || (group == ""))
+        {
+            if ((newAnimation.AnimationGroup === undefined) || (newAnimation.AnimationGroup == null) || (newAnimation.AnimationGroup == ""))
+            {
+                group = "group-" + Math.random();
+            }
+            else
+            {
+                group = newAnimation.AnimationGroup;
+            }
+        }
+
+        var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
         if (!this.UseAnimationGroups)
         {
             group = this.staticName;
@@ -241,10 +260,6 @@ class AnimationHandler
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
 
-        if ((group === undefined) || (group == null) || (group == ""))
-        {
-            group = "group-" + Math.random();
-        }
 
         if (this.gameHandler.config.verbose)
         {
@@ -259,15 +274,16 @@ class AnimationHandler
             {
                 this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
 
-                this.animationGroups[group] = []
+                this.animationGroups[group] = {}
 
 
                 this.eventHandler.addTimer(timerName, function ()
                 {
-                    for (var i = 0; i < self.animationGroups[group].length; i++)
+                    $.each(self.animationGroups[group], function (id, callback)
                     {
-                        self.animationGroups[group][i]();
-                    }
+                        callback();
+                    });
+
 
                     self.eventHandler.callEvent("forceRerender", this, null);
 
@@ -276,14 +292,18 @@ class AnimationHandler
 
             }
 
-            this.animationGroups[group].push(function ()
+            container.AnimationGroup = group;
+
+            this.animationGroups[group][elementID] = function ()
             {
-                self.animationStep(container);
-            });
+                self.animationStep(group, container);
+            };
 
         }
         else
         {
+            container.AnimationGroup = null;
+
             if (this.gameHandler.config.verbose)
             {
                 this.gameHandler.log("Satic Animation applied ....");
@@ -306,11 +326,27 @@ class AnimationHandler
                 return;
             }
 
-            // Remove Timer for Animation:
-            var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+            // Remove from Animation Group:
+            if (container.AnimationGroup != null)
+            {
+                delete this.animationGroups[container.AnimationGroup][container.ID];
+            }
 
-            this.eventHandler.stopTimer(timerName);
+            // Check if ammount of Animations in that Group:
+            var count = 0;
+            for (var k in this.animationGroups[container.AnimationGroup])
+            {
+                count++;
+            }
 
+            if (count == 0)
+            {
+                // Remove Timer for Animation:
+                var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
+                this.eventHandler.stopTimer(timerName);
+            }
+
+            container.AnimationGroup = null;
             container.Animation = null;
         }
         else
@@ -329,7 +365,7 @@ class AnimationHandler
 
     }
 
-    private animationStep(animation: PlayableAnimation)
+    private animationStep(group: string, animation: PlayableAnimation)
     {
         if (animation == null)
         {
@@ -340,6 +376,12 @@ class AnimationHandler
 
         if (anim == null)
         {
+            return;
+        }
+
+        if (group != animation.AnimationGroup)
+        {
+            this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
             return;
         }
 
@@ -469,7 +511,10 @@ class AnimationHandler
     {
         if (this.gameHandler.spriteContainer[name] === undefined)
         {
-            console.warn("No sprite with name '" + name + "' was found!");
+            if (this.gameHandler.config.verbose)
+            {
+                console.warn("No sprite with name '" + name + "' was found!");
+            }
             return;
         }
 

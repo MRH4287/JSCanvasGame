@@ -34,16 +34,14 @@ var AnimationHandler = (function () {
         });
     }
     AnimationHandler.prototype.setLayer = function (layer) {
-        this.gameHandler.log("Animation: Layer set ... ", layer);
-
+        //this.gameHandler.log("Animation: Layer set ... ", layer);
         this.canvas = layer.canvas;
         this.ctx = layer.ctx;
 
         var el = $(this.canvas);
         this.width = el.width();
         this.height = el.height();
-
-        console.log("Animation Handler: ", this);
+        //console.log("Animation Handler: ", this);
     };
 
     AnimationHandler.prototype.setPosition = function (elementName, x, y) {
@@ -97,7 +95,7 @@ var AnimationHandler = (function () {
                 this.gameHandler.log(this.gameHandler.animations);
 
                 tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
-            } else {
+            } else if (this.gameHandler.config.verbose) {
                 this.gameHandler.log("Ignore Dynamic Element .. not in the same layer ...");
             }
         }
@@ -119,28 +117,32 @@ var AnimationHandler = (function () {
     };
 
     AnimationHandler.prototype.addAnimation = function (ElementID, containerName, startAnimation, x, y) {
-        this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
-        this.gameHandler.log("Default Animation: ", startAnimation);
-        this.gameHandler.log({ "X": x, " Y": y });
-
+        //this.gameHandler.log("Add Animation for: ", containerName, this.gameHandler.animations[containerName]);
+        //this.gameHandler.log("Default Animation: ", startAnimation);
+        //this.gameHandler.log({ "X": x, " Y": y });
         var container = this.gameHandler.animations[containerName];
         var animation = container.Animations[startAnimation];
+
+        if (this.UseAnimationGroups) {
+            if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == "")) {
+                animation.AnimationGroup = "group-" + ElementID;
+            } else if (animation.AnimationGroup == "@") {
+                animation.AnimationGroup = "group-" + Math.random() + Math.random();
+            }
+        } else {
+            animation.AnimationGroup = this.staticName;
+        }
 
         var element = {
             ID: ElementID,
             AnimationContainer: container,
             X: x,
             Y: y,
-            Animation: null
+            Animation: null,
+            AnimationGroup: animation.AnimationGroup
         };
 
         this.playableAnimations[ElementID] = element;
-
-        if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == "")) {
-            animation.AnimationGroup = "group-" + ElementID;
-        } else if (animation.AnimationGroup == "@") {
-            animation.AnimationGroup = "group-" + Math.random() + Math.random();
-        }
 
         this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
 
@@ -164,17 +166,21 @@ var AnimationHandler = (function () {
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        var timerName = (this.UseAnimationGroups) ? ("anim-" + container.ID + "-" + group) : this.staticName;
+        if ((group === undefined) || (group == null) || (group == "")) {
+            if ((newAnimation.AnimationGroup === undefined) || (newAnimation.AnimationGroup == null) || (newAnimation.AnimationGroup == "")) {
+                group = "group-" + Math.random();
+            } else {
+                group = newAnimation.AnimationGroup;
+            }
+        }
+
+        var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
         if (!this.UseAnimationGroups) {
             group = this.staticName;
         }
 
         //this.gameHandler.log(timerName);
         //this.gameHandler.log(container);
-        if ((group === undefined) || (group == null) || (group == "")) {
-            group = "group-" + Math.random();
-        }
-
         if (this.gameHandler.config.verbose) {
             this.gameHandler.log("Animation Group: ", group);
         }
@@ -185,21 +191,25 @@ var AnimationHandler = (function () {
             if (this.animationGroups[group] === undefined) {
                 this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
 
-                this.animationGroups[group] = [];
+                this.animationGroups[group] = {};
 
                 this.eventHandler.addTimer(timerName, function () {
-                    for (var i = 0; i < self.animationGroups[group].length; i++) {
-                        self.animationGroups[group][i]();
-                    }
+                    $.each(self.animationGroups[group], function (id, callback) {
+                        callback();
+                    });
 
                     self.eventHandler.callEvent("forceRerender", this, null);
                 }, newAnimation.Speed);
             }
 
-            this.animationGroups[group].push(function () {
-                self.animationStep(container);
-            });
+            container.AnimationGroup = group;
+
+            this.animationGroups[group][elementID] = function () {
+                self.animationStep(group, container);
+            };
         } else {
+            container.AnimationGroup = null;
+
             if (this.gameHandler.config.verbose) {
                 this.gameHandler.log("Satic Animation applied ....");
             }
@@ -216,11 +226,24 @@ var AnimationHandler = (function () {
                 return;
             }
 
-            // Remove Timer for Animation:
-            var timerName = "anim-" + container.ID + "-" + container.Animation.ID;
+            // Remove from Animation Group:
+            if (container.AnimationGroup != null) {
+                delete this.animationGroups[container.AnimationGroup][container.ID];
+            }
 
-            this.eventHandler.stopTimer(timerName);
+            // Check if ammount of Animations in that Group:
+            var count = 0;
+            for (var k in this.animationGroups[container.AnimationGroup]) {
+                count++;
+            }
 
+            if (count == 0) {
+                // Remove Timer for Animation:
+                var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
+                this.eventHandler.stopTimer(timerName);
+            }
+
+            container.AnimationGroup = null;
             container.Animation = null;
         } else {
             var timerName = this.staticName;
@@ -235,7 +258,7 @@ var AnimationHandler = (function () {
         }
     };
 
-    AnimationHandler.prototype.animationStep = function (animation) {
+    AnimationHandler.prototype.animationStep = function (group, animation) {
         if (animation == null) {
             return;
         }
@@ -243,6 +266,11 @@ var AnimationHandler = (function () {
         var anim = animation.Animation;
 
         if (anim == null) {
+            return;
+        }
+
+        if (group != animation.AnimationGroup) {
+            this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
             return;
         }
 
@@ -332,7 +360,9 @@ var AnimationHandler = (function () {
 
     AnimationHandler.prototype.drawImage = function (name, offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight) {
         if (this.gameHandler.spriteContainer[name] === undefined) {
-            console.warn("No sprite with name '" + name + "' was found!");
+            if (this.gameHandler.config.verbose) {
+                console.warn("No sprite with name '" + name + "' was found!");
+            }
             return;
         }
 
