@@ -20,6 +20,18 @@
     var _bufferCanvas;
     var _bufferCtx;
 
+    var _fps = 0;
+    var _now = Date.now();
+    var _lastUpdate = Date.now();
+
+    // The higher this value, the less the FPS will be affected by quick changes
+    // Setting this to 1 will show you the FPS of the last sampled frame only
+    var _fpsFilter = 5;
+
+    var _minTimeBetweenFrames = 5;
+    var _lastCheck = null;
+
+
     var _layer =
         {
             BottomStaticLayer:
@@ -121,13 +133,50 @@
 
         _eventHandler.addEventListener("forceRerender", function ()
         {
-            _render();
+            // Change that back if it won't work as wanted ...
+            // _render();
+            _beginDrawing();
+        });
+
+        _eventHandler.addEventListener("postInit", function ()
+        {
+            _beginDrawing();
         });
 
         _eventHandler.callEvent("renderPostInit", this, null);
 
+        
     }
 
+    var _beginDrawing = function()
+    {
+        if ((_lastCheck != null) && ((Date.now() - _lastCheck) < _minTimeBetweenFrames))
+        {
+            return;
+        }
+
+        _lastCheck = Date.now();
+        
+
+        _render();
+
+        
+        var thisFrameFPS = 1000 / ((now = Date.now()) - _lastUpdate);
+        if (_now != _lastUpdate)
+        {
+            _fps += (thisFrameFPS - _fps) / _fpsFilter;
+            _lastUpdate = _now;
+        }
+        
+
+
+    }
+
+
+    this.getFPS = function()
+    {
+        return _fps;
+    }
 
     var _initLayer = function ()
     {

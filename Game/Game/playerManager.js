@@ -13,7 +13,7 @@ var PlayerManager = (function () {
             Y: 0
         };
         this.playerSpeed = 0.5;
-        this.updatesPerSecond = 10;
+        this.updatesPerSecond = 20;
         this.playerElementName = "player";
         this.playerState = 0 /* Standing */;
         this.moveDirection = 4 /* None */;

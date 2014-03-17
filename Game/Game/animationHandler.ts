@@ -19,7 +19,7 @@ class AnimationHandler
     private layer: number;
 
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
-    private animationGroups: { [id: string]: { [id: string]: { (): void } } } = {};
+    private animationGroups: { [id: string]: {[index: string ]: boolean } } = {}; // { [id: string]: { (): void } }
 
     private UseAnimationGroups: boolean = true;
     private staticName: string = null;
@@ -347,18 +347,26 @@ class AnimationHandler
                     this.gameHandler.log("Dynamic Animation. Start timer: ", timerName);
                 }
 
-                this.animationGroups[group] = {}
+                this.animationGroups[group] = {};
 
 
                 this.eventHandler.addTimer(timerName, function ()
                 {
+                    /*
                     $.each(self.animationGroups[group], function (id, callback)
                     {
                         callback();
                     });
+                    */
+                    var animinations: PlayableAnimation[] = [];
+                    $.each(self.animationGroups[group], function (name, _)
+                    {
+                        animinations.push(self.playableAnimations[name]);
+                    });
 
+                    self.animationStep(group, animinations);
 
-                    self.eventHandler.callEvent("forceRerender", this, null);
+                    self.eventHandler.callEvent("forceRerender", self, null);
 
 
                 }, newAnimation.Speed);
@@ -367,10 +375,14 @@ class AnimationHandler
 
             container.AnimationGroup = group;
 
+            this.animationGroups[group][elementID] = true;
+
+            /*
             this.animationGroups[group][elementID] = function ()
             {
                 self.animationStep(group, container);
             };
+            */
 
         }
         else
@@ -438,69 +450,106 @@ class AnimationHandler
 
     }
 
-    private animationStep(group: string, animation: PlayableAnimation)
+    private animationStep(group: string, animation: PlayableAnimation[])
     {
         if (animation == null)
         {
             return;
         }
 
-        var anim: Animation = animation.Animation;
-
-        if (anim == null)
+        if (animation.length == 0)
         {
             return;
         }
 
-        if (group != animation.AnimationGroup)
+        //var anim: Animation = animation[0].Animation;
+
+        var anims: Animation[] = [];
+        $.each(animation, function (i, el)
         {
-            this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
+            anims.push(el.Animation);
+        });
+
+
+        if (anims.length == 0)
+        {
             return;
         }
 
-        var state: number = anim.AnimationState;
+        if (group != animation[0].AnimationGroup)
+        {
+            //this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
+            return;
+        }
 
-        state += (anim.IsReverse) ? -1 : 1;
+        var state: number = anims[0].AnimationState;
 
-        if ((state >= anim.ImageCount) || (state < 0))
+        state += (anims[0].IsReverse) ? -1 : 1;
+
+        if ((state >= anims[0].ImageCount) || (state < 0))
         {
             // End of Animation reached:
-            if (anim.Loop)
+            if (anims[0].Loop)
             {
-                if (anim.ReverseOnEnd)
+                if (anims[0].ReverseOnEnd)
                 {
-                    if (anim.IsReverse)
+                    if (anims[0].IsReverse)
                     {
-                        anim.AnimationState = 0;
-                        anim.IsReverse = false;
+                        $.each(anims, function (k, el)
+                        {
+                            el.AnimationState = 0;
+                        });
+
+                        //anim.AnimationState = 0;
+                        anims[0].IsReverse = false;
                     }
                     else
                     {
-                        anim.AnimationState = anim.ImageCount - 1;
-                        anim.IsReverse = true;
+                        $.each(anims, function (k, el)
+                        {
+                            el.AnimationState = anims[0].ImageCount - 1;
+                        });
+
+
+                        anims[0].IsReverse = true;
                     }
                 }
                 else
                 {
-                    if (anim.IsReverse)
+                    if (anims[0].IsReverse)
                     {
-                        anim.AnimationState = anim.ImageCount - 1;
+                        $.each(anims, function (k, el)
+                        {
+                            el.AnimationState = anims[0].ImageCount - 1;
+                        });
+
                     }
                     else
                     {
-                        anim.AnimationState = 0;
+                        $.each(anims, function (k, el)
+                        {
+                            el.AnimationState = 0;
+                        });
+
                     }
                 }
             }
             else
             {
-                this.stopAnimation(animation.ID);
+                $.each(anims, function (k, el)
+                {
+                    this.stopAnimation(el.ID);
+                });
             }
 
         }
         else
         {
-            anim.AnimationState = state;
+            $.each(anims, function (k, el)
+            {
+                el.AnimationState = state;
+            });
+
         }
 
 

@@ -22,7 +22,7 @@ class PlayerManager
     }
 
     private playerSpeed: number = 0.5;
-    private updatesPerSecond: number = 10;
+    private updatesPerSecond: number = 20;
 
 
     private playerElementName: string = "player";

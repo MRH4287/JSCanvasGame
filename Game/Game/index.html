@@ -21,6 +21,8 @@
 
     <canvas id="canvas"></canvas>
 
+    <span id="fps">0</span>
+
     <audio controls id="themeSound">
         <source src="sound/theme.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
@@ -45,6 +47,12 @@
 
         var script = new ScriptHandler(gameHandler);
         var mp = null;
+
+        var fps = $("#fps");
+        setInterval(function ()
+        {
+            fps.text(render.getFPS().toFixed(1) + "fps");
+        }, 1000);
 
 
         eventHandler.addEventListener("postInit", function ()
