@@ -8,7 +8,8 @@
 /// <reference path="windowManager.ts" />
 /// <reference path="scriptHandler.ts" />
 /// <reference path="NPCHandler.ts" />
-
+/// <reference path="MultiplayerHandler.ts" />
+/// <reference path="Profiler.ts" />
 
 class GameHandler
 {
@@ -70,10 +71,14 @@ class GameHandler
         var self = this;
         window.setTimeout(function ()
         {
+            self.eventHandler.callEvent("TaskCreated", self, "Player - INIT");
+
             // Init Animation Container is called in loadMap
             self.loadMap();
  
             this.eventHandler.callEvent("postInit", this, null);
+
+            self.eventHandler.callEvent("TaskDisposed", self, "Player - INIT");
         }, 100);
 
         

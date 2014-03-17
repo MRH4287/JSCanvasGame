@@ -94,7 +94,7 @@ var PlayerManager = (function () {
         }
 
         if (initialCall) {
-            this.playerAnimation.playAnimation(this.playerElementName, idleAnimation, "");
+            this.playAnimation(idleAnimation);
         }
 
         var target = {
@@ -104,18 +104,26 @@ var PlayerManager = (function () {
 
         //this.gameHandler.log("Want to move to: ", target);
         //this.gameHandler.log("Play Animation: ", animation);
+        this.moveDirection = direction;
+
         if (this.gameHandler.isCoordPassable(target.X, target.Y)) {
+            this.gameHandler.eventHandler.callEvent("PlayerStartMoving", this, {
+                Target: target,
+                Direction: direction,
+                Speed: this.playerSpeed,
+                Position: this.position
+            });
+
             var offsetPerUpdate = (1 / this.playerSpeed) / this.updatesPerSecond;
             var intervall = (1 / this.updatesPerSecond) * 1000;
 
             this.targetPosition = target;
-            this.moveDirection = direction;
 
             this.playerState = 1 /* Walking */;
 
             // Start Animation:
             if (initialCall) {
-                this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+                this.playAnimation(animation);
             }
 
             var self = this;
@@ -160,8 +168,10 @@ var PlayerManager = (function () {
         }
 
         if (!walkAgain) {
-            this.playerAnimation.playAnimation(this.playerElementName, animation, "");
+            this.playAnimation(animation);
             this.playerState = 0 /* Standing */;
+
+            this.gameHandler.eventHandler.callEvent("PlayerStopMoving", this, null);
         } else {
             this.initMove(this.moveDirection, false);
         }
@@ -219,7 +229,11 @@ var PlayerManager = (function () {
 
             //console.log("Position updated: ", newPosition);
             window.setTimeout(function () {
+                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "Player - PositionUpdateStep");
+
                 self.positionUpdateStep(self, direction, offsetPerUpdate, intervall, callback);
+
+                self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "Player - PositionUpdateStep");
             }, intervall);
         }
     };
@@ -281,9 +295,13 @@ var PlayerManager = (function () {
 
             //console.log("CheckDiff: ", diff);
             if (diff > 120000) {
-                self.playerAnimation.playAnimation(self.playerElementName, "sleep", "");
+                self.playAnimation("sleep");
             }
         });
+    };
+
+    PlayerManager.prototype.getPosition = function () {
+        return this.position;
     };
 
     PlayerManager.prototype.keyDown = function (key) {
@@ -326,6 +344,11 @@ var PlayerManager = (function () {
         this.lastAction = Date.now();
 
         this.gameHandler.eventHandler.callEvent("PlayerAction", this, offset);
+    };
+
+    PlayerManager.prototype.playAnimation = function (name) {
+        this.gameHandler.eventHandler.callEvent("playerAnimationChange", this, name);
+        this.playerAnimation.playAnimation(this.playerElementName, name);
     };
     return PlayerManager;
 })();

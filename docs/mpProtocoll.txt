@@ -1,0 +1,66 @@
+{
+	"Type": "PlayerJoined",
+	"ID": "...",
+	"Position": 
+	{
+		"X": 0,
+		"Y": 0
+	},
+	"AnimationContainer": "pichu",
+	"Animation": "stand"
+}
+
+{
+	"Type": "ConnectionRequest",
+	"Position":
+	{
+		"X": 0,
+		"Y": 0
+	},
+	"AnimationContainer": "pichu",
+	"Animation": "stand"
+
+}
+
+{
+	"Type": "PlayerBeginMove",
+	"ID": "...",
+	"Position": 
+	{
+		"X": 0,
+		"Y": 0
+	},
+	"Direction": 0,
+	"Speed": 0,
+	"Target": 
+	{
+		"X": 0,
+		"Y": 0
+	}
+}
+
+{
+	"Type": "PlayerStopMove",
+	"ID": "..."
+}
+
+{
+	"Type": "PlayerDisconnected",
+	"ID": "..."
+}
+
+{
+	"Type": "PlayerPositionChanged",
+	"ID": "...",
+	"Position":
+	{
+		"X": 0,
+		"Y": 0
+	}
+}
+
+{
+	"Type": "PlayerAnimationChanged",
+	"ID": "...",
+	"Animation": "..."
+}

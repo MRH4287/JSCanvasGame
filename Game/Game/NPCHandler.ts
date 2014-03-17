@@ -50,7 +50,11 @@ class NPCHandler
 
         window.setTimeout(function ()
         {
+            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
+
             self.gameHandler.eventHandler.callEvent("npcInit", self, null);
+
+            self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - Constructor");
         }, 100);
 
         
@@ -79,6 +83,18 @@ class NPCHandler
 
     }
 
+    public removeNPC(name: string)
+    {
+        if (this.npcList[name] === undefined)
+        {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        this.animation.stopAnimation(this.npcList[name].GUID);
+        delete this.npcList[name];
+    }
+
     public setAnimation(name: string, animationName: string)
     {
         if (this.npcList[name] === undefined)
@@ -91,7 +107,7 @@ class NPCHandler
     }
 
 
-    public setPosition(name: string, position: { X: number; Y: number })
+    public setPosition(name: string, position: { X: number; Y: number }, rerender = true)
     {
         if (this.npcList[name] === undefined)
         {
@@ -100,11 +116,41 @@ class NPCHandler
         }
 
         this.npcList[name].Position = position;
-        this.animation.setPosition(this.npcList[name].GUID, position.X, position.Y);
+        this.animation.setPosition(this.npcList[name].GUID, position.X, position.Y, rerender);
+    }
+
+    public NPCMotionStop(name: string)
+    {
+        if (this.npcList[name] === undefined)
+        {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        this.npcList[name].State = PlayerState.Standing;
+    }
+
+    public advInitMove(name: string, position: { X: number; Y: number }, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
+    {
+
+
+        var npc: NPCData = this.npcList[name];
+
+        if ((npc.State == PlayerState.Walking) && (!ignoreChecks))
+        {
+            this.gameHandler.log("NPC is already walking", npc);
+            return;
+        }
+
+        this.setPosition(name, position);
+        npc.Speed = speed;
+        this.initMove(name, direction, callback, ignoreChecks);
+
+
     }
 
 
-    public initMove(name: string, direction: WalkDirection, callback?: () => any)
+    public initMove(name: string, direction: WalkDirection, callback?: () => any, ignoreChecks: boolean = false)
     {
         if (this.npcList[name] === undefined)
         {
@@ -114,7 +160,7 @@ class NPCHandler
 
         var npc: NPCData = this.npcList[name];
 
-        if (npc.State == PlayerState.Walking)
+        if ((npc.State == PlayerState.Walking) && (!ignoreChecks))
         {
             this.gameHandler.log("NPC is already walking", npc);
             return;
@@ -237,8 +283,15 @@ class NPCHandler
 
     }
 
+
+
     private positionUpdateStep(npc: NPCData, direction: WalkDirection, offsetPerUpdate: number, intervall: number, callback?: (npc: NPCData) => any)
     {
+        if (npc.State == PlayerState.Standing)
+        {
+            return;
+        }
+
         var walkOffset = {
             X: 0,
             Y: 0
@@ -303,7 +356,11 @@ class NPCHandler
 
             window.setTimeout(function ()
             {
+                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
+
                 self.positionUpdateStep(npc, direction, offsetPerUpdate, intervall, callback);
+
+                self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - PlayerPositonUpdateStep");
             }, intervall);
         }
 

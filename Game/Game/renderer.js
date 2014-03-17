@@ -264,7 +264,14 @@
 
         function okCallback()
         {
-            window.setTimeout(callback, 1);
+            window.setTimeout(function ()
+            {
+                _eventHandler.callEvent("TaskCreated", this, "Renderer - RenderMapCallback");
+
+                callback();
+
+                _eventHandler.callEvent("TaskDisposed", this, "Renderer - RenderMapCallback");
+            }, 1);
 
             _staticRendered = true;
 
@@ -349,7 +356,11 @@
 
             window.setTimeout(function ()
             {
+                _eventHandler.callEvent("TaskCreated", this, "Renderer - DrawImage");
+
                 _ctx.drawImage(_bufferCanvas, _offset.x * -1, _offset.y * -1);
+
+                _eventHandler.callEvent("TaskDisposed", this, "Renderer - DrawImage");
 
             }, 2);
         }

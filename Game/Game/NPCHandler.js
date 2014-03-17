@@ -30,7 +30,11 @@ var NPCHandler = (function () {
         });
 
         window.setTimeout(function () {
+            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
+
             self.gameHandler.eventHandler.callEvent("npcInit", self, null);
+
+            self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - Constructor");
         }, 100);
     }
     NPCHandler.prototype.addNPC = function (name, position, animationContainer, defaultAnimation, speed) {
@@ -52,6 +56,16 @@ var NPCHandler = (function () {
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
     };
 
+    NPCHandler.prototype.removeNPC = function (name) {
+        if (this.npcList[name] === undefined) {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        this.animation.stopAnimation(this.npcList[name].GUID);
+        delete this.npcList[name];
+    };
+
     NPCHandler.prototype.setAnimation = function (name, animationName) {
         if (this.npcList[name] === undefined) {
             this.gameHandler.error("No NPC with this ID found!", name);
@@ -61,17 +75,42 @@ var NPCHandler = (function () {
         this.animation.playAnimation(this.npcList[name].GUID, animationName);
     };
 
-    NPCHandler.prototype.setPosition = function (name, position) {
+    NPCHandler.prototype.setPosition = function (name, position, rerender) {
+        if (typeof rerender === "undefined") { rerender = true; }
         if (this.npcList[name] === undefined) {
             this.gameHandler.error("No NPC with this ID found!", name);
             return;
         }
 
         this.npcList[name].Position = position;
-        this.animation.setPosition(this.npcList[name].GUID, position.X, position.Y);
+        this.animation.setPosition(this.npcList[name].GUID, position.X, position.Y, rerender);
     };
 
-    NPCHandler.prototype.initMove = function (name, direction, callback) {
+    NPCHandler.prototype.NPCMotionStop = function (name) {
+        if (this.npcList[name] === undefined) {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        this.npcList[name].State = 0 /* Standing */;
+    };
+
+    NPCHandler.prototype.advInitMove = function (name, position, direction, speed, callback, ignoreChecks) {
+        if (typeof ignoreChecks === "undefined") { ignoreChecks = false; }
+        var npc = this.npcList[name];
+
+        if ((npc.State == 1 /* Walking */) && (!ignoreChecks)) {
+            this.gameHandler.log("NPC is already walking", npc);
+            return;
+        }
+
+        this.setPosition(name, position);
+        npc.Speed = speed;
+        this.initMove(name, direction, callback, ignoreChecks);
+    };
+
+    NPCHandler.prototype.initMove = function (name, direction, callback, ignoreChecks) {
+        if (typeof ignoreChecks === "undefined") { ignoreChecks = false; }
         if (this.npcList[name] === undefined) {
             this.gameHandler.error("No NPC with this ID found!", name);
             return;
@@ -79,7 +118,7 @@ var NPCHandler = (function () {
 
         var npc = this.npcList[name];
 
-        if (npc.State == 1 /* Walking */) {
+        if ((npc.State == 1 /* Walking */) && (!ignoreChecks)) {
             this.gameHandler.log("NPC is already walking", npc);
             return;
         }
@@ -183,6 +222,10 @@ var NPCHandler = (function () {
     };
 
     NPCHandler.prototype.positionUpdateStep = function (npc, direction, offsetPerUpdate, intervall, callback) {
+        if (npc.State == 0 /* Standing */) {
+            return;
+        }
+
         var walkOffset = {
             X: 0,
             Y: 0
@@ -232,7 +275,11 @@ var NPCHandler = (function () {
             var self = this;
 
             window.setTimeout(function () {
+                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
+
                 self.positionUpdateStep(npc, direction, offsetPerUpdate, intervall, callback);
+
+                self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - PlayerPositonUpdateStep");
             }, intervall);
         }
     };

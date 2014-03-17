@@ -13,6 +13,8 @@
     <script src="windowManager.js"></script>
     <script src="scriptHandler.js"></script>
     <script src="NPCHandler.js"></script>
+    <script src="MultiplayerHandler.js"></script>
+    <script src="Profiler.js"></script>
 </head>
 <body>
     <div class="output"></div>
@@ -37,16 +39,13 @@
         var render = new Renderer($("#canvas")[0], gameHandler);
         gameHandler.setRenderer(render);
 
+        var profiler = new Profiler(gameHandler);
+
         gameHandler.init();
 
         var script = new ScriptHandler(gameHandler);
-        
+        var mp = new MultiplayerHandler(gameHandler, "ws://server.mrh-development.de:8181");
 
-        var run = false;
-        var offset = 0;
-        var moveOffset = 5;
-        var maxMove = 600;
-        var minMove = -0;
 
         eventHandler.addEventListener("postInit", function ()
         {
@@ -55,14 +54,35 @@
 
         eventHandler.addEventListener("npcInit", function ()
         {
-            gameHandler.npcManager.addNPC("test", { X: 24, Y: 10 }, "pichu", "stand");
+            //gameHandler.npcManager.addNPC("test", { X: 24, Y: 10 }, "pichu", "stand");
         });
 
 
     </script>
 
     <p>Use Cursor Keys to move.</p>
-    <p>Press Return for "sleep" Animation</p>
+    
+    <button id="connect">Connect to Multiplayer Server (WIP)</button>
+
+    <script>
+        $(document).ready(function ()
+        {
+            $("#connect").click(function ()
+            {
+                
+                mp.connect();
+
+                
+                $(this).before("<p>Connected</p>").remove();
+
+
+            });
+
+
+        });
+
+    </script>
+
 
 </body>
 </html>

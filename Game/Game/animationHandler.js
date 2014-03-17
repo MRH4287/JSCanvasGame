@@ -44,12 +44,15 @@ var AnimationHandler = (function () {
         //console.log("Animation Handler: ", this);
     };
 
-    AnimationHandler.prototype.setPosition = function (elementName, x, y) {
+    AnimationHandler.prototype.setPosition = function (elementName, x, y, rerender) {
+        if (typeof rerender === "undefined") { rerender = true; }
         if (this.playableAnimations[elementName] !== undefined) {
             this.playableAnimations[elementName].X = x;
             this.playableAnimations[elementName].Y = y;
 
-            this.eventHandler.callEvent("forceRerender", this, null);
+            if (rerender) {
+                this.eventHandler.callEvent("forceRerender", this, null);
+            }
         }
     };
 
@@ -109,11 +112,6 @@ var AnimationHandler = (function () {
         console.log(this.playableAnimations);
 
         var self = this;
-
-        //ForceRerender
-        window.setTimeout(function () {
-            //self.eventHandler.callEvent("forceRerender", this, null);
-        }, 10);
     };
 
     AnimationHandler.prototype.addAnimation = function (ElementID, containerName, startAnimation, x, y) {

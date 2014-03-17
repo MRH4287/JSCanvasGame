@@ -77,14 +77,17 @@ class AnimationHandler
         //console.log("Animation Handler: ", this);
     }
 
-    public setPosition(elementName: string, x: number, y: number)
+    public setPosition(elementName: string, x: number, y: number, rerender = true)
     {
         if (this.playableAnimations[elementName] !== undefined)
         {
             this.playableAnimations[elementName].X = x;
             this.playableAnimations[elementName].Y = y;
 
-            this.eventHandler.callEvent("forceRerender", this, null);
+            if (rerender)
+            {
+                this.eventHandler.callEvent("forceRerender", this, null);
+            }
         }
     }
 
@@ -166,12 +169,7 @@ class AnimationHandler
         console.log(this.playableAnimations);
 
         var self = this;
-        //ForceRerender
-        window.setTimeout(function ()
-        {
-            //self.eventHandler.callEvent("forceRerender", this, null);
 
-        }, 10);
 
 
     }
@@ -217,6 +215,7 @@ class AnimationHandler
 
         return element;
     }
+
 
     private getNewAnimationInstance(input: Animation): Animation
     {
