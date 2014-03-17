@@ -109,9 +109,12 @@ namespace WebSocketServer
                             id = this.userIDTable.Max(el => el.Value) + 1;
                         }
 
+                        var username = (this.userData.Any(el => el.Value.Username == ((string)element.Username))) ? ("Guest-" + (new Random()).Next(1000)) : element.Username;
+
                         var response = new ConnectionResponse()
                         {
-                            ID = id.ToString()
+                            ID = id.ToString(),
+                            Username = username
                         };
 
                         this.userIDTable[origin.ConnectionInfo.Id] = id;
@@ -123,7 +126,8 @@ namespace WebSocketServer
                             {
                                 X = element.Position.X,
                                 Y = element.Position.Y
-                            }
+                            },
+                            Username = username
 
                         };
 
@@ -140,7 +144,8 @@ namespace WebSocketServer
                                 Y = element.Position.Y
                             },
                             AnimationContainer = element.AnimationContainer,
-                            Animation = element.Animation
+                            Animation = element.Animation,
+                            Username = username
 
                         };
 
@@ -157,7 +162,8 @@ namespace WebSocketServer
                                     Animation = user.Value.Animation,
                                     AnimationContainer = user.Value.AnimationContainer,
                                     ID = user.Key.ToString(),
-                                    Position = user.Value.Position
+                                    Position = user.Value.Position,
+                                    Username = user.Value.Username
 
                                 };
 

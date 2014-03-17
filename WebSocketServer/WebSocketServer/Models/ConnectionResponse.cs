@@ -11,6 +11,10 @@ namespace WebSocketServer.Models
         public ConnectionResponse()
             : base("ConnectionResponse")
         {
+           
         }
+
+        public string Username { get; set; }
+
     }
 }

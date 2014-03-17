@@ -20,7 +20,8 @@ var GameHandler = (function () {
             showBlocking: true,
             verbose: false,
             initStaticAnimations: true,
-            playStaticAnimations: true
+            playStaticAnimations: true,
+            hideOwnUsername: true
         };
         this.elements = {};
         this.animations = {};
@@ -288,6 +289,22 @@ var GameHandler = (function () {
     };
 
     // ---------------------------------------
+    GameHandler.prototype.execVerbose = function (data) {
+        this.config.verbose = true;
+        data();
+        this.config.verbose = false;
+    };
+
+    GameHandler.prototype.activateVerbose = function (time) {
+        if (typeof time === "undefined") { time = 500; }
+        this.config.verbose = true;
+
+        var self = this;
+        window.setTimeout(function () {
+            self.config.verbose = false;
+        }, time);
+    };
+
     // Global Helper Functions:
     GameHandler.prototype.getFile = function (url, callback, dataType) {
         var async = (!(typeof (callback) == "undefined"));

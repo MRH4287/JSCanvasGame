@@ -8,6 +8,7 @@ var AnimationHandler = (function () {
         this.animationGroups = {};
         this.UseAnimationGroups = true;
         this.staticName = null;
+        this.genericDrawActions = {};
         if (staticName !== undefined) {
             this.UseAnimationGroups = false;
             this.staticName = staticName;
@@ -25,6 +26,14 @@ var AnimationHandler = (function () {
             if (self.gameHandler.config.playStaticAnimations) {
                 self.renderAnimations(self);
             }
+
+            $.each(self.genericDrawActions, function (name, data) {
+                if (self.gameHandler.config.verbose) {
+                    self.gameHandler.log("Draw Generic Action: ", data, self);
+                }
+
+                data.Action();
+            });
         });
 
         this.eventHandler.addEventListener("postTileUpdate", function (sender, tile) {
@@ -91,27 +100,17 @@ var AnimationHandler = (function () {
 
         if (dynamic) {
             if (def.Level == this.layer) {
-                this.gameHandler.log("Load Animation for item: ", tile);
+                if (this.gameHandler.config.verbose) {
+                    this.gameHandler.log("Load Animation for item: ", tile);
+                }
 
                 var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" + tile.ID;
-
-                this.gameHandler.log(this.gameHandler.animations);
 
                 tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
             } else if (this.gameHandler.config.verbose) {
                 this.gameHandler.log("Ignore Dynamic Element .. not in the same layer ...");
             }
         }
-    };
-
-    AnimationHandler.prototype.test = function () {
-        this.gameHandler.loadAnimation("data/animations/pichu.json");
-
-        this.addAnimation("test", "pichu", "sleep", 6, 6);
-
-        console.log(this.playableAnimations);
-
-        var self = this;
     };
 
     AnimationHandler.prototype.addAnimation = function (ElementID, containerName, startAnimation, x, y) {
@@ -145,6 +144,65 @@ var AnimationHandler = (function () {
         this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
 
         return element;
+    };
+
+    AnimationHandler.prototype.drawColorRect = function (name, x, y, width, height, red, green, blue, opacity, rerender) {
+        if (typeof opacity === "undefined") { opacity = 1; }
+        if (typeof rerender === "undefined") { rerender = true; }
+        this.drawRect(name, x, y, width, height, "rgba(" + red + "," + green + "," + blue + "," + opacity + ")", rerender);
+    };
+
+    AnimationHandler.prototype.writeText = function (name, text, x, y, font, textBaseline, textAlign, fillStyle, maxWidth, rerender) {
+        if (typeof font === "undefined") { font = "bold 12px sans-serif"; }
+        if (typeof textBaseline === "undefined") { textBaseline = "top"; }
+        if (typeof textAlign === "undefined") { textAlign = "left"; }
+        if (typeof fillStyle === "undefined") { fillStyle = "rgba(0,0,0,1)"; }
+        if (typeof rerender === "undefined") { rerender = true; }
+        var self = this;
+
+        this.genericDrawActions[name] = {
+            Type: "Text",
+            Action: function () {
+                self.ctx.font = font;
+                self.ctx.textBaseline = textBaseline;
+                self.ctx.textAlign = textAlign;
+                self.ctx.fillStyle = fillStyle;
+                if (maxWidth !== undefined) {
+                    self.ctx.fillText(text, x, y, maxWidth);
+                } else {
+                    self.ctx.fillText(text, x, y);
+                }
+            }
+        };
+
+        if (rerender) {
+            this.eventHandler.callEvent("forceRerender", this, null);
+        }
+    };
+
+    AnimationHandler.prototype.drawRect = function (name, x, y, width, height, fillStyle, rerender) {
+        if (typeof fillStyle === "undefined") { fillStyle = "rgba(225,225,225,1)"; }
+        if (typeof rerender === "undefined") { rerender = true; }
+        var self = this;
+        this.genericDrawActions[name] = {
+            Type: "Rectangle",
+            Action: function () {
+                self.ctx.fillStyle = fillStyle;
+                self.ctx.fillRect(x, y, width, height);
+            }
+        };
+
+        if (rerender) {
+            this.eventHandler.callEvent("forceRerender", this, null);
+        }
+    };
+
+    AnimationHandler.prototype.removeGenericDraw = function (name) {
+        if (this.genericDrawActions[name] !== undefined) {
+            delete this.genericDrawActions[name];
+
+            this.eventHandler.callEvent("forceRerender", this, null);
+        }
     };
 
     AnimationHandler.prototype.getNewAnimationInstance = function (input) {

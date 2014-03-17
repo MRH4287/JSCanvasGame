@@ -255,7 +255,10 @@
     {
         _eventHandler.callEvent("renderPreMapRender", this, null);
 
-        _log("Map rendering ...");
+        if (_gameHandler.config.verbose)
+        {
+            _log("Map rendering ...");
+        }
 
         _clear(_layer.BottomStaticLayer.ctx);
         _clear(_layer.MiddleStaticLayer.ctx);
@@ -393,7 +396,7 @@
         //_render();
     }
 
-    this.getBottomAnimationLayer = function()
+    this.getBottomAnimationLayer = function ()
     {
         return _layer.BottomAnimationLayer;
     }
@@ -419,7 +422,7 @@
         return _config.tileSize;
     }
 
-    this.getMapSize = function()
+    this.getMapSize = function ()
     {
         return {
             X: _staticWidth,
@@ -498,7 +501,7 @@
             _addImage(_layer.TopStaticLayer.ctx, top, x, y, undefined, undefined, callback("top"));
         }
 
-      
+
     }
 
     var _addImage = function (ctx, tile, x, y, width, height, imageOnLoad)

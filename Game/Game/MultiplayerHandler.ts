@@ -12,13 +12,15 @@ class MultiplayerHandler
     private socket: WebSocket;
     private id: string = undefined;
 
-    // --- Change that ...
-    private npcName: string = undefined;
+    private username: string = undefined;
 
-    constructor(gameHandler: GameHandler, serverAdress: string)
+    private usernameTable: { [index: string]: string } = {};
+
+    constructor(gameHandler: GameHandler, serverAdress: string, username: string)
     {
         this.gameHandler = gameHandler;
         this.serverAdress = serverAdress;
+        this.username = username;
 
         var self = this;
         this.gameHandler.eventHandler.addEventListener("PlayerPositionChanged", function (s, arg)
@@ -31,6 +33,12 @@ class MultiplayerHandler
                 }
 
             self.send(data);
+
+            if (!self.gameHandler.config.hideOwnUsername)
+            {
+                // Render the Lable above the Player:
+                self.renderPlayerLabel(self.username, arg);
+            }
         });
 
         this.gameHandler.eventHandler.addEventListener("playerAnimationChange", function (s, arg)
@@ -80,19 +88,6 @@ class MultiplayerHandler
 
     }
 
-    private join()
-    {
-        var data =
-            {
-                "Type": MessageType[MessageType.PlayerJoined],
-                "ID": this.id,
-                "Position": this.gameHandler.playerManager.getPosition()
-            };
-
-
-        this.send(data);
-    }
-
 
     public connect()
     {
@@ -107,7 +102,8 @@ class MultiplayerHandler
                 "Type": "ConnectionRequest",
                 "Position": self.gameHandler.playerManager.getPosition(),
                 "AnimationContainer": "pichu",
-                "Animation": "stand"
+                "Animation": "stand",
+                "Username": self.username
 
             };
 
@@ -139,6 +135,10 @@ class MultiplayerHandler
 
                                     self.gameHandler.npcManager.addNPC(data.ID, data.Position, data.AnimationContainer, data.Animation);
 
+                                    self.usernameTable[data.ID] = data.Username;
+
+                                    self.renderPlayerLabel(data.Username, data.Position);
+
                                     break;
 
                                 case MessageType.PlayerBeginMove:
@@ -150,6 +150,7 @@ class MultiplayerHandler
                                 case MessageType.PlayerPositionChanged:
 
                                     self.gameHandler.npcManager.setPosition(data.ID, data.Position);
+                                    self.renderPlayerLabel(self.usernameTable[data.ID], data.Position);
 
                                     break;
 
@@ -167,12 +168,21 @@ class MultiplayerHandler
                                 case MessageType.ConnectionResponse:
 
                                     self.id = data.ID;
+                                    self.username = data.Username;
+
+                                    if (!self.gameHandler.config.hideOwnUsername)
+                                    {
+                                        // Render the Lable above the Player:
+                                        self.renderPlayerLabel(self.username, self.gameHandler.playerManager.getPosition());
+                                    }
 
                                     break;
 
                                 case MessageType.PlayerDisconnected:
 
                                     self.gameHandler.npcManager.removeNPC(data.ID);
+                                    self.removePlayerLabel(self.usernameTable[data.ID]);
+                                    delete self.usernameTable[data.ID];
 
                                     break;
 
@@ -220,6 +230,35 @@ class MultiplayerHandler
 
     }
 
+    private renderPlayerLabel(name: string, position: { X: number; Y: number })
+    {
+        var nameTagName = "PlayerNameTag-" + name;
+        var handler = this.gameHandler.topAnimationHandler;
+
+        var textLength = 60;
+        var height = 11;
+
+        var textOffset = 5;
+
+        var Coord = {
+            X: position.X * this.gameHandler.config.tileSize - 45,
+            Y: (position.Y - 1.6) * this.gameHandler.config.tileSize
+        };
+
+        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", name, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+
+
+    }
+
+    private removePlayerLabel(name: string)
+    {
+        var nameTagName = "PlayerNameTag-" + name;
+        var handler = this.gameHandler.topAnimationHandler;
+
+        handler.removeGenericDraw(nameTagName);
+        handler.removeGenericDraw(nameTagName + "-text");
+    }
 
 
     private send(data: any, ignoreCheck: boolean = false)

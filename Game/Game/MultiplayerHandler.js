@@ -12,12 +12,13 @@ var MessageType;
 })(MessageType || (MessageType = {}));
 
 var MultiplayerHandler = (function () {
-    function MultiplayerHandler(gameHandler, serverAdress) {
+    function MultiplayerHandler(gameHandler, serverAdress, username) {
         this.id = undefined;
-        // --- Change that ...
-        this.npcName = undefined;
+        this.username = undefined;
+        this.usernameTable = {};
         this.gameHandler = gameHandler;
         this.serverAdress = serverAdress;
+        this.username = username;
 
         var self = this;
         this.gameHandler.eventHandler.addEventListener("PlayerPositionChanged", function (s, arg) {
@@ -28,6 +29,11 @@ var MultiplayerHandler = (function () {
             };
 
             self.send(data);
+
+            if (!self.gameHandler.config.hideOwnUsername) {
+                // Render the Lable above the Player:
+                self.renderPlayerLabel(self.username, arg);
+            }
         });
 
         this.gameHandler.eventHandler.addEventListener("playerAnimationChange", function (s, arg) {
@@ -65,16 +71,6 @@ var MultiplayerHandler = (function () {
     MultiplayerHandler.prototype.init = function () {
     };
 
-    MultiplayerHandler.prototype.join = function () {
-        var data = {
-            "Type": MessageType[0 /* PlayerJoined */],
-            "ID": this.id,
-            "Position": this.gameHandler.playerManager.getPosition()
-        };
-
-        this.send(data);
-    };
-
     MultiplayerHandler.prototype.connect = function () {
         this.socket = new WebSocket(this.serverAdress);
 
@@ -85,7 +81,8 @@ var MultiplayerHandler = (function () {
                 "Type": "ConnectionRequest",
                 "Position": self.gameHandler.playerManager.getPosition(),
                 "AnimationContainer": "pichu",
-                "Animation": "stand"
+                "Animation": "stand",
+                "Username": self.username
             };
 
             self.send(data, true);
@@ -105,6 +102,10 @@ var MultiplayerHandler = (function () {
                                 case 0 /* PlayerJoined */:
                                     self.gameHandler.npcManager.addNPC(data.ID, data.Position, data.AnimationContainer, data.Animation);
 
+                                    self.usernameTable[data.ID] = data.Username;
+
+                                    self.renderPlayerLabel(data.Username, data.Position);
+
                                     break;
 
                                 case 4 /* PlayerBeginMove */:
@@ -114,6 +115,7 @@ var MultiplayerHandler = (function () {
 
                                 case 5 /* PlayerPositionChanged */:
                                     self.gameHandler.npcManager.setPosition(data.ID, data.Position);
+                                    self.renderPlayerLabel(self.usernameTable[data.ID], data.Position);
 
                                     break;
 
@@ -128,11 +130,19 @@ var MultiplayerHandler = (function () {
 
                                 case 3 /* ConnectionResponse */:
                                     self.id = data.ID;
+                                    self.username = data.Username;
+
+                                    if (!self.gameHandler.config.hideOwnUsername) {
+                                        // Render the Lable above the Player:
+                                        self.renderPlayerLabel(self.username, self.gameHandler.playerManager.getPosition());
+                                    }
 
                                     break;
 
                                 case 1 /* PlayerDisconnected */:
                                     self.gameHandler.npcManager.removeNPC(data.ID);
+                                    self.removePlayerLabel(self.usernameTable[data.ID]);
+                                    delete self.usernameTable[data.ID];
 
                                     break;
                             }
@@ -166,6 +176,32 @@ var MultiplayerHandler = (function () {
             
             */
         };
+    };
+
+    MultiplayerHandler.prototype.renderPlayerLabel = function (name, position) {
+        var nameTagName = "PlayerNameTag-" + name;
+        var handler = this.gameHandler.topAnimationHandler;
+
+        var textLength = 60;
+        var height = 11;
+
+        var textOffset = 5;
+
+        var Coord = {
+            X: position.X * this.gameHandler.config.tileSize - 45,
+            Y: (position.Y - 1.6) * this.gameHandler.config.tileSize
+        };
+
+        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", name, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+    };
+
+    MultiplayerHandler.prototype.removePlayerLabel = function (name) {
+        var nameTagName = "PlayerNameTag-" + name;
+        var handler = this.gameHandler.topAnimationHandler;
+
+        handler.removeGenericDraw(nameTagName);
+        handler.removeGenericDraw(nameTagName + "-text");
     };
 
     MultiplayerHandler.prototype.send = function (data, ignoreCheck) {

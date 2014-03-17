@@ -20,18 +20,18 @@
     <div class="output"></div>
 
     <canvas id="canvas"></canvas>
-	
-	<audio controls id="themeSound">
-		<source src="sound/theme.mp3" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-	
+
+    <audio controls id="themeSound">
+        <source src="sound/theme.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
 
         var gameHandler = new GameHandler({
             verbose: false,
             initStaticAnimations: true,
-            mapPath: "data/lakeMap.json",
+            mapPath: "data/lake2.json",
             width: 600,
             height: 400
         });
@@ -44,7 +44,7 @@
         gameHandler.init();
 
         var script = new ScriptHandler(gameHandler);
-        var mp = new MultiplayerHandler(gameHandler, "ws://server.mrh-development.de:8181");
+        var mp = null;
 
 
         eventHandler.addEventListener("postInit", function ()
@@ -61,7 +61,7 @@
     </script>
 
     <p>Use Cursor Keys to move.</p>
-    
+
     <button id="connect">Connect to Multiplayer Server (WIP)</button>
 
     <script>
@@ -69,12 +69,17 @@
         {
             $("#connect").click(function ()
             {
-                
-                mp.connect();
+                var person = prompt("Please enter your name", "Guest" + Math.round(Math.random() * 1000));
 
-                
-                $(this).before("<p>Connected</p>").remove();
+                if (person != null)
+                {
 
+                    mp = new MultiplayerHandler(gameHandler, "ws://server.mrh-development.de:8181", person);
+                    //mp = new MultiplayerHandler(gameHandler, "ws://localhost:8181", person);
+                    mp.connect();
+
+                    $(this).before("<p>Connected</p>").remove();
+                }
 
             });
 

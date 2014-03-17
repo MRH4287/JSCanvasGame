@@ -24,7 +24,8 @@ class GameHandler
         showBlocking: true,
         verbose: false,
         initStaticAnimations: true,
-        playStaticAnimations: true
+        playStaticAnimations: true,
+        hideOwnUsername: true
     };
 
     public map: Tile[][];
@@ -66,7 +67,7 @@ class GameHandler
         this.loadConfig();
         this.initAnimations();
         this.windowManager = new WindowManager(this);
-        
+
 
         var self = this;
         window.setTimeout(function ()
@@ -75,13 +76,13 @@ class GameHandler
 
             // Init Animation Container is called in loadMap
             self.loadMap();
- 
+
             this.eventHandler.callEvent("postInit", this, null);
 
             self.eventHandler.callEvent("TaskDisposed", self, "Player - INIT");
         }, 100);
 
-        
+
     }
 
     private initAnimationContainer()
@@ -392,6 +393,26 @@ class GameHandler
 
 
     // ---------------------------------------
+
+    public execVerbose(data: () => void)
+    {
+        this.config.verbose = true;
+        data();
+        this.config.verbose = false;
+    }
+
+    public activateVerbose(time: number = 500)
+    {
+        this.config.verbose = true;
+
+        var self = this;
+        window.setTimeout(function ()
+        {
+            self.config.verbose = false;
+        }, time);
+
+    }
+
 
     // Global Helper Functions:
     public getFile(url: string, callback?: (any) => void, dataType?: string): any

@@ -20,7 +20,7 @@
 			"green", "soft"
 		],
 		"ImageURI": "graphics/terrain/flowers.png",
-		"Dynamic": true,
+		"Dynamic": false,
 		"AnimationDefinition": "data/animations/flower.json",
 		"AnimationContainer": "flower",
 		"DefaultAnimation": "default"
@@ -39,7 +39,7 @@
 		"ID": "tree_bottom",
 		"Name": "Tree-Bottom",
 		"Level": 0,
-		"Passable": false,
+		"Passable": true,
 		"ImageURI": "graphics/objects/tree_bottom2.png"	
 	},
 	{
@@ -212,6 +212,118 @@
 		"Flags": [
 			"water", "swimable"
 		]
+	},
+	{
+		"ID": "bridge_bottom_left",
+		"Name": "Bridge (Bottom Left)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_bottom_left.png"	
+	},
+	{
+		"ID": "bridge_bottom_middle",
+		"Name": "Bridge (Bottom Middle)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_bottom_middle.png"	
+	},
+	{
+		"ID": "bridge_bottom_middle2",
+		"Name": "Bridge (Bottom Middle2)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_bottom_middle2.png"	
+	},
+	{
+		"ID": "bridge_bottom_right",
+		"Name": "Bridge (Bottom Right)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_bottom_right.png"	
+	},
+	{
+		"ID": "bridge_left_middle",
+		"Name": "Bridge (Left Middle)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_left_middle.png"	
+	},
+	{
+		"ID": "bridge_middle_left",
+		"Name": "Bridge (Middle Left)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_middle_left.png"	
+	},
+	{
+		"ID": "bridge_middle_left2",
+		"Name": "Bridge (Middle Left2)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_middle_left2.png"	
+	},
+	{
+		"ID": "bridge_middle_middle",
+		"Name": "Bridge (Middle Middle)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_middle_middle.png"	
+	},
+	{
+		"ID": "bridge_middle_middle2",
+		"Name": "Bridge (Middle Middle2)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_middle_middle2.png"	
+	},
+	{
+		"ID": "bridge_middle_right",
+		"Name": "Bridge (Middle Right)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_middle_right.png"	
+	},
+	{
+		"ID": "bridge_middle_right2",
+		"Name": "Bridge (Middle Right2)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_middle_right2.png"	
+	},
+	{
+		"ID": "bridge_right_top",
+		"Name": "Bridge (Right Top)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_right_top.png"	
+	},
+	{
+		"ID": "bridge_top_left",
+		"Name": "Bridge (Top Left)",
+		"Level": 1,
+		"Passable": false,
+		"ImageURI": "graphics/terrain/bridge_top_left.png"	
+	},
+	{
+		"ID": "bridge_top_middle",
+		"Name": "Bridge (Top Middle)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_top_middle.png"	
+	},
+	{
+		"ID": "bridge_top_middle2",
+		"Name": "Bridge (Top Middle2)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_top_middle2.png"	
+	},
+	{
+		"ID": "bridge_top_middle3",
+		"Name": "Bridge (Top Middle3)",
+		"Level": 1,
+		"Passable": true,
+		"ImageURI": "graphics/terrain/bridge_top_middle3.png"	
 	},
 	{
 		"ID": "PlayerSpawn",

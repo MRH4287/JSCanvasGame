@@ -15,5 +15,7 @@ namespace WebSocketServer
 
         public string AnimationContainer { get; set; }
 
+        public string Username { get; set; }
+
     }
 }

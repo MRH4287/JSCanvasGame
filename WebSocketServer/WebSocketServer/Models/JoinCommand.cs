@@ -18,6 +18,8 @@ namespace WebSocketServer.Models
         public string AnimationContainer { get; set; }
         public string Animation { get; set; }
 
+        public string Username { get; set; }
+
     }
 
 
