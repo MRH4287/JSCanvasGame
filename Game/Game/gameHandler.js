@@ -256,11 +256,15 @@ var GameHandler = (function () {
             return false;
         }
 
+        var bottomPassable = ((tile.BottomElement !== undefined) && (tile.BottomElement != null)) ? tile.BottomElement.Passable : true;
+        var middlePassable = ((tile.MiddleElement !== undefined) && (tile.MiddleElement != null)) ? tile.MiddleElement.Passable : true;
+        var topPassable = ((tile.TopElement !== undefined) && (tile.TopElement != null)) ? tile.TopElement.Passable : true;
+
         var data = {
             Tile: tile,
             X: x,
             Y: y,
-            result: tile.Passable
+            result: bottomPassable && middlePassable && topPassable
         };
 
         this.eventHandler.callEvent("CheckIsPassable", this, data);
