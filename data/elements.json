@@ -20,7 +20,7 @@
 			"green", "soft"
 		],
 		"ImageURI": "graphics/terrain/flowers.png",
-		"Dynamic": false,
+		"Dynamic": true,
 		"AnimationDefinition": "data/animations/flower.json",
 		"AnimationContainer": "flower",
 		"DefaultAnimation": "default"
