@@ -415,29 +415,29 @@ class AnimationHandler
             if (container.AnimationGroup != null)
             {
                 delete this.animationGroups[container.AnimationGroup][container.ID];
-            }
 
-            if (this.animationGroups[container.AnimationGroup] !== undefined)
-            {
-
-                // Check if ammount of Animations in that Group:
-                var count = 0;
-
-                $.each(this.animationGroups[container.AnimationGroup], function (k, _)
+                if (this.animationGroups[container.AnimationGroup] !== undefined)
                 {
-                    count++;
-                });
 
-                if (count == 0)
-                {
-                    if (this.gameHandler.config.verbose)
+                    // Check if ammount of Animations in that Group:
+                    var count = 0;
+
+                    $.each(this.animationGroups[container.AnimationGroup], function (k, _)
                     {
-                        this.gameHandler.log("Close Animation Group - Empty", group);
-                    }
+                        count++;
+                    });
 
-                    // Remove Timer for Animation:
-                    var timerName = "anim-" + group;
-                    this.eventHandler.stopTimer(timerName);
+                    if (count == 0)
+                    {
+                        if (this.gameHandler.config.verbose)
+                        {
+                            this.gameHandler.log("Close Animation Group - Empty", group);
+                        }
+
+                        // Remove Timer for Animation:
+                        var timerName = "anim-" + group;
+                        this.eventHandler.stopTimer(timerName);
+                    }
                 }
             }
 
@@ -469,6 +469,16 @@ class AnimationHandler
 
         if (animation.length == 0)
         {
+            // I am a Empty Animation Group ... I should not be running!
+            if (this.gameHandler.config.verbose)
+            {
+                this.gameHandler.log("Close Animation Group - AnimationStep is Empty", group);
+            }
+
+
+            var timerName = "anim-" + group;
+            this.eventHandler.stopTimer(timerName);
+
             return;
         }
 
@@ -483,12 +493,32 @@ class AnimationHandler
 
         if (anims.length == 0)
         {
+            // I am a Empty Animation Group ... I should not be running!
+            if (this.gameHandler.config.verbose)
+            {
+                this.gameHandler.log("Close Animation Group - AnimationStep is Empty", group);
+            }
+
+
+            var timerName = "anim-" + group;
+            this.eventHandler.stopTimer(timerName);
+
             return;
         }
 
         if (group != animation[0].AnimationGroup)
         {
-            //this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
+            this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
+
+            if (this.gameHandler.config.verbose)
+            {
+                this.gameHandler.log("Close Animation Group - Wrong Animation Group", group);
+            }
+
+
+            var timerName = "anim-" + group;
+            this.eventHandler.stopTimer(timerName);
+
             return;
         }
 
