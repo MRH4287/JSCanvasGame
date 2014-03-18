@@ -28,7 +28,7 @@
     // Setting this to 1 will show you the FPS of the last sampled frame only
     var _fpsFilter = 5;
 
-    var _minTimeBetweenFrames = 5;
+    var _minTimeBetweenFrames = 20;
     var _lastCheck = null;
 
 
@@ -145,14 +145,21 @@
 
         _eventHandler.callEvent("renderPostInit", this, null);
 
-        
+        //setInterval(_beginDrawing, 1);
     }
 
     var _beginDrawing = function()
     {
-        if ((_lastCheck != null) && ((Date.now() - _lastCheck) < _minTimeBetweenFrames))
+        var div = (Date.now() - _lastCheck);
+
+        if ((_lastCheck != null) && (div < _minTimeBetweenFrames))
         {
             return;
+        }
+
+        if (_gameHandler.config.verbose)
+        {
+            _gameHandler.log("Begin Rendering - Last Frame: ", div);
         }
 
         _lastCheck = Date.now();
@@ -167,8 +174,6 @@
             _fps += (thisFrameFPS - _fps) / _fpsFilter;
             _lastUpdate = _now;
         }
-        
-
 
     }
 
@@ -316,17 +321,18 @@
 
         function okCallback()
         {
+            _eventHandler.callEvent("TaskCreated", this, "Renderer - RenderMapCallback - Step2");
             window.setTimeout(function ()
             {
-                _eventHandler.callEvent("TaskCreated", this, "Renderer - RenderMapCallback");
 
                 callback();
 
-                _eventHandler.callEvent("TaskDisposed", this, "Renderer - RenderMapCallback");
+                _eventHandler.callEvent("TaskDisposed", this, "Renderer - RenderMapCallback - Step2");
             }, 1);
 
             _staticRendered = true;
 
+            _eventHandler.callEvent("TaskDisposed", this, "Renderer - RenderMapCallback - Step1");
         }
 
         for (collom = 0; collom < _map.length; collom++)
@@ -367,6 +373,7 @@
 
                 if (last)
                 {
+                    _eventHandler.callEvent("TaskCreated", this, "Renderer - RenderMapCallback - Step1");
                     window.setTimeout(okCallback, 100);
 
                 }
@@ -406,15 +413,16 @@
             _bufferCtx.drawImage(_layer.TopStaticLayer.canvas, 0, 0);
             _bufferCtx.drawImage(_layer.TopAnimationLayer.canvas, 0, 0);
 
-            window.setTimeout(function ()
-            {
-                _eventHandler.callEvent("TaskCreated", this, "Renderer - DrawImage");
+            //_eventHandler.callEvent("TaskCreated", this, "Renderer - DrawImage");
+            //window.setTimeout(function ()
+            //{
+                
 
                 _ctx.drawImage(_bufferCanvas, _offset.x * -1, _offset.y * -1);
 
-                _eventHandler.callEvent("TaskDisposed", this, "Renderer - DrawImage");
+                //_eventHandler.callEvent("TaskDisposed", this, "Renderer - DrawImage");
 
-            }, 2);
+            //}, 2);
         }
 
         _renderDynamic();

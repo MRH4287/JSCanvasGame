@@ -228,9 +228,8 @@ var PlayerManager = (function () {
             self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, newPosition);
 
             //console.log("Position updated: ", newPosition);
+            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "Player - PositionUpdateStep");
             window.setTimeout(function () {
-                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "Player - PositionUpdateStep");
-
                 self.positionUpdateStep(self, direction, offsetPerUpdate, intervall, callback);
 
                 self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "Player - PositionUpdateStep");

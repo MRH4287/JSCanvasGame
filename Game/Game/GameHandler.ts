@@ -70,10 +70,10 @@ class GameHandler
 
 
         var self = this;
+
+        self.eventHandler.callEvent("TaskCreated", self, "Player - INIT");
         window.setTimeout(function ()
         {
-            self.eventHandler.callEvent("TaskCreated", self, "Player - INIT");
-
             // Init Animation Container is called in loadMap
             self.loadMap();
 

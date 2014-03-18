@@ -48,10 +48,9 @@ class NPCHandler
 
         });
 
+        self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
         window.setTimeout(function ()
         {
-            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
-
             self.gameHandler.eventHandler.callEvent("npcInit", self, null);
 
             self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - Constructor");
@@ -354,9 +353,9 @@ class NPCHandler
 
             var self = this;
 
+            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
             window.setTimeout(function ()
             {
-                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
 
                 self.positionUpdateStep(npc, direction, offsetPerUpdate, intervall, callback);
 

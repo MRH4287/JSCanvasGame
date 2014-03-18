@@ -29,9 +29,8 @@ var NPCHandler = (function () {
             });
         });
 
+        self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
         window.setTimeout(function () {
-            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
-
             self.gameHandler.eventHandler.callEvent("npcInit", self, null);
 
             self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - Constructor");
@@ -274,9 +273,8 @@ var NPCHandler = (function () {
             //console.log("Position updated: ", newPosition);
             var self = this;
 
+            self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
             window.setTimeout(function () {
-                self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - PlayerPositonUpdateStep");
-
                 self.positionUpdateStep(npc, direction, offsetPerUpdate, intervall, callback);
 
                 self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - PlayerPositonUpdateStep");

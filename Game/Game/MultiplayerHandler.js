@@ -109,8 +109,6 @@ var MultiplayerHandler = (function () {
                                     break;
 
                                 case 4 /* PlayerBeginMove */:
-                                    self.gameHandler.npcManager.advInitMove(data.ID, data.Position, data.Direction, data.Speed, undefined, true);
-
                                     break;
 
                                 case 5 /* PlayerPositionChanged */:

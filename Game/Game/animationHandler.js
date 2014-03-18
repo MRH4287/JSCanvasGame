@@ -302,16 +302,23 @@ var AnimationHandler = (function () {
                 delete this.animationGroups[container.AnimationGroup][container.ID];
             }
 
-            // Check if ammount of Animations in that Group:
-            var count = 0;
-            for (var k in this.animationGroups[container.AnimationGroup]) {
-                count++;
-            }
+            if (this.animationGroups[container.AnimationGroup] !== undefined) {
+                // Check if ammount of Animations in that Group:
+                var count = 0;
 
-            if (count == 0) {
-                // Remove Timer for Animation:
-                var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
-                this.eventHandler.stopTimer(timerName);
+                $.each(this.animationGroups[container.AnimationGroup], function (k, _) {
+                    count++;
+                });
+
+                if (count == 0) {
+                    if (this.gameHandler.config.verbose) {
+                        this.gameHandler.log("Close Animation Group - Empty", group);
+                    }
+
+                    // Remove Timer for Animation:
+                    var timerName = "anim-" + group;
+                    this.eventHandler.stopTimer(timerName);
+                }
             }
 
             container.AnimationGroup = null;

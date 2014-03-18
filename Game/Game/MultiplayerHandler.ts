@@ -143,7 +143,7 @@ class MultiplayerHandler
 
                                 case MessageType.PlayerBeginMove:
 
-                                    self.gameHandler.npcManager.advInitMove(data.ID, data.Position, data.Direction, data.Speed, undefined, true);
+                                    //self.gameHandler.npcManager.advInitMove(data.ID, data.Position, data.Direction, data.Speed, undefined, true);
 
                                     break;
 

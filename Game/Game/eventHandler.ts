@@ -93,13 +93,15 @@ class EventHandler
         var self = this;
         var triggerEvent = function ()
         {
-            self.callEvent("TaskCreated", self, "Timer");
+            
 
             var data = self.timedEvents[name];
 
             if ((data !== undefined) && (data.run))
             {
                 data.callback(sender, arguments);
+
+                self.callEvent("TaskCreated", self, "Timer - " + name);
 
                 window.setTimeout(triggerEvent, intervall);
             }
@@ -108,9 +110,10 @@ class EventHandler
                 delete self.timedEvents[name];
             }
 
-            self.callEvent("TaskDisposed", self, "Timer");
+            self.callEvent("TaskDisposed", self, "Timer - " + name);
         };
 
+        self.callEvent("TaskCreated", self, "Timer - " + name);
         window.setTimeout(triggerEvent, intervall);
     }
 
