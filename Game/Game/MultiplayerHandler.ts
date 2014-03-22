@@ -103,7 +103,7 @@ class MultiplayerHandler
             var data = {
                 "Type": "ConnectionRequest",
                 "Position": self.gameHandler.playerManager.getPosition(),
-                "AnimationContainer": "pichu",
+                "AnimationContainer": self.gameHandler.config.playerModel,
                 "Animation": "stand",
                 "Username": self.username
 

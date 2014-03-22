@@ -14,10 +14,12 @@ var Profiler = (function () {
         });
 
         this.gameHandler.eventHandler.addEventListener("TaskDisposed", function (s, arg) {
-            if (self.TaskList[arg] === undefined) {
-                self.TaskList[arg] = 0;
-            } else {
+            if (self.TaskList[arg] !== undefined) {
                 self.TaskList[arg] -= 1;
+
+                if (self.TaskList[arg] <= 0) {
+                    delete self.TaskList[arg];
+                }
             }
         });
     }
