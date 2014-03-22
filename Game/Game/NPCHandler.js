@@ -46,13 +46,27 @@ var NPCHandler = (function () {
             GUID: "NPC-Animation-" + String(Math.random() * Math.random() * 10000),
             Direction: 4 /* None */,
             Speed: speed,
-            State: 0 /* Standing */
+            State: 0 /* Standing */,
+            DisplaySpeechBubbleTo: undefined
         };
 
         this.npcList[name] = data;
 
         // Start default Animation for Element:
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
+
+        var self = this;
+        this.gameHandler.eventHandler.addTimedTrigger("NPCSpeechBubbleCheck", "NPCSpeechBubbleCheck", 1000, this, null);
+        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function () {
+            $.each(self.npcList, function (name, data) {
+                if (data.DisplaySpeechBubbleTo !== undefined) {
+                    if (data.DisplaySpeechBubbleTo < Date.now()) {
+                        self.removeSpeechBubble(name);
+                        data.DisplaySpeechBubbleTo = undefined;
+                    }
+                }
+            });
+        });
     };
 
     NPCHandler.prototype.removeNPC = function (name) {
@@ -72,6 +86,51 @@ var NPCHandler = (function () {
         }
 
         this.animation.playAnimation(this.npcList[name].GUID, animationName);
+    };
+
+    NPCHandler.prototype.renderSpeechBubble = function (name, message, timeout) {
+        if (typeof timeout === "undefined") { timeout = 5; }
+        if (this.npcList[name] === undefined) {
+            this.gameHandler.error("No NPC with this ID found!", name);
+            return;
+        }
+
+        var npc = this.npcList[name];
+
+        var nameTagName = "NPCSpeechBubble-" + name;
+        var handler = this.animation;
+
+        var textLength = 5 * message.length + 15;
+        var height = 11;
+
+        var textOffset = 5;
+
+        var position = npc.Position;
+
+        var offsetX = 0;
+        if (textLength > this.gameHandler.config.tileSize) {
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
+        }
+
+        var Coord = {
+            X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
+            Y: (position.Y - 1.8) * this.gameHandler.config.tileSize
+        };
+
+        //console.log(position);
+        //console.log(Coord);
+        npc.DisplaySpeechBubbleTo = Date.now() + timeout * 1000;
+
+        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+    };
+
+    NPCHandler.prototype.removeSpeechBubble = function (name) {
+        var nameTagName = "NPCSpeechBubble-" + name;
+        var handler = this.animation;
+
+        handler.removeGenericDraw(nameTagName);
+        handler.removeGenericDraw(nameTagName + "-text");
     };
 
     NPCHandler.prototype.setPosition = function (name, position, rerender) {

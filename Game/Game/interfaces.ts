@@ -170,6 +170,6 @@ interface NPCData
     Speed: number;
     State: PlayerState;
     Direction: WalkDirection;
-
+    DisplaySpeechBubbleTo: number;
 
 }

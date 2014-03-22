@@ -17,5 +17,13 @@ namespace WebSocketServer
 
         public string Username { get; set; }
 
+        public bool IgnoreMessages { get; set; }
+
+        public DateTime LastMessage { get; set; }
+
+        public int Strikes { get; set; }
+
+        public DateTime? LastStrike { get; set; }
+
     }
 }

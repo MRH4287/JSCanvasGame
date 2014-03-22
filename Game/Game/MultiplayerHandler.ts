@@ -2,7 +2,9 @@
 
 enum MessageType
 {
-    PlayerJoined, PlayerDisconnected, ConnectionRequest, ConnectionResponse, PlayerBeginMove, PlayerPositionChanged, PlayerAnimationChanged, PlayerStopMove
+    PlayerJoined, PlayerDisconnected, ConnectionRequest,
+    ConnectionResponse, PlayerBeginMove, PlayerPositionChanged,
+    PlayerAnimationChanged, PlayerStopMove, PlayerKicked, ChatMessage
 }
 
 class MultiplayerHandler
@@ -186,6 +188,20 @@ class MultiplayerHandler
 
                                     break;
 
+                                case MessageType.ChatMessage:
+
+                                    console.log("Chat - " + data.ID + ": " + data.Message);
+                                    self.gameHandler.npcManager.renderSpeechBubble(data.ID, data.Message);
+
+                                    break;
+
+                                case MessageType.PlayerKicked:
+
+                                    alert("You have been kicked from the Server! Reason: " + data.Reason);
+                                    self.id = undefined;
+
+                                    break;
+
                             }
                         }
                         else
@@ -206,44 +222,50 @@ class MultiplayerHandler
 
             }
 
-            /*
-            if (data.X !== undefined)
-            {
-                if (self.npcName === undefined)
-                {
-                    self.gameHandler.npcManager.addNPC("bla", data, "pichu", "stand");
-                    self.npcName = "bla";
-                }
-                else
-                {
-                    self.gameHandler.npcManager.setPosition("bla", data);
-                }
-            }
-            else if (data.Animation !== undefined)
-            {
-                self.gameHandler.npcManager.setAnimation("bla", data.Animation);
-            }
-
-            */
-
         };
 
     }
+
+    public sendChatMessage(message: string)
+    {
+        var data = {
+            ID: this.id,
+            Message: message,
+            Type: "ChatMessage"
+        };
+
+        this.send(data);
+    }
+
 
     private renderPlayerLabel(name: string, position: { X: number; Y: number })
     {
         var nameTagName = "PlayerNameTag-" + name;
         var handler = this.gameHandler.topAnimationHandler;
 
-        var textLength = 60;
+        var textLength = 5 * name.length + 15; // 60
         var height = 11;
 
         var textOffset = 5;
 
+        /*
         var Coord = {
             X: position.X * this.gameHandler.config.tileSize - 45,
             Y: (position.Y - 1.6) * this.gameHandler.config.tileSize
         };
+*/
+
+        var offsetX = 0;
+        if (textLength > this.gameHandler.config.tileSize)
+        {
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2
+        }
+
+        var Coord = {
+            X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
+            Y: (position.Y - 1.4) * this.gameHandler.config.tileSize
+        };
+
 
         handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
         handler.writeText(nameTagName + "-text", name, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);

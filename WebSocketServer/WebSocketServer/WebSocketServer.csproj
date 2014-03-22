@@ -60,6 +60,7 @@
     <Compile Include="Models\ConnectionResponse.cs" />
     <Compile Include="Models\JoinCommand.cs" />
     <Compile Include="Models\PlayerDisconnected.cs" />
+    <Compile Include="Models\PlayerKicked.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserData.cs" />

@@ -9,6 +9,8 @@ var MessageType;
     MessageType[MessageType["PlayerPositionChanged"] = 5] = "PlayerPositionChanged";
     MessageType[MessageType["PlayerAnimationChanged"] = 6] = "PlayerAnimationChanged";
     MessageType[MessageType["PlayerStopMove"] = 7] = "PlayerStopMove";
+    MessageType[MessageType["PlayerKicked"] = 8] = "PlayerKicked";
+    MessageType[MessageType["ChatMessage"] = 9] = "ChatMessage";
 })(MessageType || (MessageType = {}));
 
 var MultiplayerHandler = (function () {
@@ -143,6 +145,18 @@ var MultiplayerHandler = (function () {
                                     delete self.usernameTable[data.ID];
 
                                     break;
+
+                                case 9 /* ChatMessage */:
+                                    console.log("Chat - " + data.ID + ": " + data.Message);
+                                    self.gameHandler.npcManager.renderSpeechBubble(data.ID, data.Message);
+
+                                    break;
+
+                                case 8 /* PlayerKicked */:
+                                    alert("You have been kicked from the Server! Reason: " + data.Reason);
+                                    self.id = undefined;
+
+                                    break;
                             }
                         } else {
                             self.gameHandler.error("Unknown Message Type on Socket: ", data.Type, data);
@@ -154,40 +168,42 @@ var MultiplayerHandler = (function () {
                     self.gameHandler.error("No Type Attribute on Socket Message:", data);
                 }
             }
-            /*
-            if (data.X !== undefined)
-            {
-            if (self.npcName === undefined)
-            {
-            self.gameHandler.npcManager.addNPC("bla", data, "pichu", "stand");
-            self.npcName = "bla";
-            }
-            else
-            {
-            self.gameHandler.npcManager.setPosition("bla", data);
-            }
-            }
-            else if (data.Animation !== undefined)
-            {
-            self.gameHandler.npcManager.setAnimation("bla", data.Animation);
-            }
-            
-            */
         };
+    };
+
+    MultiplayerHandler.prototype.sendChatMessage = function (message) {
+        var data = {
+            ID: this.id,
+            Message: message,
+            Type: "ChatMessage"
+        };
+
+        this.send(data);
     };
 
     MultiplayerHandler.prototype.renderPlayerLabel = function (name, position) {
         var nameTagName = "PlayerNameTag-" + name;
         var handler = this.gameHandler.topAnimationHandler;
 
-        var textLength = 60;
+        var textLength = 5 * name.length + 15;
         var height = 11;
 
         var textOffset = 5;
 
+        /*
         var Coord = {
-            X: position.X * this.gameHandler.config.tileSize - 45,
-            Y: (position.Y - 1.6) * this.gameHandler.config.tileSize
+        X: position.X * this.gameHandler.config.tileSize - 45,
+        Y: (position.Y - 1.6) * this.gameHandler.config.tileSize
+        };
+        */
+        var offsetX = 0;
+        if (textLength > this.gameHandler.config.tileSize) {
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
+        }
+
+        var Coord = {
+            X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
+            Y: (position.Y - 1.4) * this.gameHandler.config.tileSize
         };
 
         handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);

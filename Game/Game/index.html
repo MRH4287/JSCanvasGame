@@ -17,11 +17,18 @@
     <script src="Profiler.js"></script>
 </head>
 <body>
-    <div class="output"></div>
 
-    <canvas id="canvas"></canvas>
+    <!-- For everyone that reads the Source and thinks: "That's not a nice HTML and CSS" -->
+    <!-- This is a Test Script ... that is going to change as soon as the Game is in a stable state :P -->
+    <!-- Made by: MRH https://github.com/MRH4287/ -->
 
-    <span id="fps">0</span>
+    <div style="margin-bottom:100px;">
+        <canvas id="canvas"></canvas><br />
+        <div style="width:600px; display:inline-block">
+            <input style="width:80%" type="text" id="chatInput" />
+            <button style="width:15%; margin-left:15px;" id="chatSend">Send</button>
+        </div>
+    </div>
 
     <audio controls id="themeSound">
         <source src="sound/theme.mp3" type="audio/mpeg">
@@ -47,13 +54,6 @@
 
         var script = new ScriptHandler(gameHandler);
         var mp = null;
-
-        var fps = $("#fps");
-        setInterval(function ()
-        {
-            fps.text(render.getFPS().toFixed(1) + "fps");
-        }, 1000);
-
 
         eventHandler.addEventListener("postInit", function ()
         {
@@ -88,6 +88,17 @@
 
                     $(this).before("<p>Connected</p>").remove();
                 }
+
+                $("#chatSend").click(function ()
+                {
+                    var text = $("#chatInput").val();
+                    $("#chatInput").val("");
+
+                    mp.sendChatMessage(text);
+
+
+                });
+
 
             });
 
