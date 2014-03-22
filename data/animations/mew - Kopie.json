@@ -1,0 +1,31 @@
+{
+	"ID": "mew",
+	"ImageURI": "graphics/animations/mew.png",
+	"Animations":
+	[
+		{
+			"ID": "stand",
+			"ImageCount": 2,
+			"StartX": 0,
+			"StartY": 0,
+			"ImageHeight": 55,
+			"ImageWidth": 55,
+			"DisplayHeight": 2.5,
+			"DisplayWidth": 2.5,
+			"OffsetX": 57,
+			"OffsetY": 0,
+			"DisplayOffsetX": -0.8,
+			"DisplayOffsetY": 0,
+			"Speed": 5000,
+			"ReverseOnEnd": false,
+			"IsReverse": false,
+			"Loop": true,
+			"AnimationState": 0,
+			"AnimationGroup": null
+		}
+	]
+
+
+
+
+}

@@ -48,6 +48,24 @@ class NPCHandler
 
         });
 
+        this.gameHandler.eventHandler.addTimedTrigger("NPCSpeechBubbleCheck", "NPCSpeechBubbleCheck", 1000, this, null);
+        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function ()
+        {
+            $.each(self.npcList, function (name: string, data: NPCData)
+            {
+                if (data.DisplaySpeechBubbleTo !== undefined)
+                {
+                    if (data.DisplaySpeechBubbleTo < Date.now())
+                    {
+                        self.removeSpeechBubble(name);
+                        data.DisplaySpeechBubbleTo = undefined;
+                    }
+                }
+
+            });
+        });
+
+
         self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
         window.setTimeout(function ()
         {
@@ -80,25 +98,6 @@ class NPCHandler
 
         // Start default Animation for Element:
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
-
-
-        var self = this;
-        this.gameHandler.eventHandler.addTimedTrigger("NPCSpeechBubbleCheck", "NPCSpeechBubbleCheck", 1000, this, null); 
-        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function ()
-        {
-            $.each(self.npcList, function (name: string, data: NPCData)
-            {
-                if (data.DisplaySpeechBubbleTo !== undefined)
-                {
-                    if (data.DisplaySpeechBubbleTo < Date.now())
-                    {
-                        self.removeSpeechBubble(name);
-                        data.DisplaySpeechBubbleTo = undefined;
-                    }
-                }
-
-            });
-        });
 
     }
 
@@ -166,6 +165,7 @@ class NPCHandler
         handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
 
     }
+
 
 
     private removeSpeechBubble(name: string)

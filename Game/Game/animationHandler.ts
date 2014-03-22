@@ -684,5 +684,15 @@ class AnimationHandler
     }
 
 
+    public test()
+    {
+        this.gameHandler.loadAnimation("data/animations/mew.json");
+
+        var pos = this.gameHandler.playerManager.getPosition();
+
+        this.addAnimation("test", "mew", "stand", pos.X, pos.Y + 2);
+
+    }
+
 }
 

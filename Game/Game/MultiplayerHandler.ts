@@ -228,6 +228,8 @@ class MultiplayerHandler
 
     public sendChatMessage(message: string)
     {
+        this.gameHandler.playerManager.renderSpeechBubble(message);
+
         var data = {
             ID: this.id,
             Message: message,

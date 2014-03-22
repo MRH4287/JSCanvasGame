@@ -29,6 +29,18 @@ var NPCHandler = (function () {
             });
         });
 
+        this.gameHandler.eventHandler.addTimedTrigger("NPCSpeechBubbleCheck", "NPCSpeechBubbleCheck", 1000, this, null);
+        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function () {
+            $.each(self.npcList, function (name, data) {
+                if (data.DisplaySpeechBubbleTo !== undefined) {
+                    if (data.DisplaySpeechBubbleTo < Date.now()) {
+                        self.removeSpeechBubble(name);
+                        data.DisplaySpeechBubbleTo = undefined;
+                    }
+                }
+            });
+        });
+
         self.gameHandler.eventHandler.callEvent("TaskCreated", self, "NPC - Constructor");
         window.setTimeout(function () {
             self.gameHandler.eventHandler.callEvent("npcInit", self, null);
@@ -54,19 +66,6 @@ var NPCHandler = (function () {
 
         // Start default Animation for Element:
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
-
-        var self = this;
-        this.gameHandler.eventHandler.addTimedTrigger("NPCSpeechBubbleCheck", "NPCSpeechBubbleCheck", 1000, this, null);
-        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function () {
-            $.each(self.npcList, function (name, data) {
-                if (data.DisplaySpeechBubbleTo !== undefined) {
-                    if (data.DisplaySpeechBubbleTo < Date.now()) {
-                        self.removeSpeechBubble(name);
-                        data.DisplaySpeechBubbleTo = undefined;
-                    }
-                }
-            });
-        });
     };
 
     NPCHandler.prototype.removeNPC = function (name) {

@@ -30,6 +30,7 @@ class PlayerManager
     private moveDirection: WalkDirection = WalkDirection.None;
 
     private lastAction: number = Date.now();
+    private DisplaySpeechBubbleTo: number = undefined;
 
 
    // Keycodes:
@@ -56,7 +57,7 @@ class PlayerManager
     private KeysDown: { [index: number]: boolean } = {};
 
 
-    constructor(gameHandler: GameHandler, animationHandler: AnimationHandler)
+    constructor(gameHandler: GameHandler, animationHandler: AnimationHandler, playerModel: string = "pichu")
     {
         this.gameHandler = gameHandler;
         this.playerAnimation = animationHandler;
@@ -64,7 +65,7 @@ class PlayerManager
         var self = this;
         this.gameHandler.eventHandler.addEventListener("postInit", function (s, e)
         {
-            self.init();
+            self.init(playerModel);
         });
 
 
@@ -74,6 +75,19 @@ class PlayerManager
             {
                 data.result = false;
             } 
+        });
+
+
+        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function ()
+        {
+            if (self.DisplaySpeechBubbleTo !== undefined)
+            {
+                if (self.DisplaySpeechBubbleTo < Date.now())
+                {
+                    self.removeSpeechBubble();
+                    self.DisplaySpeechBubbleTo = undefined;
+                }
+            }
         });
 
     }
@@ -304,7 +318,7 @@ class PlayerManager
 
     }
 
-    public init()
+    public init(playerModel: string = "pichu")
     {
         var self = this;
 
@@ -321,7 +335,7 @@ class PlayerManager
         }
 
 
-        this.initPlayer(self);
+        this.initPlayer(self, playerModel);
 
         $(document).keydown(function (event)
         {
@@ -406,10 +420,11 @@ class PlayerManager
         return ((value !== undefined) && (value));
     }
 
-    private initPlayer(self: PlayerManager)
+    private initPlayer(self: PlayerManager, playerModel: string = "pichu")
     {
         self.gameHandler.loadAnimation("data/animations/pichu.json");
-        self.playerAnimation.addAnimation(this.playerElementName, "pichu", "stand", this.position.X, this.position.Y);
+        self.gameHandler.loadAnimation("data/animations/mew.json");
+        self.playerAnimation.addAnimation(this.playerElementName, playerModel, "stand", this.position.X, this.position.Y);
 
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
@@ -451,6 +466,51 @@ class PlayerManager
         this.gameHandler.eventHandler.callEvent("playerAnimationChange", this, name);
         this.playerAnimation.playAnimation(this.playerElementName, name);
         
+    }
+
+
+    public renderSpeechBubble(message: string, timeout: number = 5)
+    {
+        var nameTagName = "NPCSpeechBubble-" + this.playerElementName;
+        var handler = this.playerAnimation;
+
+        var textLength = 5 * message.length + 15;
+        var height = 11;
+
+        var textOffset = 5;
+
+        var position = this.position;
+
+        var offsetX = 0;
+        if (textLength > this.gameHandler.config.tileSize)
+        {
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2
+        }
+
+        var Coord = {
+            X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
+            Y: (position.Y - 1.8) * this.gameHandler.config.tileSize
+        };
+
+        //console.log(position);
+        //console.log(Coord);
+
+        this.DisplaySpeechBubbleTo = Date.now() + timeout * 1000;
+
+        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+
+    }
+
+
+
+    private removeSpeechBubble()
+    {
+        var nameTagName = "NPCSpeechBubble-" + this.playerElementName;
+        var handler = this.playerAnimation;
+
+        handler.removeGenericDraw(nameTagName);
+        handler.removeGenericDraw(nameTagName + "-text");
     }
 
 

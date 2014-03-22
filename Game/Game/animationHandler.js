@@ -493,5 +493,13 @@ var AnimationHandler = (function () {
 
         this.ctx.drawImage(this.gameHandler.spriteContainer[name], offsetX, offsetY, width, height, canvasOffsetX, canvasOffsetY, canvasImageWidth, canvasImageHeight);
     };
+
+    AnimationHandler.prototype.test = function () {
+        this.gameHandler.loadAnimation("data/animations/mew.json");
+
+        var pos = this.gameHandler.playerManager.getPosition();
+
+        this.addAnimation("test", "mew", "stand", pos.X, pos.Y + 2);
+    };
     return AnimationHandler;
 })();

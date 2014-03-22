@@ -25,7 +25,8 @@ class GameHandler
         verbose: false,
         initStaticAnimations: true,
         playStaticAnimations: true,
-        hideOwnUsername: true
+        hideOwnUsername: true,
+        playerModel: "pichu"
     };
 
     public map: Tile[][];
@@ -52,7 +53,6 @@ class GameHandler
     private tileIDIndex: { [index: string]: Tile } = {};
     private tileFlagIndex: { [index: string]: Tile[] } = {};
     private elementsFlagIndex: { [index: string]: ElementDefinition[] } = {};
-
 
     constructor(config: any)
     {
@@ -90,9 +90,9 @@ class GameHandler
         this.bottomAnimationHandler = this.createAnimationHandler(0, this.renderer.getBottomAnimationLayer());
         this.middleAnimationHandler = this.createAnimationHandler(1, this.renderer.getMiddleAnimationLayer());
         this.topAnimationHandler = this.createAnimationHandler(2, this.renderer.getTopAnimationLayer());
-        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
+        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer()); // , "playerLayer"
 
-        this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
+        this.playerManager = new PlayerManager(this, this.playerAnimationHandler, this.config.playerModel);
         this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
     }
 

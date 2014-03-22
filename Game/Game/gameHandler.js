@@ -21,7 +21,8 @@ var GameHandler = (function () {
             verbose: false,
             initStaticAnimations: true,
             playStaticAnimations: true,
-            hideOwnUsername: true
+            hideOwnUsername: true,
+            playerModel: "pichu"
         };
         this.elements = {};
         this.animations = {};
@@ -54,9 +55,9 @@ var GameHandler = (function () {
         this.bottomAnimationHandler = this.createAnimationHandler(0, this.renderer.getBottomAnimationLayer());
         this.middleAnimationHandler = this.createAnimationHandler(1, this.renderer.getMiddleAnimationLayer());
         this.topAnimationHandler = this.createAnimationHandler(2, this.renderer.getTopAnimationLayer());
-        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer(), "playerLayer");
+        this.playerAnimationHandler = this.createAnimationHandler(3, this.renderer.getPlayerLayer()); // , "playerLayer"
 
-        this.playerManager = new PlayerManager(this, this.playerAnimationHandler);
+        this.playerManager = new PlayerManager(this, this.playerAnimationHandler, this.config.playerModel);
         this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
     };
 

@@ -172,6 +172,8 @@ var MultiplayerHandler = (function () {
     };
 
     MultiplayerHandler.prototype.sendChatMessage = function (message) {
+        this.gameHandler.playerManager.renderSpeechBubble(message);
+
         var data = {
             ID: this.id,
             Message: message,

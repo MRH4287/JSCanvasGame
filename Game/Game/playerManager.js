@@ -3,7 +3,8 @@
 /// <reference path="interfaces.ts" />
 /// <reference path="animationHandler.ts" />
 var PlayerManager = (function () {
-    function PlayerManager(gameHandler, animationHandler) {
+    function PlayerManager(gameHandler, animationHandler, playerModel) {
+        if (typeof playerModel === "undefined") { playerModel = "pichu"; }
         this.position = {
             X: 0,
             Y: 0
@@ -18,6 +19,7 @@ var PlayerManager = (function () {
         this.playerState = 0 /* Standing */;
         this.moveDirection = 4 /* None */;
         this.lastAction = Date.now();
+        this.DisplaySpeechBubbleTo = undefined;
         // Keycodes:
         /*
         39 - right
@@ -41,12 +43,21 @@ var PlayerManager = (function () {
 
         var self = this;
         this.gameHandler.eventHandler.addEventListener("postInit", function (s, e) {
-            self.init();
+            self.init(playerModel);
         });
 
         this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, data) {
             if ((data.X == self.position.X) && (data.Y == self.position.Y)) {
                 data.result = false;
+            }
+        });
+
+        this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function () {
+            if (self.DisplaySpeechBubbleTo !== undefined) {
+                if (self.DisplaySpeechBubbleTo < Date.now()) {
+                    self.removeSpeechBubble();
+                    self.DisplaySpeechBubbleTo = undefined;
+                }
             }
         });
     }
@@ -237,7 +248,8 @@ var PlayerManager = (function () {
         }
     };
 
-    PlayerManager.prototype.init = function () {
+    PlayerManager.prototype.init = function (playerModel) {
+        if (typeof playerModel === "undefined") { playerModel = "pichu"; }
         var self = this;
 
         // Add Player to the Game:
@@ -251,7 +263,7 @@ var PlayerManager = (function () {
             this.position.Y = tiles[0].YCoord;
         }
 
-        this.initPlayer(self);
+        this.initPlayer(self, playerModel);
 
         $(document).keydown(function (event) {
             self.KeysDown[event.keyCode] = true;
@@ -309,9 +321,11 @@ var PlayerManager = (function () {
         return ((value !== undefined) && (value));
     };
 
-    PlayerManager.prototype.initPlayer = function (self) {
+    PlayerManager.prototype.initPlayer = function (self, playerModel) {
+        if (typeof playerModel === "undefined") { playerModel = "pichu"; }
         self.gameHandler.loadAnimation("data/animations/pichu.json");
-        self.playerAnimation.addAnimation(this.playerElementName, "pichu", "stand", this.position.X, this.position.Y);
+        self.gameHandler.loadAnimation("data/animations/mew.json");
+        self.playerAnimation.addAnimation(this.playerElementName, playerModel, "stand", this.position.X, this.position.Y);
 
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     };
@@ -348,6 +362,44 @@ var PlayerManager = (function () {
     PlayerManager.prototype.playAnimation = function (name) {
         this.gameHandler.eventHandler.callEvent("playerAnimationChange", this, name);
         this.playerAnimation.playAnimation(this.playerElementName, name);
+    };
+
+    PlayerManager.prototype.renderSpeechBubble = function (message, timeout) {
+        if (typeof timeout === "undefined") { timeout = 5; }
+        var nameTagName = "NPCSpeechBubble-" + this.playerElementName;
+        var handler = this.playerAnimation;
+
+        var textLength = 5 * message.length + 15;
+        var height = 11;
+
+        var textOffset = 5;
+
+        var position = this.position;
+
+        var offsetX = 0;
+        if (textLength > this.gameHandler.config.tileSize) {
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
+        }
+
+        var Coord = {
+            X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
+            Y: (position.Y - 1.8) * this.gameHandler.config.tileSize
+        };
+
+        //console.log(position);
+        //console.log(Coord);
+        this.DisplaySpeechBubbleTo = Date.now() + timeout * 1000;
+
+        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+    };
+
+    PlayerManager.prototype.removeSpeechBubble = function () {
+        var nameTagName = "NPCSpeechBubble-" + this.playerElementName;
+        var handler = this.playerAnimation;
+
+        handler.removeGenericDraw(nameTagName);
+        handler.removeGenericDraw(nameTagName + "-text");
     };
     return PlayerManager;
 })();
