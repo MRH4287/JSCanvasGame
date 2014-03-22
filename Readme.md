@@ -7,7 +7,7 @@ This project is a game i am working on.
 
 ## Technology - Client:
 
-* HTL5 - Canvas Elements
+* HTML5 - Canvas Elements
 * Typescript
 * jQuery
 * WebSockets
