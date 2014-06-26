@@ -422,10 +422,23 @@ class PlayerManager
     {
         self.gameHandler.loadAnimation("data/animations/pichu.json");
         self.gameHandler.loadAnimation("data/animations/mew.json");
-        self.playerAnimation.addAnimation(this.playerElementName, playerModel, "stand", this.position.X, this.position.Y);
+        self.setPlayerModel(playerModel, this.position);
 
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
+
+    public setPlayerModel(model: string, position?: { X: number; Y: number })
+    {
+        if (typeof (position) === "undefined")
+        {
+            position = this.position;
+        }
+
+        this.playerAnimation.addAnimation(this.playerElementName, model, "stand", position.X, position.Y);
+
+        this.gameHandler.config.playerModel = model;
+    }
+
 
     private playerAction()
     {
