@@ -105,6 +105,11 @@ module.exports = function (grunt) {
                         files: '<%= jshint.gruntfile.src %>',
                         tasks: ['jshint:gruntfile']
                     },
+                ts:
+                    {
+                        files: '*.ts',
+                        taks: ['devBuild']
+                    }
 
             },
     });
@@ -121,14 +126,25 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default',
-      [
+    grunt.registerTask('devBuild',
+        [
           'clean:build',
           'tslint',
           'jshint',
           'typescript',
           'copy:pack',
-          'concat:main',
+          'concat:main'
+        ]);
+
+    grunt.registerTask('dev',
+      [
+          'devBuild',
+          'watch'
+      ]);
+
+    grunt.registerTask('default',
+      [
+          'devBuild',
           'uglify'
       ]);
 
