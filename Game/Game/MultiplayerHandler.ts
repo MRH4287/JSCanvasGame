@@ -32,7 +32,7 @@ class MultiplayerHandler
                     "Type": MessageType[MessageType.PlayerPositionChanged],
                     "ID": self.id,
                     "Position": arg
-                }
+                };
 
             self.send(data);
 
@@ -50,7 +50,7 @@ class MultiplayerHandler
                     "Type": MessageType[MessageType.PlayerAnimationChanged],
                     "ID": self.id,
                     "Animation": arg
-                }
+                };
 
             self.send(data);
         });
@@ -65,7 +65,7 @@ class MultiplayerHandler
                     "Target": arg.Target,
                     "Direction": arg.Direction,
                     "Speed": arg.Speed
-                }
+                };
 
             self.send(data);
 
@@ -77,7 +77,7 @@ class MultiplayerHandler
                 {
                     "Type": MessageType[MessageType.PlayerStopMove],
                     "ID": self.id
-                }
+                };
 
             self.send(data);
         });
@@ -111,7 +111,7 @@ class MultiplayerHandler
 
             self.send(data, true);
 
-        }
+        };
 
 
         this.socket.onmessage = function (e)
@@ -120,7 +120,7 @@ class MultiplayerHandler
 
             //self.gameHandler.log("WebSocket: ", data);
 
-            if ((data !== undefined) && (data != null) && (typeof (data) == "object"))
+            if ((data !== undefined) && (data !== null) && (typeof (data) === "object"))
             {
                 if (data.Type !== undefined)
                 {
@@ -260,17 +260,17 @@ class MultiplayerHandler
         var offsetX = 0;
         if (textLength > this.gameHandler.config.tileSize)
         {
-            offsetX = (textLength - this.gameHandler.config.tileSize) / 2
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
         }
 
-        var Coord = {
+        var coord = {
             X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
             Y: (position.Y - 1.4) * this.gameHandler.config.tileSize
         };
 
 
-        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
-        handler.writeText(nameTagName + "-text", name, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+        handler.drawColorRect(nameTagName, coord.X, coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", name, coord.X + textLength / 2, coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
 
 
     }
@@ -294,3 +294,4 @@ class MultiplayerHandler
         }
     }
 }
+

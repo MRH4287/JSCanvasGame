@@ -83,6 +83,14 @@ module.exports = function (grunt) {
                 }
             }
         },
+        copy:
+            {
+                pack:
+                    {
+                        src: 'renderer.js',
+                        dest: 'build/renderer.js'
+                    }
+            },
         clean:
           {
               build:
@@ -108,6 +116,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-tslint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
@@ -118,6 +127,7 @@ module.exports = function (grunt) {
           'tslint',
           'jshint',
           'typescript',
+          'copy:pack',
           'concat:main',
           'uglify'
       ]);

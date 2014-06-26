@@ -4,7 +4,7 @@ class Profiler
 {
     private gameHandler: GameHandler;
 
-    public TaskList: { [index: string]: number } = {};
+    public taskList: { [index: string]: number } = {};
 
     constructor(gameHandler: GameHandler)
     {
@@ -13,32 +13,30 @@ class Profiler
         var self = this;
         this.gameHandler.eventHandler.addEventListener("TaskCreated", function (s, arg)
         {
-            if (self.TaskList[arg] === undefined)
+            if (self.taskList[arg] === undefined)
             {
-                self.TaskList[arg] = 0;
+                self.taskList[arg] = 0;
             }
 
-            self.TaskList[arg] += 1;
+            self.taskList[arg] += 1;
 
         });
 
 
         this.gameHandler.eventHandler.addEventListener("TaskDisposed", function (s, arg)
         {
-            if (self.TaskList[arg] !== undefined)
+            if (self.taskList[arg] !== undefined)
             {
-                self.TaskList[arg] -= 1;
+                self.taskList[arg] -= 1;
 
-                if (self.TaskList[arg] <= 0)
+                if (self.taskList[arg] <= 0)
                 {
-                    delete self.TaskList[arg];
+                    delete self.taskList[arg];
                 }
             }
 
         });
 
     }
-
-
 
 }

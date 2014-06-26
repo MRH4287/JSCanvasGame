@@ -74,7 +74,7 @@ class EventHandler
 
     public containesKey(index: string): boolean
     {
-        return (this.getEvents().indexOf(index) != -1);
+        return (this.getEvents().indexOf(index) !== -1);
     }
 
     public addTimer(name: string, callback: (sender: any, arguments: any) => void, intervall: number, sender?: any, arguments?: any)
@@ -88,7 +88,7 @@ class EventHandler
         this.timedEvents[name] = {
             run: true,
             callback: callback
-        }
+        };
 
         var self = this;
         var triggerEvent = function ()
@@ -139,7 +139,7 @@ class EventHandler
 
     private addEventToList(name: string)
     {
-        if (this.calledEvents.indexOf(name) == -1)
+        if (this.calledEvents.indexOf(name) === -1)
         {
             this.calledEvents.push(name);
         }

@@ -13,13 +13,13 @@ class PlayerManager
     {
         X: 0,
         Y: 0
-    }
+    };
 
     private targetPosition =
     {
         X: 0,
         Y: 0
-    }
+    };
 
     private playerSpeed: number = 0.5;
     private updatesPerSecond: number = 20;
@@ -30,10 +30,10 @@ class PlayerManager
     private moveDirection: WalkDirection = WalkDirection.None;
 
     private lastAction: number = Date.now();
-    private DisplaySpeechBubbleTo: number = undefined;
+    private displaySpeechBubbleTo: number = undefined;
 
 
-   // Keycodes:
+    // Keycodes:
     /*
         39 - right
         37 - left
@@ -43,18 +43,16 @@ class PlayerManager
         32 - space
         27 - escape
     */
-    public Keys =
+    public keys =
     {
         up: 38,
         left: 37,
         right: 39,
         down: 40,
         action: 13
+    };
 
-
-    }
-
-    private KeysDown: { [index: number]: boolean } = {};
+    private keysDown: { [index: number]: boolean } = {};
 
 
     constructor(gameHandler: GameHandler, animationHandler: AnimationHandler, playerModel: string = "pichu")
@@ -71,7 +69,7 @@ class PlayerManager
 
         this.gameHandler.eventHandler.addEventListener("CheckIsPassable", function (s, data)
         {
-            if ((data.X == self.position.X) && (data.Y == self.position.Y))
+            if ((data.X === self.position.X) && (data.Y === self.position.Y))
             {
                 data.result = false;
             } 
@@ -80,12 +78,12 @@ class PlayerManager
 
         this.gameHandler.eventHandler.addEventListener("NPCSpeechBubbleCheck", function ()
         {
-            if (self.DisplaySpeechBubbleTo !== undefined)
+            if (self.displaySpeechBubbleTo !== undefined)
             {
-                if (self.DisplaySpeechBubbleTo < Date.now())
+                if (self.displaySpeechBubbleTo < Date.now())
                 {
                     self.removeSpeechBubble();
-                    self.DisplaySpeechBubbleTo = undefined;
+                    self.displaySpeechBubbleTo = undefined;
                 }
             }
         });
@@ -94,7 +92,7 @@ class PlayerManager
 
     private initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any)
     {
-        if ((this.playerState == PlayerState.Walking) && initialCall)
+        if ((this.playerState === PlayerState.Walking) && initialCall)
         {
             this.gameHandler.log("Player is already walking");
             return;
@@ -205,22 +203,22 @@ class PlayerManager
         {
             case WalkDirection.Right:
                 animation = "stand-right";
-                walkAgain = this.keyDown(this.Keys.right);
+                walkAgain = this.keyDown(this.keys.right);
                 break;
 
             case WalkDirection.Left:
                 animation = "stand-left";
-                walkAgain = this.keyDown(this.Keys.left);
+                walkAgain = this.keyDown(this.keys.left);
                 break;
 
             case WalkDirection.Up:
                 animation = "stand-up";
-                walkAgain = this.keyDown(this.Keys.up);
+                walkAgain = this.keyDown(this.keys.up);
                 break;
 
             case WalkDirection.Down:
                 animation = "stand";
-                walkAgain = this.keyDown(this.Keys.down);
+                walkAgain = this.keyDown(this.keys.down);
                 break;
 
         }
@@ -280,10 +278,10 @@ class PlayerManager
         };
 
         if ( //((normalizedPosition.X == self.targetPosition.X) && (normalizedPosition.Y == self.targetPosition.Y)) ||
-            (((direction == WalkDirection.Right) && (newPosition.X > self.targetPosition.X)) ||
-            ((direction == WalkDirection.Left) && (newPosition.X < self.targetPosition.X)) ||
-            ((direction == WalkDirection.Up) && (newPosition.Y < self.targetPosition.Y)) ||
-            ((direction == WalkDirection.Down) && (newPosition.Y > self.targetPosition.Y))))
+            (((direction === WalkDirection.Right) && (newPosition.X > self.targetPosition.X)) ||
+            ((direction === WalkDirection.Left) && (newPosition.X < self.targetPosition.X)) ||
+            ((direction === WalkDirection.Up) && (newPosition.Y < self.targetPosition.Y)) ||
+            ((direction === WalkDirection.Down) && (newPosition.Y > self.targetPosition.Y))))
         {
             self.position = normalizedPosition;
             self.playerAnimation.setPosition(self.playerElementName, normalizedPosition.X, normalizedPosition.Y);
@@ -328,7 +326,7 @@ class PlayerManager
 
         // Get Player Tile:
         var tiles: Tile[] = this.gameHandler.getTilesByFlagName("player");
-        if (tiles.length != 0)
+        if (tiles.length !== 0)
         {
             this.position.X = tiles[0].XCoord;
             this.position.Y = tiles[0].YCoord;
@@ -339,13 +337,13 @@ class PlayerManager
 
         $(document).keydown(function (event)
         {
-            self.KeysDown[event.keyCode] = true;
+            self.keysDown[event.keyCode] = true;
 
             self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
         })
             .keyup(function (event)
             {
-                self.KeysDown[event.keyCode] = false;
+                self.keysDown[event.keyCode] = false;
 
                 self.lastAction = Date.now();
             });
@@ -356,25 +354,25 @@ class PlayerManager
         {
             //self.gameHandler.log("Check for Input ...", self.KeysDown);
 
-            if (self.playerState == PlayerState.Standing)
+            if (self.playerState === PlayerState.Standing)
             {
-                if (self.keyDown(self.Keys.up))
+                if (self.keyDown(self.keys.up))
                 {
                     self.initMove(WalkDirection.Up);
                 }
-                else if (self.keyDown(self.Keys.down))
+                else if (self.keyDown(self.keys.down))
                 {
                     self.initMove(WalkDirection.Down);
                 }
-                else if (self.keyDown(self.Keys.left))
+                else if (self.keyDown(self.keys.left))
                 {
                     self.initMove(WalkDirection.Left);
                 }
-                else if (self.keyDown(self.Keys.right))
+                else if (self.keyDown(self.keys.right))
                 {
                     self.initMove(WalkDirection.Right);
                 }
-                else if (self.keyDown(self.Keys.action))
+                else if (self.keyDown(self.keys.action))
                 {
                     var now = Date.now();
                     if ((now - self.lastAction) > 300)
@@ -414,7 +412,7 @@ class PlayerManager
 
     private keyDown(key: number): boolean
     {
-        var value = this.KeysDown[key];
+        var value = this.keysDown[key];
 
 
         return ((value !== undefined) && (value));
@@ -434,7 +432,7 @@ class PlayerManager
         var offset = {
             X: this.position.X,
             Y: this.position.Y
-        }
+        };
 
         switch (this.moveDirection)
         {
@@ -484,10 +482,10 @@ class PlayerManager
         var offsetX = 0;
         if (textLength > this.gameHandler.config.tileSize)
         {
-            offsetX = (textLength - this.gameHandler.config.tileSize) / 2
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
         }
 
-        var Coord = {
+        var coord = {
             X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
             Y: (position.Y - 1.8) * this.gameHandler.config.tileSize
         };
@@ -495,10 +493,10 @@ class PlayerManager
         //console.log(position);
         //console.log(Coord);
 
-        this.DisplaySpeechBubbleTo = Date.now() + timeout * 1000;
+        this.displaySpeechBubbleTo = Date.now() + timeout * 1000;
 
-        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
-        handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+        handler.drawColorRect(nameTagName, coord.X, coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", message, coord.X + textLength / 2, coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
 
     }
 
@@ -512,6 +510,5 @@ class PlayerManager
         handler.removeGenericDraw(nameTagName);
         handler.removeGenericDraw(nameTagName + "-text");
     }
-
 
 }

@@ -123,7 +123,7 @@ class GameHandler
         var self = this;
         $.each(self.elements, function (ID: string, el: ElementDefinition)
         {
-            if ((el.Dynamic !== undefined) && (el.Dynamic == true) && (el.AnimationDefinition !== undefined) && (el.AnimationDefinition != ""))
+            if ((el.Dynamic !== undefined) && (el.Dynamic === true) && (el.AnimationDefinition !== undefined) && (el.AnimationDefinition !== ""))
             {
                 self.loadAnimation(el.AnimationDefinition);
             }
@@ -275,7 +275,7 @@ class GameHandler
 
         this.eventHandler.callEvent("preTileUpdate", this, tile);
 
-        if ((tile.BottomElementID !== undefined) && (tile.BottomElementID != null) && (tile.BottomElementID != ""))
+        if ((tile.BottomElementID !== undefined) && (tile.BottomElementID !== null) && (tile.BottomElementID !== ""))
         {
             if (this.elements[tile.BottomElementID] !== undefined)
             {
@@ -287,7 +287,7 @@ class GameHandler
             }
         }
 
-        if ((tile.MiddleElementID !== undefined) && (tile.MiddleElementID != null) && (tile.MiddleElementID != ""))
+        if ((tile.MiddleElementID !== undefined) && (tile.MiddleElementID !== null) && (tile.MiddleElementID !== ""))
         {
             if (this.elements[tile.MiddleElementID] !== undefined)
             {
@@ -299,7 +299,7 @@ class GameHandler
             }
         }
 
-        if ((tile.TopElementID !== undefined) && (tile.TopElementID != null) && (tile.TopElementID != ""))
+        if ((tile.TopElementID !== undefined) && (tile.TopElementID !== null) && (tile.TopElementID !== ""))
         {
             if (this.elements[tile.TopElementID] !== undefined)
             {
@@ -346,15 +346,15 @@ class GameHandler
     {
         var tile = this.getTileAtPos(x, y);
 
-        if (tile == undefined)
+        if (tile === undefined)
         {
             this.warn("Tile not found: ", [x, y]);
             return false;
         }
 
-        var bottomPassable = ((tile.BottomElement !== undefined) && (tile.BottomElement != null)) ? tile.BottomElement.Passable : true;
-        var middlePassable = ((tile.MiddleElement !== undefined) && (tile.MiddleElement != null)) ? tile.MiddleElement.Passable : true;
-        var topPassable = ((tile.TopElement !== undefined) && (tile.TopElement != null)) ? tile.TopElement.Passable : true;
+        var bottomPassable = ((tile.BottomElement !== undefined) && (tile.BottomElement !== null)) ? tile.BottomElement.Passable : true;
+        var middlePassable = ((tile.MiddleElement !== undefined) && (tile.MiddleElement !== null)) ? tile.MiddleElement.Passable : true;
+        var topPassable = ((tile.TopElement !== undefined) && (tile.TopElement !== null)) ? tile.TopElement.Passable : true;
 
         var data =
             {
@@ -421,8 +421,8 @@ class GameHandler
     // Global Helper Functions:
     public getFile(url: string, callback?: (any) => void, dataType?: string): any
     {
-        var async = (!(typeof (callback) == "undefined"));
-        dataType = (typeof (dataType) == "undefined") ? "json" : dataType;
+        var async = (!(typeof (callback) === "undefined"));
+        dataType = (typeof (dataType) === "undefined") ? "json" : dataType;
 
         var tempResult = null;
 

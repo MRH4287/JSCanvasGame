@@ -161,7 +161,7 @@ interface NPCData
     Position: {
         X: number;
         Y: number;
-    }
+    };
     Target: {
         X: number;
         Y: number;

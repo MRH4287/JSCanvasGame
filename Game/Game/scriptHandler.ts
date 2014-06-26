@@ -31,7 +31,7 @@ class ScriptHandler
         "-": ElementTypes.Sub,
         "*": ElementTypes.Mult,
         "/": ElementTypes.Div
-    }
+    };
 
 
 
@@ -113,6 +113,10 @@ class ScriptHandler
                 return;
             }
 
+            var values = null;
+            var i: number = null;
+            var data = null;
+
             switch (type)
             {
                 case ElementTypes.OnEvent:
@@ -187,11 +191,11 @@ class ScriptHandler
                             return false;
                         }
 
-                        var values = this.parseValue(scriptNode.Values);
+                        values = this.parseValue(scriptNode.Values);
 
-                        var data: any = 0;
+                        data = 0;
 
-                        for (var i = 0; i < values.length; i++)
+                        for (i = 0; i < values.length; i++)
                         {
                             data += values[i];
                         }
@@ -211,11 +215,11 @@ class ScriptHandler
                             return false;
                         }
 
-                        var values = this.parseValue(scriptNode.Values);
+                        values = this.parseValue(scriptNode.Values);
 
-                        var data: any = values[0];
+                        data = values[0];
 
-                        for (var i = 1; i < values.length; i++)
+                        for (i = 1; i < values.length; i++)
                         {
                             data -= values[i];
                         }
@@ -235,11 +239,11 @@ class ScriptHandler
                             return false;
                         }
 
-                        var values = this.parseValue(scriptNode.Values);
+                        values = this.parseValue(scriptNode.Values);
 
-                        var data: any = 1;
+                        data = 1;
 
-                        for (var i = 0; i < values.length; i++)
+                        for (i = 0; i < values.length; i++)
                         {
                             data *= values[i];
                         }
@@ -259,11 +263,11 @@ class ScriptHandler
                             return false;
                         }
 
-                        var values = this.parseValue(scriptNode.Values);
+                        values = this.parseValue(scriptNode.Values);
 
-                        var data: any = values[0];
+                        data = values[0];
 
-                        for (var i = 1; i < values.length; i++)
+                        for (i = 1; i < values.length; i++)
                         {
                             data /= values[i];
                         }
@@ -378,13 +382,15 @@ class ScriptHandler
 
             var ok = true;
 
+            var i: number = null;
+
             if (conditions.length === undefined)
             {
                 ok = Boolean(conditions);
             }
             else
             {
-                for (var i = 0; i < conditions.length; i++)
+                for (i = 0; i < conditions.length; i++)
                 {
                     ok = ok && Boolean(conditions[i]);
                 }
@@ -395,7 +401,7 @@ class ScriptHandler
             {
                 if (node.Then.length !== undefined)
                 {
-                    for (var i = 0; i < node.Then.length; i++)
+                    for (i = 0; i < node.Then.length; i++)
                     {
                         this.parseScript(node.Then);
                     }
@@ -409,7 +415,7 @@ class ScriptHandler
             {
                 if (node.Else.length !== undefined)
                 {
-                    for (var i = 0; i < node.Else.length; i++)
+                    for (i = 0; i < node.Else.length; i++)
                     {
                         this.parseScript(node.Else);
                     }
@@ -427,6 +433,8 @@ class ScriptHandler
 
     private parseValue(value: any): any
     {
+        var i: number = null;
+
         if (typeof (value) !== "object")
         {
             return value;
@@ -440,7 +448,7 @@ class ScriptHandler
                     // This is an Array ...
                     var result = [];
 
-                    for (var i = 0; i < value.length; i++)
+                    for (i = 0; i < value.length; i++)
                     {
                         result.push(this.parseValue(value[i]));
                     }
@@ -466,6 +474,10 @@ class ScriptHandler
                         return null;
                     }
 
+                    var values = null;
+                    var data = null;
+
+
                     switch (type)
                     {
                         case ElementTypes.Variable:
@@ -489,15 +501,15 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Equals Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Equals Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                return (values[0] == values[1]);
+                                return (values[0] === values[1]);
 
                             }
                             break;
@@ -512,15 +524,15 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Not Equals Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Not Equals Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                return (values[0] != values[1]);
+                                return (values[0] !== values[1]);
 
                             }
 
@@ -535,13 +547,13 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Greater Than Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Greater Than Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
                                 return (values[0] > values[1]);
 
@@ -558,13 +570,13 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Less Than Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Less Than Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
                                 return (values[0] < values[1]);
 
@@ -581,13 +593,13 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Greater Than Equals Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Greater Than Equals Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
                                 return (values[0] >= values[1]);
 
@@ -604,13 +616,13 @@ class ScriptHandler
                                     this.gameHandler.warn("Not a valid Value Argument for Less Than Equals Statement: ", value);
                                     return false;
                                 }
-                                if (value.Values.length != 2)
+                                if (value.Values.length !== 2)
                                 {
                                     this.gameHandler.warn("Need exactly two Arguments for Less Than Equals Statement: ", value);
                                     return false;
                                 }
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
                                 return (values[0] <= values[1]);
 
@@ -629,7 +641,7 @@ class ScriptHandler
                                 }
 
 
-                                var value = this.parseValue(value.Values);
+                                value = this.parseValue(value.Values);
 
                                 return (!value);
 
@@ -648,11 +660,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = true;
+                                data = true;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data = data && values[i];
                                 }
@@ -674,11 +686,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = true;
+                                data = true;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data = data && values[i];
                                 }
@@ -700,11 +712,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = false;
+                                data = false;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data = data || values[i];
                                 }
@@ -726,11 +738,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = false;
+                                data = false;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data = data || values[i];
                                 }
@@ -759,11 +771,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = 0;
+                                data = 0;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data += values[i];
                                 }
@@ -790,11 +802,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = values[0];
+                                data = values[0];
 
-                                for (var i = 1; i < values.length; i++)
+                                for (i = 1; i < values.length; i++)
                                 {
                                     data -= values[i];
                                 }
@@ -821,11 +833,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = 1;
+                                data = 1;
 
-                                for (var i = 0; i < values.length; i++)
+                                for (i = 0; i < values.length; i++)
                                 {
                                     data *= values[i];
                                 }
@@ -851,11 +863,11 @@ class ScriptHandler
                                 }
 
 
-                                var values = this.parseValue(value.Values);
+                                values = this.parseValue(value.Values);
 
-                                var data: any = values[0];
+                                data = values[0];
 
-                                for (var i = 1; i < values.length; i++)
+                                for (i = 1; i < values.length; i++)
                                 {
                                     data /= values[i];
                                 }
@@ -877,9 +889,6 @@ class ScriptHandler
                         default:
                             this.gameHandler.warn("Not supported Type for Value: ", type, value);
                             return null;
-
-                            break;
-
                     }
 
 

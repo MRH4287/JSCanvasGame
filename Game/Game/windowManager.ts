@@ -32,17 +32,17 @@ class WindowManager
         var maxOffset = {
             X: mapSize.X - this.gameHandler.config.width,
             Y: mapSize.Y - this.gameHandler.config.height,
-        }
+        };
 
         var offsetToSet = {
             X: (postion.X * tileSize) - this.offsetDiff.X,
             Y: (postion.Y * tileSize) - this.offsetDiff.Y
-        }
+        };
 
         offsetToSet = {
             X: (offsetToSet.X < 0) ? 0 : ((offsetToSet.X > maxOffset.X) ? maxOffset.X : offsetToSet.X),  //offsetToSet.X,
             Y: (offsetToSet.Y < 0) ? 0 : ((offsetToSet.Y > maxOffset.Y) ? maxOffset.Y : offsetToSet.Y) // offsetToSet.Y
-        }
+        };
 
         this.gameHandler.renderer.setOffset(offsetToSet);
 
@@ -58,7 +58,4 @@ class WindowManager
 
 
     }
-
-
-
 }

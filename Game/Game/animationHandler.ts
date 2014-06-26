@@ -21,7 +21,7 @@ class AnimationHandler
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
     private animationGroups: { [id: string]: {[index: string ]: boolean } } = {}; // { [id: string]: { (): void } }
 
-    private UseAnimationGroups: boolean = true;
+    private useAnimationGroups: boolean = true;
     private staticName: string = null;
 
     private genericDrawActions: {
@@ -35,7 +35,7 @@ class AnimationHandler
     {
         if (staticName !== undefined)
         {
-            this.UseAnimationGroups = false;
+            this.useAnimationGroups = false;
             this.staticName = staticName;
         }
 
@@ -119,13 +119,13 @@ class AnimationHandler
 
         //this.gameHandler.log("Got Tile to update: (X: " + tile.XCoord + ", Y: " + tile.YCoord +") ", tile);
 
-        if ((tile.BottomElement !== undefined) && (tile.BottomElement.Dynamic !== undefined) && (tile.BottomElement.Dynamic == true))
+        if ((tile.BottomElement !== undefined) && (tile.BottomElement.Dynamic !== undefined) && (tile.BottomElement.Dynamic === true))
         {
             dynamic = true;
             def = tile.BottomElement;
             defLayer = 0;
         }
-        if ((tile.MiddleElement !== undefined) && (tile.MiddleElement.Dynamic !== undefined) && (tile.MiddleElement.Dynamic == true))
+        if ((tile.MiddleElement !== undefined) && (tile.MiddleElement.Dynamic !== undefined) && (tile.MiddleElement.Dynamic === true))
         {
             if (dynamic)
             {
@@ -139,7 +139,7 @@ class AnimationHandler
                 defLayer = 1;
             }
         }
-        if ((tile.TopElement !== undefined) && (tile.TopElement.Dynamic !== undefined) && (tile.TopElement.Dynamic == true))
+        if ((tile.TopElement !== undefined) && (tile.TopElement.Dynamic !== undefined) && (tile.TopElement.Dynamic === true))
         {
             if (dynamic)
             {
@@ -157,14 +157,14 @@ class AnimationHandler
 
         if (dynamic) // && )
         {
-            if (def.Level == this.layer)
+            if (def.Level === this.layer)
             {
                 if (this.gameHandler.config.verbose)
                 {
                     this.gameHandler.log("Load Animation for item: ", tile);
                 }
 
-                var id = ((tile.ID === undefined) || (tile.ID == null) || (tile.ID == "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" + tile.ID;
+                var id = ((tile.ID === undefined) || (tile.ID === null) || (tile.ID === "")) ? "ent-" + def.ID + "-" + Math.random() + "-" + Math.random() : "ent-" + tile.ID;
 
                 tile.Animation = this.addAnimation(id, def.AnimationContainer, def.DefaultAnimation, tile.XCoord, tile.YCoord);
 
@@ -189,13 +189,13 @@ class AnimationHandler
         var container: InternalAnimationContainer = this.gameHandler.animations[containerName];
         var animation: Animation = container.Animations[startAnimation];
 
-        if (this.UseAnimationGroups)
+        if (this.useAnimationGroups)
         {
-            if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup == null) || (animation.AnimationGroup == ""))
+            if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup === null) || (animation.AnimationGroup === ""))
             {
                 animation.AnimationGroup = "group-" + ElementID;
             }
-            else if (animation.AnimationGroup == "@")
+            else if (animation.AnimationGroup === "@")
             {
                 animation.AnimationGroup = "group-" + Math.random() + Math.random();
             }
@@ -297,7 +297,7 @@ class AnimationHandler
     {
         var container: PlayableAnimation = this.playableAnimations[elementID];
 
-        if ((container.Animation != null) && (container.Animation.ID == animation))
+        if ((container.Animation !== null) && (container.Animation.ID === animation))
         {
             // this.gameHandler.warn("Animation '" + animation + "' is allready running for '" + elementID + "'");
             return;
@@ -309,9 +309,9 @@ class AnimationHandler
         var newAnimation = this.getNewAnimationInstance(container.AnimationContainer.Animations[animation]);
         container.Animation = newAnimation;
 
-        if ((group === undefined) || (group == null) || (group == ""))
+        if ((group === undefined) || (group === null) || (group === ""))
         {
-            if ((newAnimation.AnimationGroup === undefined) || (newAnimation.AnimationGroup == null) || (newAnimation.AnimationGroup == ""))
+            if ((newAnimation.AnimationGroup === undefined) || (newAnimation.AnimationGroup === null) || (newAnimation.AnimationGroup === ""))
             {
                 group = "group-" + Math.random();
             }
@@ -321,8 +321,8 @@ class AnimationHandler
             }
         }
 
-        var timerName = (this.UseAnimationGroups) ? ("anim-" + group) : this.staticName;
-        if (!this.UseAnimationGroups)
+        var timerName = (this.useAnimationGroups) ? ("anim-" + group) : this.staticName;
+        if (!this.useAnimationGroups)
         {
             group = this.staticName;
         }
@@ -401,7 +401,7 @@ class AnimationHandler
 
     public stopAnimation(elementID: string)
     {
-        if (this.UseAnimationGroups)
+        if (this.useAnimationGroups)
         {
 
             var container: PlayableAnimation = this.playableAnimations[elementID];
@@ -427,7 +427,7 @@ class AnimationHandler
                         count++;
                     });
 
-                    if (count == 0)
+                    if (count === 0)
                     {
                         if (this.gameHandler.config.verbose)
                         {
@@ -446,13 +446,13 @@ class AnimationHandler
         }
         else
         {
-            var timerName = this.staticName;
+            var staticTimerName = this.staticName;
             var group = this.staticName;
 
-            this.eventHandler.stopTimer(timerName);
-            var container: PlayableAnimation = this.playableAnimations[elementID];
+            this.eventHandler.stopTimer(staticTimerName);
+            var staticContainer: PlayableAnimation = this.playableAnimations[elementID];
 
-            container.Animation = null;
+            staticContainer.Animation = null;
 
             this.animationGroups[group] = undefined;
 
@@ -462,12 +462,12 @@ class AnimationHandler
 
     private animationStep(group: string, animation: PlayableAnimation[])
     {
-        if (animation == null)
+        if (animation === null)
         {
             return;
         }
 
-        if (animation.length == 0)
+        if (animation.length === 0)
         {
             // I am a Empty Animation Group ... I should not be running!
             if (this.gameHandler.config.verbose)
@@ -491,7 +491,7 @@ class AnimationHandler
         });
 
 
-        if (anims.length == 0)
+        if (anims.length === 0)
         {
             // I am a Empty Animation Group ... I should not be running!
             if (this.gameHandler.config.verbose)
@@ -499,14 +499,12 @@ class AnimationHandler
                 this.gameHandler.log("Close Animation Group - AnimationStep is Empty", group);
             }
 
-
-            var timerName = "anim-" + group;
-            this.eventHandler.stopTimer(timerName);
+            this.eventHandler.stopTimer("anim-" + group);
 
             return;
         }
 
-        if (group != animation[0].AnimationGroup)
+        if (group !== animation[0].AnimationGroup)
         {
             this.gameHandler.warn("Wrong Animation Group. Don't Update!", animation);
 
@@ -516,8 +514,8 @@ class AnimationHandler
             }
 
 
-            var timerName = "anim-" + group;
-            this.eventHandler.stopTimer(timerName);
+
+            this.eventHandler.stopTimer("anim-" + group);
 
             return;
         }

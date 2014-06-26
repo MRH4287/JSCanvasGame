@@ -23,7 +23,7 @@ class NPCHandler
 
             $.each(self.npcList, function (id: string, data: NPCData)
             {
-                if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y))
+                if ((data.Position.X === argument.X) && (data.Position.Y === argument.Y))
                 {
                     argument.result = false;
                 }
@@ -34,7 +34,7 @@ class NPCHandler
         {
             $.each(self.npcList, function (id: string, data: NPCData)
             {
-                if ((data.Position.X == argument.X) && (data.Position.Y == argument.Y))
+                if ((data.Position.X === argument.X) && (data.Position.Y === argument.Y))
                 {
                     self.gameHandler.eventHandler.callEvent("PlayerNPCAction", self, {
                         name: id,
@@ -148,10 +148,10 @@ class NPCHandler
         var offsetX = 0;
         if (textLength > this.gameHandler.config.tileSize)
         {
-            offsetX = (textLength - this.gameHandler.config.tileSize) / 2
+            offsetX = (textLength - this.gameHandler.config.tileSize) / 2;
         }
 
-        var Coord = {
+        var coord = {
             X: (position.X - 1) * this.gameHandler.config.tileSize - offsetX,
             Y: (position.Y - 1.8) * this.gameHandler.config.tileSize
         };
@@ -161,8 +161,8 @@ class NPCHandler
 
         npc.DisplaySpeechBubbleTo = Date.now() + timeout * 1000;
 
-        handler.drawColorRect(nameTagName, Coord.X, Coord.Y, textLength, height, 255, 255, 255, 0.3, false);
-        handler.writeText(nameTagName + "-text", message, Coord.X + textLength / 2, Coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
+        handler.drawColorRect(nameTagName, coord.X, coord.Y, textLength, height, 255, 255, 255, 0.3, false);
+        handler.writeText(nameTagName + "-text", message, coord.X + textLength / 2, coord.Y, "11px sans-serif", "top", "center", "rgba(0,0,0,1)", textLength - 2 * textOffset, false);
 
     }
 
@@ -207,7 +207,7 @@ class NPCHandler
 
         var npc: NPCData = this.npcList[name];
 
-        if ((npc.State == PlayerState.Walking) && (!ignoreChecks))
+        if ((npc.State === PlayerState.Walking) && (!ignoreChecks))
         {
             this.gameHandler.log("NPC is already walking", npc);
             return;
@@ -231,7 +231,7 @@ class NPCHandler
 
         var npc: NPCData = this.npcList[name];
 
-        if ((npc.State == PlayerState.Walking) && (!ignoreChecks))
+        if ((npc.State === PlayerState.Walking) && (!ignoreChecks))
         {
             this.gameHandler.log("NPC is already walking", npc);
             return;
@@ -358,7 +358,7 @@ class NPCHandler
 
     private positionUpdateStep(npc: NPCData, direction: WalkDirection, offsetPerUpdate: number, intervall: number, callback?: (npc: NPCData) => any)
     {
-        if (npc.State == PlayerState.Standing)
+        if (npc.State === PlayerState.Standing)
         {
             return;
         }
@@ -401,10 +401,10 @@ class NPCHandler
         };
 
         if (
-            (((direction == WalkDirection.Right) && (newPosition.X > npc.Target.X)) ||
-            ((direction == WalkDirection.Left) && (newPosition.X < npc.Target.X)) ||
-            ((direction == WalkDirection.Up) && (newPosition.Y < npc.Target.Y)) ||
-            ((direction == WalkDirection.Down) && (newPosition.Y > npc.Target.Y))))
+            (((direction === WalkDirection.Right) && (newPosition.X > npc.Target.X)) ||
+            ((direction === WalkDirection.Left) && (newPosition.X < npc.Target.X)) ||
+            ((direction === WalkDirection.Up) && (newPosition.Y < npc.Target.Y)) ||
+            ((direction === WalkDirection.Down) && (newPosition.Y > npc.Target.Y))))
         {
             this.setPosition(npc.ID, normalizedPosition);
 
