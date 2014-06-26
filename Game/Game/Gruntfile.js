@@ -112,6 +112,18 @@ module.exports = function (grunt) {
                     }
 
             },
+        'ftp-deploy': {
+            build: {
+                auth: {
+                    host: 'mrh-development.de',
+                    port: 21,
+                    authKey: 'key1'
+                },
+                src: './',
+                dest: '/',
+                exclusions: ['.ftppass', 'bin', 'Controller', 'node_modules', 'obj', '.gitignore', 'jshint', '*.csproj', '**/*.cs', '*.user', '*.ts']
+            }
+        }
     });
 
     // These plugins provide necessary tasks.
@@ -125,6 +137,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-ftp-deploy');
 
     grunt.registerTask('devBuild',
         [
@@ -146,6 +159,12 @@ module.exports = function (grunt) {
       [
           'devBuild',
           'uglify'
+      ]);
+
+    grunt.registerTask('deploy',
+      [
+          'default',
+          'ftp-deploy'
       ]);
 
 };
