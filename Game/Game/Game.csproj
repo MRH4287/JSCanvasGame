@@ -59,6 +59,7 @@
     <None Include="graphics\animations\strich\winken4.pdn" />
     <None Include="graphics\animations\strich\winken5.pdn" />
     <None Include="graphics\animations\strich\winken6.pdn" />
+    <None Include="package.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="graphics\animations\pichu.png" />
@@ -99,6 +100,7 @@
     <Content Include="graphics\terrain\ledge.png" />
     <Content Include="graphics\terrain\ledge_left.png" />
     <Content Include="graphics\terrain\ledge_right.png" />
+    <Content Include="Gruntfile.js" />
     <Content Include="index.html" />
     <Content Include="js\jquery-2.1.0.min.js" />
     <Content Include="renderer.js" />
@@ -118,7 +120,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>tsc "$(ProjectDir)\gameHandler.ts"</PreBuildEvent>
+    <PreBuildEvent>cd "$(ProjectDir)"
+grunt</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
