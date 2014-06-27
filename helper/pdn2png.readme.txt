@@ -1,0 +1,57 @@
+About pdn2png...
+
+Commandline tool to create a composite image from the layers stored in a .pdn file or 
+extracts single layers or channels. Files with the extension .pdn are used by the 
+digital photo editing application Paint.NET. The resulting filetpye is PNG.
+
+Copyright 2011-2012 by Martin Osieka, ComSquare AG, Switzerland
+
+>pdn2png /help
+pdn2png v0.8
+(c) 2011-2012 by Martin Osieka, ComSquare AG, Switzerland (www.comsquare.ch)
+Creates a composite image from the layers stored in a .pdn file. Files with
+the extension .pdn are used by the digital photo editing application Paint.NET.
+
+This program does not depend on an installed .NET framework.
+
+Usage: pdn2png {options} {infile}.pdn
+
+Options:
+/help       Show this help text
+/pause      Pause after execution
+/argb       Write 32-bit RGB bitmap (default)
+/rgb        Write 24-bit RGB bitmap
+/red        Write 8-bit bitmap of red channel
+/green      Write 8-bit bitmap of green channel
+/blue       Write 8-bit bitmap of blue channel
+/alpha      Write 8-bit bitmap of alpha channel
+/mask       Write 8-bit bitmap of inverted alpha channel
+/outfile={filename}
+    Write bitmap to {filename} (default: {infile}.png)
+/background=0xRRGGBB
+    Sets background color (default: white 0xFFFFFF)
+/checkerboard[=0xRRGGBB]
+    Sets second background color to show checkerboard (default: 0xBFBFBF)
+/index={value}
+    Return composite image or image of layer {value} (0: composite (default),
+    1..number of layers (bottom to top), -1..-number of layers (top to bottom))
+/split
+    Write all layers as separate files. The filenames contain the properties
+    of the layers {infile}{-LiBlendOpacityVName}.png
+
+Examples:
+pdn2png image.pdn
+    Creates 32-bit ARGB bitmap 'image.png' from 'image.pdn'.
+    Fully transparent pixels will show a checkerboard in simple viewers.
+pdn2png /background=0xFF0000 image.pdn
+    Creates 32-bit RGB bitmap 'image.png' from 'image.pdn'.
+    Fully transparent pixels will show red color in simple viewers.
+pdn2png /rgb image.pdn
+    Creates 24-bit RGB bitmap 'image.png' from 'image.pdn'.
+    Transparent pixels will be blended to the default background color.
+pdn2png /split /outfile=myname.png image.pdn
+    Creates a 32-bit ARGB bitmap for each layer in 'image.pdn'.
+    The names of the files will be 'myname-AAA.png'
+    (AAA depends on the layer index and properties).
+pdn2png /index=-1 image.pdn
+    Creates 32-bit RGB bitmap of the top layer in 'image.pdn'.
