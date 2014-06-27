@@ -1,0 +1,14 @@
+0 - stand.png
+41 - stand-left.png
+82 - stand-right.png
+123 - stand-up.png
+164 - walk-down-1.png
+205 - walk-down-2.png
+246 - walk-left-1.png
+287 - walk-left-2.png
+328 - walk-right-1.png
+369 - walk-right-2.png
+410 - walk-up-1.png
+451 - walk-up-2.png
+492 - sleep-1.png
+533 - sleep-2.png
