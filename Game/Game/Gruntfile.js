@@ -139,26 +139,23 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ftp-deploy');
 
-    grunt.registerTask('devBuild',
-        [
-          'clean:build',
-          'tslint',
-          'jshint',
-          'typescript',
-          'copy:pack',
-          'concat:main'
-        ]);
 
-    grunt.registerTask('dev',
-      [
-          'devBuild',
-          'watch'
-      ]);
 
     grunt.registerTask('default',
       [
-          'devBuild',
-          'uglify'
+        'clean:build',
+        'tslint',
+        'jshint',
+        'typescript',
+        'copy:pack',
+        'concat:main',
+        'uglify'
+      ]);
+
+    grunt.registerTask('dev',
+      [
+          'default',
+          'watch'
       ]);
 
     grunt.registerTask('deploy',
