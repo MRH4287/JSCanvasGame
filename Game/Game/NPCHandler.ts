@@ -178,7 +178,7 @@ class NPCHandler
     }
 
 
-    public setPosition(name: string, position: { X: number; Y: number }, rerender = true)
+    public setPosition(name: string, position: GridPosition, rerender = true)
     {
         if (this.npcList[name] === undefined)
         {
@@ -201,7 +201,7 @@ class NPCHandler
         this.npcList[name].State = PlayerState.Standing;
     }
 
-    public advInitMove(name: string, position: { X: number; Y: number }, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
+    public advInitMove(name: string, position: GridPosition, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
     {
 
 
@@ -277,7 +277,7 @@ class NPCHandler
         this.animation.playAnimation(npc.GUID, idleAnimation);
         
 
-        var target = {
+        var target: GridPosition = {
             X: npc.Position.X + walkOffset.X,
             Y: npc.Position.Y + walkOffset.Y
         };

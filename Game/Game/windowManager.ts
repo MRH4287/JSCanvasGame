@@ -23,7 +23,7 @@ class WindowManager
     }
 
 
-    private onPlayerPositionUpdate(self: WindowManager, sender: PlayerManager, postion: { X: number; Y: number })
+    private onPlayerPositionUpdate(self: WindowManager, sender: PlayerManager, postion: GridPosition)
     {
         var tileSize = this.gameHandler.config.tileSize;
 

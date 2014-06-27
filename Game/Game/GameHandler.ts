@@ -1,6 +1,7 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="eventHandler.ts" />
 /// <reference path="interfaces.ts" />
+/// <reference path="astar.d.ts" />
 
 
 /// <reference path="animationHandler.ts" />
@@ -10,6 +11,7 @@
 /// <reference path="NPCHandler.ts" />
 /// <reference path="MultiplayerHandler.ts" />
 /// <reference path="Profiler.ts" />
+/// <reference path="pathHandler.ts" />
 
 class GameHandler
 {
@@ -369,6 +371,28 @@ class GameHandler
 
         return data.result;
 
+    }
+
+    public getMapPassableData(): boolean[][]
+    {
+        var maxX = this.map.length;
+        var maxY = this.map[0].length;
+
+        var result: boolean[][] = [];
+
+        for (var y = 0; y < maxY; y++)
+        {
+            var data: boolean[] = [];
+
+            for (var x = 0; x < maxX; x++)
+            {
+                data[x] = this.isCoordPassable(x + 1, y + 1);
+            }
+
+            result[y] = data;
+        }
+
+        return result;
     }
 
     public getElementByID(ID: string): ElementDefinition

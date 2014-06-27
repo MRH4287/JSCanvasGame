@@ -23,7 +23,8 @@ module.exports = function (grunt) {
           'build/Profiler.js',
           'build/renderer.js',
           'build/scriptHandler.js',
-          'build/windowManager.js'
+          'build/windowManager.js',
+          'build/pathHandler.js'
         ],
 
         // Task configuration.
@@ -78,7 +79,7 @@ module.exports = function (grunt) {
                     module: 'amd', //or commonjs
                     target: 'es5', //or es3
                     basePath: '',
-                    sourceMap: true,
+                    sourceMap: false,
                     declaration: true
                 }
             }

@@ -240,7 +240,7 @@ class MultiplayerHandler
     }
 
 
-    private renderPlayerLabel(name: string, position: { X: number; Y: number })
+    private renderPlayerLabel(name: string, position: GridPosition)
     {
         var nameTagName = "PlayerNameTag-" + name;
         var handler = this.gameHandler.topAnimationHandler;

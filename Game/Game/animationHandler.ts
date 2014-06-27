@@ -596,20 +596,20 @@ class AnimationHandler
 
 
 
-    private getPosition(x: number, y: number): { x: number; y: number }
+    private getPosition(x: number, y: number): GridPosition
     {
         var tileSize: number = this.renderer.getTileSize();
         var result =
             {
-                x: ((x - 1) * tileSize),
-                y: ((y - 1) * tileSize)
+                X: ((x - 1) * tileSize),
+                Y: ((y - 1) * tileSize)
             };
 
         return result;
     }
 
 
-    private renderAnimations(self)
+    private renderAnimations(self: AnimationHandler)
     {
         if (self.ctx == null)
         {
@@ -628,8 +628,8 @@ class AnimationHandler
 
         $.each(self.playableAnimations, function (id: string, el: PlayableAnimation) 
         {
-            var pos = self.getPosition(el.X, el.Y);
-            self.renderAninmation(el.AnimationContainer, el.Animation, pos.x, pos.y);
+            var pos : GridPosition = self.getPosition(el.X, el.Y);
+            self.renderAninmation(el.AnimationContainer, el.Animation, pos.X, pos.Y);
         });
 
         self.eventHandler.callEvent("animationsPostRender", self, null);

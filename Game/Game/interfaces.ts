@@ -11,10 +11,8 @@ interface Renderer
     setMap(map: Tile[][]);
     initMap(sizeX: number, sizeY: number);
     setConfig(elements: { [id: string]: ElementDefinition });
-    setOffset(offset: { X: number; Y: number });
-    getMapSize(): {
-        X: number; Y: number
-    }
+    setOffset(offset: GridPosition);
+    getMapSize(): GridPosition;
 }
 
 interface RendererLayer
@@ -158,18 +156,18 @@ enum WalkDirection
 interface NPCData
 {
     ID: string;
-    Position: {
-        X: number;
-        Y: number;
-    };
-    Target: {
-        X: number;
-        Y: number;
-    };
+    Position: GridPosition;
+    Target: GridPosition;
     GUID: string;
     Speed: number;
     State: PlayerState;
     Direction: WalkDirection;
     DisplaySpeechBubbleTo: number;
 
+}
+
+interface GridPosition
+{
+    X: number;
+    Y: number;
 }

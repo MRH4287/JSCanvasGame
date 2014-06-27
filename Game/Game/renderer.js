@@ -84,8 +84,8 @@
     var _map = [];
 
     var _offset = {
-        x: 0,
-        y: 0
+        X: 0,
+        Y: 0
     }
 
     var _eventHandler = null;
@@ -360,8 +360,8 @@
                 //}
 
                 if (
-                        ((xOffset + _config.tileSize) < _offset.x) ||
-                        (yOffset + _config.tileSize) < _offset.y //||
+                        ((xOffset + _config.tileSize) < _offset.X) ||
+                        (yOffset + _config.tileSize) < _offset.Y //||
                     //(xOffset > ( _width + _offset.x))
 
                     )
@@ -418,7 +418,7 @@
             //{
                 
 
-                _ctx.drawImage(_bufferCanvas, _offset.x * -1, _offset.y * -1);
+                _ctx.drawImage(_bufferCanvas, _offset.X * -1, _offset.Y * -1);
 
                 //_eventHandler.callEvent("TaskDisposed", this, "Renderer - DrawImage");
 
@@ -447,8 +447,8 @@
     {
 
 
-        _offset.x = offset.X;
-        _offset.y = offset.Y;
+        _offset.X = offset.X;
+        _offset.Y = offset.Y;
 
         //_render();
     }

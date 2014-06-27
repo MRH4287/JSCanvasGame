@@ -422,6 +422,7 @@ class PlayerManager
     {
         self.gameHandler.loadAnimation("data/animations/pichu.json");
         self.gameHandler.loadAnimation("data/animations/mew.json");
+        self.gameHandler.loadAnimation("data/animations/pikachu.json");
         self.setPlayerModel(playerModel, this.position);
 
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
