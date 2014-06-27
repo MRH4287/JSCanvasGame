@@ -26,7 +26,7 @@ namespace MapEditor
         MapController controller;
 
         private ElementDefinitionSelect elementDefSelectWindow = null;
-        private AnimationEdit animationEdit = null;
+        //private AnimationEdit animationEdit = null;
 
         public MainWindow()
         {
@@ -102,7 +102,7 @@ namespace MapEditor
             controller.addRow(30);
             controller.addRow(30);
             controller.addRow(30);
-            
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -206,7 +206,8 @@ namespace MapEditor
 
 
                     controller.createMap(int.Parse(sizeSplit[0]), int.Parse(sizeSplit[1]));
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     MessageBox.Show("Error in Map Creation: " + ex.Message);
                 }
@@ -245,6 +246,7 @@ namespace MapEditor
 
         private void ShowAnimationEdit(object sender, RoutedEventArgs e)
         {
+            /*
             if (animationEdit != null)
             {
                 if (animationEdit.IsVisible)
@@ -253,8 +255,9 @@ namespace MapEditor
                     animationEdit = null;
                 }
             }
+             */
 
-            animationEdit = new AnimationEdit();
+            var animationEdit = new AnimationEdit();
             animationEdit.Show();
 
 
