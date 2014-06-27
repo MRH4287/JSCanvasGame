@@ -9,17 +9,9 @@ class PlayerManager
     private playerAnimation: AnimationHandler;
     private gameHandler: GameHandler;
 
-    private position =
-    {
-        X: 0,
-        Y: 0
-    };
+    private position: GridPosition = new GridPosition(0, 0);
+    private targetPosition: GridPosition = new GridPosition(0, 0);
 
-    private targetPosition =
-    {
-        X: 0,
-        Y: 0
-    };
 
     private playerSpeed: number = 0.5;
     private updatesPerSecond: number = 20;
@@ -90,7 +82,7 @@ class PlayerManager
 
     }
 
-    private initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any)
+    public initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any)
     {
         if ((this.playerState === PlayerState.Walking) && initialCall)
         {
@@ -142,10 +134,10 @@ class PlayerManager
             this.playAnimation(idleAnimation);
         }
 
-        var target = {
-            X: this.position.X + walkOffset.X,
-            Y: this.position.Y + walkOffset.Y
-        };
+        var target: GridPosition = new GridPosition(
+             this.position.X + walkOffset.X,
+             this.position.Y + walkOffset.Y
+        );
 
         //this.gameHandler.log("Want to move to: ", target);
         //this.gameHandler.log("Play Animation: ", animation);
@@ -240,10 +232,10 @@ class PlayerManager
 
     private positionUpdateStep(self: PlayerManager, direction: WalkDirection, offsetPerUpdate: number, intervall: number, callback?: () => any)
     {
-        var walkOffset = {
+        var walkOffset: GridPosition = new GridPosition({
             X: 0,
             Y: 0
-        };
+        });
 
         switch (direction)
         {
@@ -267,15 +259,19 @@ class PlayerManager
 
         //self.gameHandler.log("Walk Offset: ", walkOffset);
 
-        var newPosition = {
+        var newPosition = self.position.Add(walkOffset);
+
+        /*
+        var newPosition: GridPosition = new GridPosition( {
             X: self.position.X + walkOffset.X,
             Y: self.position.Y + walkOffset.Y
-        };
+        });
+        */
 
-        var normalizedPosition = {
+        var normalizedPosition: GridPosition = new GridPosition( {
             X: Math.round(newPosition.X),
             Y: Math.round(newPosition.Y)
-        };
+        });
 
         if ( //((normalizedPosition.X == self.targetPosition.X) && (normalizedPosition.Y == self.targetPosition.Y)) ||
             (((direction === WalkDirection.Right) && (newPosition.X > self.targetPosition.X)) ||
@@ -405,7 +401,7 @@ class PlayerManager
 
     }
 
-    public getPosition(): { X: number; Y: number }
+    public getPosition(): GridPosition
     {
         return this.position;
     }
@@ -428,7 +424,7 @@ class PlayerManager
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
 
-    public setPlayerModel(model: string, position?: { X: number; Y: number })
+    public setPlayerModel(model: string, position?: GridPosition)
     {
         if (typeof (position) === "undefined")
         {

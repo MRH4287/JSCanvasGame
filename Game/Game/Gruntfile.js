@@ -14,6 +14,7 @@ module.exports = function (grunt) {
 
         typescriptFiles:
         [
+          'build/interfaces.js',
           'build/GameHandler.js',
           'build/animationHandler.js',
           'build/eventHandler.js',

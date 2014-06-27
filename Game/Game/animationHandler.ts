@@ -599,11 +599,10 @@ class AnimationHandler
     private getPosition(x: number, y: number): GridPosition
     {
         var tileSize: number = this.renderer.getTileSize();
-        var result =
-            {
-                X: ((x - 1) * tileSize),
-                Y: ((y - 1) * tileSize)
-            };
+        var result = new GridPosition(
+                ((x - 1) * tileSize),
+                ((y - 1) * tileSize)
+            );
 
         return result;
     }

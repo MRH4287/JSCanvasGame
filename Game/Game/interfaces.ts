@@ -166,8 +166,53 @@ interface NPCData
 
 }
 
-interface GridPosition
+class GridPosition
 {
-    X: number;
-    Y: number;
+    public X: number = null;
+    public Y: number = null;
+
+    constructor(data:
+        {
+            X: number;
+            Y: number
+        });
+    constructor(x: number, y: number);
+
+    constructor(a: any, b?: number)
+    {
+        if (typeof (a) === "object")
+        {
+            this.X = a.X;
+            this.Y = a.Y;
+        }
+        else
+        {
+            this.X = a;
+            this.Y = b;
+        }
+    }
+
+
+    public Add(data: { X: number; Y: number }): GridPosition
+    {
+        return new GridPosition(this.X + data.X, this.Y + data.Y);
+    }
+
+    public AddX(x: number): GridPosition
+    {
+        return this.Add({ X: x, Y: 0 });
+    }
+
+    public AddY(y: number): GridPosition
+    {
+        return this.Add({ X: 0, Y: y });
+    }
+
+    public Subtract(data: { X: number; Y: number }): GridPosition
+    {
+        return new GridPosition(this.X - data.X, this.Y - data.Y);
+    }
+
+
+
 }

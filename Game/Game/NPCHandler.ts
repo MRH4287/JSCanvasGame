@@ -79,7 +79,7 @@ class NPCHandler
     }
 
 
-    public addNPC(name: string, position: { X: number; Y: number }, animationContainer: string, defaultAnimation: string, speed: number = 1)
+    public addNPC(name: string, position: GridPosition, animationContainer: string, defaultAnimation: string, speed: number = 1)
     {
         // Add new NPC to System:
 
@@ -99,6 +99,11 @@ class NPCHandler
         // Start default Animation for Element:
         this.animation.addAnimation(data.GUID, animationContainer, defaultAnimation, position.X, position.Y);
 
+    }
+
+    public getNPC(name: string): NPCData
+    {
+        return this.npcList[name];
     }
 
     public removeNPC(name: string)
@@ -203,8 +208,6 @@ class NPCHandler
 
     public advInitMove(name: string, position: GridPosition, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
     {
-
-
         var npc: NPCData = this.npcList[name];
 
         if ((npc.State === PlayerState.Walking) && (!ignoreChecks))
@@ -216,8 +219,6 @@ class NPCHandler
         this.setPosition(name, position);
         npc.Speed = speed;
         this.initMove(name, direction, callback, ignoreChecks);
-
-
     }
 
 
@@ -237,10 +238,10 @@ class NPCHandler
             return;
         }
 
-        var walkOffset = {
+        var walkOffset: GridPosition = new GridPosition({
             X: 0,
             Y: 0
-        };
+        });
         var animation = "stand";
         var idleAnimation = "stand";
 
@@ -275,12 +276,15 @@ class NPCHandler
 
 
         this.animation.playAnimation(npc.GUID, idleAnimation);
-        
 
-        var target: GridPosition = {
+        var target = npc.Position.Add(walkOffset);
+
+        /*
+        var target: GridPosition = new GridPosition({
             X: npc.Position.X + walkOffset.X,
             Y: npc.Position.Y + walkOffset.Y
-        };
+        });
+        */
 
         //this.gameHandler.log("Want to move to: ", target);
         //this.gameHandler.log("Play Animation: ", animation);
@@ -363,10 +367,10 @@ class NPCHandler
             return;
         }
 
-        var walkOffset = {
+        var walkOffset: GridPosition = new GridPosition({
             X: 0,
             Y: 0
-        };
+        });
 
         switch (direction)
         {
@@ -390,15 +394,18 @@ class NPCHandler
 
         //self.gameHandler.log("Walk Offset: ", walkOffset);
 
+        var newPosition = npc.Position.Add(walkOffset);
+        /*
         var newPosition = {
             X: npc.Position.X + walkOffset.X,
             Y: npc.Position.Y + walkOffset.Y
         };
+        */
 
-        var normalizedPosition = {
+        var normalizedPosition: GridPosition = new GridPosition({
             X: Math.round(newPosition.X),
             Y: Math.round(newPosition.Y)
-        };
+        });
 
         if (
             (((direction === WalkDirection.Right) && (newPosition.X > npc.Target.X)) ||

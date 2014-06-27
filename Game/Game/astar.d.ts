@@ -1,6 +1,6 @@
 ﻿interface GraphStatic
 {
-    new(input:boolean[][]): GraphInstance;
+    new(input:number[][]): GraphInstance;
 }
 
 interface GraphInstance

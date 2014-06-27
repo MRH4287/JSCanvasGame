@@ -46,6 +46,7 @@ class GameHandler
     public playerManager: PlayerManager;
     public windowManager: WindowManager;
     public npcManager: NPCHandler;
+    public pathHandler: PathHandler;
 
 
     public spriteContainer: { [id: string]: HTMLElement };
@@ -96,6 +97,7 @@ class GameHandler
 
         this.playerManager = new PlayerManager(this, this.playerAnimationHandler, this.config.playerModel);
         this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
+        this.pathHandler = new PathHandler(this);
     }
 
     private createAnimationHandler(level: number, layer: RendererLayer, staticName?: string): AnimationHandler
@@ -386,7 +388,7 @@ class GameHandler
 
             for (var x = 0; x < maxX; x++)
             {
-                data[x] = this.isCoordPassable(x + 1, y + 1);
+                data[x] = !this.isCoordPassable(x + 1, y + 1);
             }
 
             result[y] = data;
@@ -394,6 +396,29 @@ class GameHandler
 
         return result;
     }
+
+    public getMapPassableData2(): number[][]
+    {
+        var maxX = this.map.length;
+        var maxY = this.map[0].length;
+
+        var result: number[][] = [];
+
+        for (var x = 0; x < maxX; x++)
+        {
+            var data: number[] = [];
+
+            for (var y = 0; y < maxY; y++)
+            {
+                data[y] = this.isCoordPassable(x + 1, y + 1) ? 1 : 0;
+            }
+
+            result[x] = data;
+        }
+
+        return result;
+    }
+
 
     public getElementByID(ID: string): ElementDefinition
     {
