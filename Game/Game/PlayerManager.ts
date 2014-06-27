@@ -64,7 +64,7 @@ class PlayerManager
             if ((data.X === self.position.X) && (data.Y === self.position.Y))
             {
                 data.result = false;
-            } 
+            }
         });
 
 
@@ -82,7 +82,7 @@ class PlayerManager
 
     }
 
-    public initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any)
+    public initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any, dontResetAnimation: boolean = false)
     {
         if ((this.playerState === PlayerState.Walking) && initialCall)
         {
@@ -135,9 +135,9 @@ class PlayerManager
         }
 
         var target: GridPosition = new GridPosition(
-             this.position.X + walkOffset.X,
-             this.position.Y + walkOffset.Y
-        );
+            this.position.X + walkOffset.X,
+            this.position.Y + walkOffset.Y
+            );
 
         //this.gameHandler.log("Want to move to: ", target);
         //this.gameHandler.log("Play Animation: ", animation);
@@ -168,7 +168,8 @@ class PlayerManager
             var self = this;
             this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function ()
             {
-                self.moveFinishedCallback();
+                self.moveFinishedCallback(dontResetAnimation);
+
 
                 if (callback !== undefined)
                 {
@@ -185,7 +186,7 @@ class PlayerManager
     }
 
 
-    private moveFinishedCallback()
+    private moveFinishedCallback(dontResetAnimation: boolean = false)
     {
         var animation = "stand";
 
@@ -217,7 +218,10 @@ class PlayerManager
 
         if (!walkAgain)
         {
-            this.playAnimation(animation);
+            if (dontResetAnimation === true)
+            {
+                this.playAnimation(animation);
+            }
             this.playerState = PlayerState.Standing;
 
             this.gameHandler.eventHandler.callEvent("PlayerStopMoving", this, null);
@@ -226,7 +230,7 @@ class PlayerManager
         else
         {
             this.initMove(this.moveDirection, false);
-        }   
+        }
     }
 
 
@@ -268,7 +272,7 @@ class PlayerManager
         });
         */
 
-        var normalizedPosition: GridPosition = new GridPosition( {
+        var normalizedPosition: GridPosition = new GridPosition({
             X: Math.round(newPosition.X),
             Y: Math.round(newPosition.Y)
         });
@@ -459,7 +463,7 @@ class PlayerManager
                 break;
 
             case WalkDirection.Down:
-                offset.Y += 1;              
+                offset.Y += 1;
                 break;
         }
 
@@ -473,7 +477,7 @@ class PlayerManager
     {
         this.gameHandler.eventHandler.callEvent("playerAnimationChange", this, name);
         this.playerAnimation.playAnimation(this.playerElementName, name);
-        
+
     }
 
 
