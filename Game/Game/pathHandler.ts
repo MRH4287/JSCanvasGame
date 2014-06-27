@@ -139,7 +139,7 @@ class PathHandler
 
             var runAnimation = direction !== lastDirection;
 
-            self.gameHandler.playerManager.initMove(direction, runAnimation, callback, (index + 2 >= route.length));
+            self.gameHandler.playerManager.initMove(direction, runAnimation, callback, !(index + 2 >= route.length));
 
             lastDirection = direction;
             index++;

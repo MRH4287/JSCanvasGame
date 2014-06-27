@@ -186,7 +186,7 @@ class PlayerManager
     }
 
 
-    private moveFinishedCallback(dontResetAnimation: boolean = false)
+    private moveFinishedCallback(resetAnimation: boolean = true)
     {
         var animation = "stand";
 
@@ -218,7 +218,7 @@ class PlayerManager
 
         if (!walkAgain)
         {
-            if (dontResetAnimation === true)
+            if (resetAnimation === true)
             {
                 this.playAnimation(animation);
             }
