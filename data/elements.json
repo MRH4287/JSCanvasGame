@@ -234,6 +234,181 @@
 		]
 	},
 	{
+        "ID": "sand-grass-botom-left",
+        "Name": "Sand-Grass-Botom-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-botom-left.png"
+    },
+    {
+        "ID": "sand-grass-bottom-right",
+        "Name": "Sand-Grass-Bottom-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-bottom-right.png"
+    },
+    {
+        "ID": "sand-grass-corner-bottom-right",
+        "Name": "Sand-Grass-Corner-Bottom-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-corner-bottom-right.png"
+    },
+    {
+        "ID": "sand-grass-corner-left-bottom",
+        "Name": "Sand-Grass-Corner-Left-Bottom",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-corner-left-bottom.png"
+    },
+    {
+        "ID": "sand-grass-corner-left-top",
+        "Name": "Sand-Grass-Corner-Left-Top",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-corner-left-top.png"
+    },
+    {
+        "ID": "sand-grass-corner-top-right",
+        "Name": "Sand-Grass-Corner-Top-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-corner-top-right.png"
+    },
+    {
+        "ID": "sand-grass-middle-bottom",
+        "Name": "Sand-Grass-Middle-Bottom",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-middle-bottom.png"
+    },
+    {
+        "ID": "sand-grass-middle-left",
+        "Name": "Sand-Grass-Middle-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-middle-left.png"
+    },
+    {
+        "ID": "sand-grass-middle-right",
+        "Name": "Sand-Grass-Middle-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-middle-right.png"
+    },
+    {
+        "ID": "sand-grass-middle-top",
+        "Name": "Sand-Grass-Middle-Top",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-middle-top.png"
+    },
+    {
+        "ID": "sand-grass-top-left",
+        "Name": "Sand-Grass-Top-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-top-left.png"
+    },
+    {
+        "ID": "sand-grass-top-right",
+        "Name": "Sand-Grass-Top-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand-grass-top-right.png"
+    },
+    {
+        "ID": "sand",
+        "Name": "Sand",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/sand.png"
+    },
+{
+        "ID": "water-sand-bottom-left",
+        "Name": "Water-Sand-Bottom-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-bottom-left.png"
+    },
+    {
+        "ID": "water-sand-bottom-right",
+        "Name": "Water-Sand-Bottom-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-bottom-right.png"
+    },
+    {
+        "ID": "water-sand-cornder-bottom-right",
+        "Name": "Water-Sand-Cornder-Bottom-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-cornder-bottom-right.png"
+    },
+    {
+        "ID": "water-sand-corner-left-bottom",
+        "Name": "Water-Sand-Corner-Left-Bottom",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-corner-left-bottom.png"
+    },
+    {
+        "ID": "water-sand-corner-left-top",
+        "Name": "Water-Sand-Corner-Left-Top",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-corner-left-top.png"
+    },
+    {
+        "ID": "water-sand-corner-top-right",
+        "Name": "Water-Sand-Corner-Top-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-corner-top-right.png"
+    },
+    {
+        "ID": "water-sand-middle-bottom",
+        "Name": "Water-Sand-Middle-Bottom",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-middle-bottom.png"
+    },
+    {
+        "ID": "water-sand-middle-left",
+        "Name": "Water-Sand-Middle-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-middle-left.png"
+    },
+    {
+        "ID": "water-sand-middle-right",
+        "Name": "Water-Sand-Middle-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-middle-right.png"
+    },
+    {
+        "ID": "water-sand-middle-top",
+        "Name": "Water-Sand-Middle-Top",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-middle-top.png"
+    },
+    {
+        "ID": "water-sand-top-left",
+        "Name": "Water-Sand-Top-Left",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-top-left.png"
+    },
+    {
+        "ID": "water-sand-top-right",
+        "Name": "Water-Sand-Top-Right",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/water-sand-top-right.png"
+    },	
+	{
 		"ID": "bridge_bottom_left",
 		"Name": "Bridge (Bottom Left)",
 		"Level": 1,

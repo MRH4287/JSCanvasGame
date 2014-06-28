@@ -23,28 +23,41 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="38"/>
+            <RowDefinition Height="23"/>
             <RowDefinition/>
-            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="432">
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FFDAC7C7" Offset="0"/>
-                    <GradientStop Color="White" Offset="1"/>
-                </LinearGradientBrush>
-            </Grid.Background>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="63"/>
-                <ColumnDefinition Width="127"/>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="22"/>
-            </Grid.ColumnDefinitions>
-            <Label Content="Preview" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="26" Margin="6,3,5,3" Width="52"/>
-            <Label Content="ID" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="1" Height="26" Margin="57,3,48,3" Width="22" />
-            <Label Content="Display Name" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="2" Height="26" Margin="48,3,90,3" Width="82"/>
-        </Grid>
-        <ListBox HorizontalAlignment="Left" Margin="0,10" Grid.Row="1" Width="422" x:Name="ElementList" ItemTemplate="{DynamicResource ElementDefinitionListStyle}" MouseDoubleClick="ElementList_MouseDoubleClick"/>
+        <Menu  >
+            <MenuItem Header="Helper">
+                <MenuItem Header="ElementImporter" Click="MenuItem_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
 
+        <Grid Grid.RowSpan="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38"/>
+                <RowDefinition/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+            <Grid HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="432">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFDAC7C7" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="63"/>
+                    <ColumnDefinition Width="127"/>
+                    <ColumnDefinition Width="220"/>
+                    <ColumnDefinition Width="22"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Preview" HorizontalAlignment="Center"  VerticalAlignment="Center" Height="26" Margin="6,3,5,3" Width="52"/>
+                <Label Content="ID" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="1" Height="26" Margin="57,3,48,3" Width="22" />
+                <Label Content="Display Name" HorizontalAlignment="Center"  VerticalAlignment="Center" Grid.Column="2" Height="26" Margin="48,3,90,3" Width="82"/>
+            </Grid>
+            <ListBox HorizontalAlignment="Left" Margin="0,10" Grid.Row="1" Width="422" x:Name="ElementList" ItemTemplate="{DynamicResource ElementDefinitionListStyle}" MouseDoubleClick="ElementList_MouseDoubleClick"/>
+
+
+        </Grid>
     </Grid>
 </Window>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -115,7 +116,14 @@ namespace MapEditor.Elements
         {
             get
             {
-                return new BitmapImage(ImagePath);
+                if (File.Exists(ImagePath.LocalPath))
+                {
+                    return new BitmapImage(ImagePath);
+                }
+                else
+                {
+                    return null;
+                }
             }
 
         }

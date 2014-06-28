@@ -62,5 +62,10 @@ namespace MapEditor
                 display.Show();
             }
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            (new ElementImporter()).Show();
+        }
     }
 }
