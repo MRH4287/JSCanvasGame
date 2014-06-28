@@ -82,7 +82,7 @@ class PlayerManager
 
     }
 
-    public initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any, dontResetAnimation: boolean = false)
+    public initMove(direction: WalkDirection, initialCall: boolean = true, callback?: () => any, resetAnimation: boolean = true)
     {
         if ((this.playerState === PlayerState.Walking) && initialCall)
         {
@@ -168,7 +168,7 @@ class PlayerManager
             var self = this;
             this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function ()
             {
-                self.moveFinishedCallback(dontResetAnimation);
+                self.moveFinishedCallback(resetAnimation);
 
 
                 if (callback !== undefined)

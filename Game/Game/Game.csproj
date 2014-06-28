@@ -108,12 +108,14 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="animationHandler.ts" />
+    <TypeScriptCompile Include="astar.d.ts" />
     <TypeScriptCompile Include="eventHandler.ts" />
     <TypeScriptCompile Include="gameHandler.ts" />
     <TypeScriptCompile Include="jquery.d.ts" />
     <TypeScriptCompile Include="interfaces.ts" />
     <TypeScriptCompile Include="MultiplayerHandler.ts" />
     <TypeScriptCompile Include="NPCHandler.ts" />
+    <TypeScriptCompile Include="pathHandler.ts" />
     <TypeScriptCompile Include="playerManager.ts" />
     <TypeScriptCompile Include="Profiler.ts" />
     <TypeScriptCompile Include="scriptHandler.ts" />

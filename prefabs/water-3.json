@@ -1,0 +1,45 @@
+{
+	"ID": "water-3",
+	"PreviewImagePath": "graphics/prefabs/water-3.png",
+	"Overwrite": true,
+	"ClearOld": false,
+	"Elements": [
+		{
+			"OffsetX": 0,
+			"OffsetY": 0,
+			"Tile":
+			{		
+				"BottomElementID": "water_still_middle_right",
+				"Passable": false
+			}
+		},
+		{
+			"OffsetX": 0,
+			"OffsetY": -1,
+			"Tile":
+			{	
+				"BottomElementID": "water_still_top_right",
+				"Passable": false
+			}
+		},
+		{
+			"OffsetX": -1,
+			"OffsetY": -1,
+			"Tile":
+			{	
+				"BottomElementID": "water_still_top_middle",
+				"Passable": false
+			}
+		},
+		{
+			"OffsetX": -1,
+			"OffsetY": 0,
+			"Tile":
+			{	
+				"BottomElementID": "water_still_middle",
+				"Passable": false
+			}
+		}
+	
+	]
+}
