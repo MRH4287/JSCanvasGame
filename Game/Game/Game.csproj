@@ -43,6 +43,8 @@
     <None Include="data\map.json" />
     <None Include="data\map2.json" />
     <None Include="data\pika.json" />
+    <None Include="data\scripts\test.json" />
+    <None Include="data\scripts\types.json" />
     <None Include="graphics\animations\pichu\sleep\sleep.pdn" />
     <None Include="graphics\animations\pichu\stand-down\stand-down.pdn" />
     <None Include="graphics\animations\pichu\stand-left\stand-left.pdn" />
@@ -63,6 +65,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="data\scripts\testScript.js" />
     <Content Include="graphics\animations\pichu.png" />
     <Content Include="graphics\animations\pichu.png.txt" />
     <Content Include="graphics\animations\pichu\sleep\sleep1.png" />
@@ -111,6 +114,7 @@
     <TypeScriptCompile Include="astar.d.ts" />
     <TypeScriptCompile Include="eventHandler.ts" />
     <TypeScriptCompile Include="gameHandler.ts" />
+    <TypeScriptCompile Include="javaScriptHandler.ts" />
     <TypeScriptCompile Include="jquery.d.ts" />
     <TypeScriptCompile Include="interfaces.ts" />
     <TypeScriptCompile Include="MultiplayerHandler.ts" />
