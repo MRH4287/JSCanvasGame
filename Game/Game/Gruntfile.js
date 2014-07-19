@@ -24,6 +24,7 @@ module.exports = function (grunt) {
           'build/Profiler.js',
           'build/renderer.js',
           'build/scriptHandler.js',
+          'build/javaScriptHandler.js',
           'build/windowManager.js',
           'build/pathHandler.js'
         ],

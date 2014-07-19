@@ -46,6 +46,20 @@
 
         gameHandler.init();
 
+
+        var script = new JavaScriptHandler(gameHandler);
+
+        eventHandler.addEventListener("postInit", function ()
+        {
+            window.setTimeout(function ()
+            {
+                script.include("testScript.js");
+
+            }, 1000);
+        });
+
+
+        /*
         var script = new ScriptHandler(gameHandler);
         var mp = null;
 
@@ -58,7 +72,7 @@
         {
             //gameHandler.npcManager.addNPC("test", { X: 24, Y: 10 }, "pichu", "stand");
         });
-
+        */
 
     </script>
 

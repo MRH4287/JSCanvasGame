@@ -38,6 +38,8 @@ class NPCHandler
                 {
                     self.gameHandler.eventHandler.callEvent("PlayerNPCAction", self, {
                         name: id,
+                        data: data,
+                        animationData: self.animation.playableAnimations[data.GUID],
                         X: argument.X,
                         Y: argument.Y
                     });

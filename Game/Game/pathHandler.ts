@@ -115,7 +115,7 @@ class PathHandler
     }
 
 
-    public movePlayer(end: Coordinate, drawRoute: boolean = false)
+    public movePlayer(end: Coordinate, drawRoute: boolean = false, onFinish: () => void = undefined)
     {
         var self = this;
 
@@ -129,7 +129,15 @@ class PathHandler
         {
             if (index + 1 >= route.length)
             {
-                console.log("Reached Destination");
+                if (typeof (onFinish) !== "undefined")
+                {
+                    onFinish();
+                }
+                else
+                {
+                    console.log("Reached Destination");
+                }
+           
                 return;
             }
             var current = route[index];
@@ -153,7 +161,7 @@ class PathHandler
 
     }
 
-    public moveNPC(name: string, end: Coordinate, drawRoute: boolean = false)
+    public moveNPC(name: string, end: Coordinate, drawRoute: boolean = false, onFinish: ()=>void = undefined)
     {
         var self = this;
         var npc = this.gameHandler.npcManager.getNPC(name);
@@ -168,7 +176,14 @@ class PathHandler
         {
             if (index + 1 >= route.length)
             {
-                console.log("Reached Destination");
+                if (typeof (onFinish) !== "undefined")
+                {
+                    onFinish();
+                }
+                else
+                {
+                    console.log("Reached Destination");
+                }
                 return;
             }
             var current = route[index];
