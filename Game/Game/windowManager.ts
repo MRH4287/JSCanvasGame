@@ -23,26 +23,26 @@ class WindowManager
     }
 
 
-    private onPlayerPositionUpdate(self: WindowManager, sender: PlayerManager, postion: GridPosition)
+    private onPlayerPositionUpdate(self: WindowManager, sender: PlayerManager, postion: Coordinate)
     {
         var tileSize = this.gameHandler.config.tileSize;
 
         var mapSize = this.gameHandler.renderer.getMapSize();
 
-        var maxOffset: GridPosition = new GridPosition({
+        var maxOffset: Coordinate = {
             X: mapSize.X - this.gameHandler.config.width,
             Y: mapSize.Y - this.gameHandler.config.height,
-        });
+        };
 
-        var offsetToSet: GridPosition = new GridPosition({
+        var offsetToSet: Coordinate = {
             X: (postion.X * tileSize) - this.offsetDiff.X,
             Y: (postion.Y * tileSize) - this.offsetDiff.Y
-        });
+        };
 
-        offsetToSet = new GridPosition({
+        offsetToSet = {
             X: (offsetToSet.X < 0) ? 0 : ((offsetToSet.X > maxOffset.X) ? maxOffset.X : offsetToSet.X),  //offsetToSet.X,
             Y: (offsetToSet.Y < 0) ? 0 : ((offsetToSet.Y > maxOffset.Y) ? maxOffset.Y : offsetToSet.Y) // offsetToSet.Y
-        });
+        };
 
         this.gameHandler.renderer.setOffset(offsetToSet);
 

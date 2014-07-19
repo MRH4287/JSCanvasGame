@@ -74,12 +74,12 @@ class NPCHandler
             self.gameHandler.eventHandler.callEvent("TaskDisposed", self, "NPC - Constructor");
         }, 100);
 
-        
+
 
     }
 
 
-    public addNPC(name: string, position: GridPosition, animationContainer: string, defaultAnimation: string, speed: number = 1)
+    public addNPC(name: string, position: Coordinate, animationContainer: string, defaultAnimation: string, speed: number = 1)
     {
         // Add new NPC to System:
 
@@ -91,7 +91,7 @@ class NPCHandler
             Direction: WalkDirection.None,
             Speed: speed,
             State: PlayerState.Standing,
-            DisplaySpeechBubbleTo: undefined           
+            DisplaySpeechBubbleTo: undefined
         };
 
         this.npcList[name] = data;
@@ -183,7 +183,7 @@ class NPCHandler
     }
 
 
-    public setPosition(name: string, position: GridPosition, rerender = true)
+    public setPosition(name: string, position: Coordinate, rerender = true)
     {
         if (this.npcList[name] === undefined)
         {
@@ -206,7 +206,7 @@ class NPCHandler
         this.npcList[name].State = PlayerState.Standing;
     }
 
-    public advInitMove(name: string, position: GridPosition, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
+    public advInitMove(name: string, position: Coordinate, direction: WalkDirection, speed: number, callback?: () => any, ignoreChecks: boolean = false)
     {
         var npc: NPCData = this.npcList[name];
 
@@ -238,10 +238,11 @@ class NPCHandler
             return;
         }
 
-        var walkOffset: GridPosition = new GridPosition({
+        var walkOffset: Coordinate = {
             X: 0,
             Y: 0
-        });
+        };
+
         var animation = "stand";
         var idleAnimation = "stand";
 
@@ -277,7 +278,7 @@ class NPCHandler
 
         this.animation.playAnimation(npc.GUID, idleAnimation);
 
-        var target = npc.Position.Add(walkOffset);
+        var target = CoordinateHelper.Add(npc.Position, walkOffset);
 
         /*
         var target: GridPosition = new GridPosition({
@@ -300,9 +301,9 @@ class NPCHandler
             npc.State = PlayerState.Walking;
 
             // Start Animation:
-            
+
             this.animation.playAnimation(npc.GUID, animation);
-            
+
 
             var self = this;
             this.positionUpdateStep(npc, direction, offsetPerUpdate, intervall, function ()
@@ -333,7 +334,7 @@ class NPCHandler
         {
             case WalkDirection.Right:
                 animation = "stand-right";
-                
+
                 break;
 
             case WalkDirection.Left:
@@ -367,10 +368,10 @@ class NPCHandler
             return;
         }
 
-        var walkOffset: GridPosition = new GridPosition({
+        var walkOffset: Coordinate = {
             X: 0,
             Y: 0
-        });
+        };
 
         switch (direction)
         {
@@ -394,7 +395,7 @@ class NPCHandler
 
         //self.gameHandler.log("Walk Offset: ", walkOffset);
 
-        var newPosition = npc.Position.Add(walkOffset);
+        var newPosition = CoordinateHelper.Add(npc.Position, walkOffset);
         /*
         var newPosition = {
             X: npc.Position.X + walkOffset.X,
@@ -402,10 +403,10 @@ class NPCHandler
         };
         */
 
-        var normalizedPosition: GridPosition = new GridPosition({
+        var normalizedPosition: Coordinate = {
             X: Math.round(newPosition.X),
             Y: Math.round(newPosition.Y)
-        });
+        };
 
         if (
             (((direction === WalkDirection.Right) && (newPosition.X > npc.Target.X)) ||

@@ -83,10 +83,10 @@
     var _elements = {};
     var _map = [];
 
-    var _offset = new GridPosition({
+    var _offset = {
         X: 0,
         Y: 0
-    });
+    };
 
     var _eventHandler = null;
     var _gameHandler = null;
@@ -481,10 +481,10 @@
 
     this.getMapSize = function ()
     {
-        return new GridPosition({
+        return {
             X: _staticWidth,
             Y: _staticHeight
-        });
+        };
 
 
     }

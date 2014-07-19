@@ -9,8 +9,8 @@ class PlayerManager
     private playerAnimation: AnimationHandler;
     private gameHandler: GameHandler;
 
-    private position: GridPosition = new GridPosition(0, 0);
-    private targetPosition: GridPosition = new GridPosition(0, 0);
+    private position: Coordinate = { X: 0, Y: 0 };
+    private targetPosition: Coordinate = { X: 0, Y: 0 };
 
 
     private playerSpeed: number = 0.5;
@@ -134,10 +134,10 @@ class PlayerManager
             this.playAnimation(idleAnimation);
         }
 
-        var target: GridPosition = new GridPosition(
-            this.position.X + walkOffset.X,
-            this.position.Y + walkOffset.Y
-            );
+        var target: Coordinate = {
+            X: this.position.X + walkOffset.X,
+            Y: this.position.Y + walkOffset.Y
+        };
 
         //this.gameHandler.log("Want to move to: ", target);
         //this.gameHandler.log("Play Animation: ", animation);
@@ -236,10 +236,10 @@ class PlayerManager
 
     private positionUpdateStep(self: PlayerManager, direction: WalkDirection, offsetPerUpdate: number, intervall: number, callback?: () => any)
     {
-        var walkOffset: GridPosition = new GridPosition({
+        var walkOffset: Coordinate = {
             X: 0,
             Y: 0
-        });
+        };
 
         switch (direction)
         {
@@ -263,7 +263,7 @@ class PlayerManager
 
         //self.gameHandler.log("Walk Offset: ", walkOffset);
 
-        var newPosition = self.position.Add(walkOffset);
+        var newPosition = CoordinateHelper.Add(self.position, walkOffset);
 
         /*
         var newPosition: GridPosition = new GridPosition( {
@@ -272,10 +272,10 @@ class PlayerManager
         });
         */
 
-        var normalizedPosition: GridPosition = new GridPosition({
+        var normalizedPosition: Coordinate = {
             X: Math.round(newPosition.X),
             Y: Math.round(newPosition.Y)
-        });
+        };
 
         if ( //((normalizedPosition.X == self.targetPosition.X) && (normalizedPosition.Y == self.targetPosition.Y)) ||
             (((direction === WalkDirection.Right) && (newPosition.X > self.targetPosition.X)) ||
@@ -405,7 +405,7 @@ class PlayerManager
 
     }
 
-    public getPosition(): GridPosition
+    public getPosition(): Coordinate
     {
         return this.position;
     }
@@ -428,7 +428,7 @@ class PlayerManager
         self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
 
-    public setPlayerModel(model: string, position?: GridPosition)
+    public setPlayerModel(model: string, position?: Coordinate)
     {
         if (typeof (position) === "undefined")
         {

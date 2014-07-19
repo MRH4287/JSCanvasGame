@@ -11,8 +11,8 @@ interface Renderer
     setMap(map: Tile[][]);
     initMap(sizeX: number, sizeY: number);
     setConfig(elements: { [id: string]: ElementDefinition });
-    setOffset(offset: GridPosition);
-    getMapSize(): GridPosition;
+    setOffset(offset: Coordinate);
+    getMapSize(): Coordinate;
 }
 
 interface RendererLayer
@@ -156,8 +156,8 @@ enum WalkDirection
 interface NPCData
 {
     ID: string;
-    Position: GridPosition;
-    Target: GridPosition;
+    Position: Coordinate;
+    Target: Coordinate;
     GUID: string;
     Speed: number;
     State: PlayerState;
@@ -166,53 +166,44 @@ interface NPCData
 
 }
 
-class GridPosition
+class CoordinateHelper
 {
-    public X: number = null;
-    public Y: number = null;
-
-    constructor(data:
-        {
-            X: number;
-            Y: number
-        });
-    constructor(x: number, y: number);
-
-    constructor(a: any, b?: number)
+    public static Add(a: Coordinate, b: Coordinate): Coordinate
     {
-        if (typeof (a) === "object")
-        {
-            this.X = a.X;
-            this.Y = a.Y;
-        }
-        else
-        {
-            this.X = a;
-            this.Y = b;
-        }
+        var result: Coordinate =
+            {
+                X: (a.X + b.X),
+                Y: (a.Y + b.Y)
+            };
+
+        return result;
     }
 
-
-    public Add(data: { X: number; Y: number }): GridPosition
+    public static AddX(a: Coordinate, x: number): Coordinate
     {
-        return new GridPosition(this.X + data.X, this.Y + data.Y);
+        return this.Add(a, { X: x, Y: 0 });
     }
 
-    public AddX(x: number): GridPosition
+    public static AddY(a: Coordinate, y: number): Coordinate
     {
-        return this.Add({ X: x, Y: 0 });
+        return this.Add(a, { X: 0, Y: y });
     }
 
-    public AddY(y: number): GridPosition
+    public static Subtract(a: Coordinate, b: Coordinate): Coordinate
     {
-        return this.Add({ X: 0, Y: y });
+        var result: Coordinate =
+            {
+                X: (a.X - b.X),
+                Y: (a.Y - b.Y)
+            };
+
+        return result;
     }
 
-    public Subtract(data: { X: number; Y: number }): GridPosition
-    {
-        return new GridPosition(this.X - data.X, this.Y - data.Y);
-    }
+}
 
-
-
+interface Coordinate
+{
+    X: number;
+    Y: number;
 }

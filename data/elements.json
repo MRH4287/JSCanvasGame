@@ -324,7 +324,7 @@
         "Passable": true,
         "ImageURI": "graphics/terrain/sand.png"
     },
-{
+	{
         "ID": "water-sand-bottom-left",
         "Name": "Water-Sand-Bottom-Left",
         "Level": 0,

@@ -12,7 +12,7 @@ class PathHandler
     private debugElements: string[] = [];
 
 
-    public getRouteRaw(startPos: GridPosition, endPos: GridPosition): GridNode[]
+    public getRouteRaw(startPos: Coordinate, endPos: Coordinate): GridNode[]
     {
         var map = this.gameHandler.getMapPassableData2();
 
@@ -24,19 +24,19 @@ class PathHandler
         return astar.search(graph, start, end);
     }
 
-    public getRoute(startPos: GridPosition, endPos: GridPosition, drawRoute: boolean = false): GridPosition[]
+    public getRoute(startPos: Coordinate, endPos: Coordinate, drawRoute: boolean = false): Coordinate[]
     {
         var data = this.getRouteRaw(startPos, endPos);
 
-        var result: GridPosition[] = [];
+        var result: Coordinate[] = [];
 
         for (var i = 0; i < data.length; i++)
         {
-            result[i] = new GridPosition(
-                {
-                    X: data[i].x + 1,
-                    Y: data[i].y + 1
-                });
+            result[i] =
+            {
+                X: data[i].x + 1,
+                Y: data[i].y + 1
+            };
         }
 
         if (drawRoute === true)
@@ -47,23 +47,23 @@ class PathHandler
         return result;
     }
 
-    public drawRoute(start: GridPosition, route: GridPosition[])
+    public drawRoute(start: Coordinate, route: Coordinate[])
     {
         this.clearRoute();
 
         var counter: number = 0;
 
-        var last: GridPosition = start;
+        var last: Coordinate = start;
 
         for (var i = 0; i < route.length; i++)
         {
             var width = this.gameHandler.config.tileSize;
             var height = this.gameHandler.config.tileSize;
 
-            var current: GridPosition = route[i];
-            var anchor: GridPosition;
+            var current: Coordinate = route[i];
+            var anchor: Coordinate;
 
-            var offset = last.Subtract(current);
+            var offset = CoordinateHelper.Subtract(last, current);
             if (offset.X !== 0)
             {
                 width *= 2;
@@ -115,7 +115,7 @@ class PathHandler
     }
 
 
-    public movePlayer(end: GridPosition, drawRoute: boolean = false)
+    public movePlayer(end: Coordinate, drawRoute: boolean = false)
     {
         var self = this;
 
@@ -153,7 +153,7 @@ class PathHandler
 
     }
 
-    public moveNPC(name: string, end: GridPosition, drawRoute: boolean = false)
+    public moveNPC(name: string, end: Coordinate, drawRoute: boolean = false)
     {
         var self = this;
         var npc = this.gameHandler.npcManager.getNPC(name);
@@ -179,7 +179,7 @@ class PathHandler
             var runAnimation = direction !== lastDirection;
 
 
-            self.gameHandler.npcManager.initMove(name, direction, callback);            
+            self.gameHandler.npcManager.initMove(name, direction, callback);
             //self.gameHandler.playerManager.initMove(direction, runAnimation, callback);
 
             lastDirection = direction;
@@ -194,9 +194,9 @@ class PathHandler
     }
 
 
-    private getDirectionFromOffset(start: GridPosition, end: GridPosition): WalkDirection
+    private getDirectionFromOffset(start: Coordinate, end: Coordinate): WalkDirection
     {
-        var offset = end.Subtract(start);
+        var offset = CoordinateHelper.Subtract(end, start);
 
         if (offset.X > 0)
         {

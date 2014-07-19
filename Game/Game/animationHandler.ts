@@ -596,13 +596,13 @@ class AnimationHandler
 
 
 
-    private getPosition(x: number, y: number): GridPosition
+    private getPosition(x: number, y: number): Coordinate
     {
         var tileSize: number = this.renderer.getTileSize();
-        var result = new GridPosition(
-                ((x - 1) * tileSize),
-                ((y - 1) * tileSize)
-            );
+        var result = {
+               X: ((x - 1) * tileSize),
+               Y: ((y - 1) * tileSize)
+            };
 
         return result;
     }
@@ -627,7 +627,7 @@ class AnimationHandler
 
         $.each(self.playableAnimations, function (id: string, el: PlayableAnimation) 
         {
-            var pos : GridPosition = self.getPosition(el.X, el.Y);
+            var pos: Coordinate = self.getPosition(el.X, el.Y);
             self.renderAninmation(el.AnimationContainer, el.Animation, pos.X, pos.Y);
         });
 
