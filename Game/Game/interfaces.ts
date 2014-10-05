@@ -200,6 +200,34 @@ class CoordinateHelper
         return result;
     }
 
+    public static Length(a: Coordinate): number
+    {
+        return Math.sqrt(Math.pow(a.X, 2) + Math.pow(a.Y, 2));
+    }
+
+    public static Normalize(a: Coordinate): Coordinate
+    {
+        var length = this.Length(a);
+
+        if (length === 0)
+        {
+            return a;
+        }
+
+        return {
+            X: a.X / length,
+            Y: a.Y / length
+        };
+    }
+
+    public static Multiply(a: Coordinate, b: number): Coordinate
+    {
+        return {
+            X: a.X * b,
+            Y: a.Y * b
+        };
+    }
+
 }
 
 interface Coordinate
