@@ -60,50 +60,64 @@
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Margin="4,46,4,68" Grid.Row="1"/>
         <TabControl Margin="1,10,0,0" Grid.Column="2"  Grid.Row="1" Grid.RowSpan="1">
             <TabItem Header="Tiles">
-                <ScrollViewer>
-                    <StackPanel>
-                        <controls:ExtGrid Height="25" ConnectedElement="CommandTileHolder">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="103*"/>
-                                <ColumnDefinition Width="33*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Commands" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-                            <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </controls:ExtGrid>
-                        <WrapPanel x:Name="CommandTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" Visibility="Visible" >
-                            <controls:TileCommand Text="Select" Background="Orange" Command="Select"></controls:TileCommand>
-                            <controls:TileCommand Text="Clear All" Background="WhiteSmoke" Command="ClearAll"></controls:TileCommand>
-                            <controls:TileCommand Text="Clear Bottom" Background="Gray" Command="ClearBottom"></controls:TileCommand>
-                            <controls:TileCommand Text="Clear Middle" Background="GreenYellow" Command="ClearMiddle"></controls:TileCommand>
-                            <controls:TileCommand Text="Clear Top" Background="LightBlue" Command="ClearTop"></controls:TileCommand>
-                        </WrapPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="121*"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Grid.Row="1">
+                        <StackPanel x:Name="TileContainer">
+                            <controls:ExtGrid Height="25" ConnectedElement="CommandTileHolder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="103*"/>
+                                    <ColumnDefinition Width="33*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Commands" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+                                <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </controls:ExtGrid>
+                            <WrapPanel x:Name="CommandTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" Visibility="Visible" >
+                                <controls:TileCommand Text="Select" Background="Orange" Command="Select"></controls:TileCommand>
+                                <controls:TileCommand Text="Clear All" Background="WhiteSmoke" Command="ClearAll"></controls:TileCommand>
+                                <controls:TileCommand Text="Clear Bottom" Background="Gray" Command="ClearBottom"></controls:TileCommand>
+                                <controls:TileCommand Text="Clear Middle" Background="GreenYellow" Command="ClearMiddle"></controls:TileCommand>
+                                <controls:TileCommand Text="Clear Top" Background="LightBlue" Command="ClearTop"></controls:TileCommand>
+                            </WrapPanel>
 
-                        <controls:ExtGrid Height="25" ConnectedElement="PrefabTileHolder">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="103*"/>
-                                <ColumnDefinition Width="33*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Prefabs" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-                            <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </controls:ExtGrid>
-                        <WrapPanel x:Name="PrefabTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Collapsed">
-                        </WrapPanel>
+                            <controls:ExtGrid Height="25" ConnectedElement="PrefabTileHolder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="103*"/>
+                                    <ColumnDefinition Width="33*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Prefabs" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+                                <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </controls:ExtGrid>
+                            <WrapPanel x:Name="PrefabTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Collapsed">
+                            </WrapPanel>
 
-                        <controls:ExtGrid Height="25" ConnectedElement="TileHolder">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="103*"/>
-                                <ColumnDefinition Width="33*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Tiles" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
-                            <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </controls:ExtGrid>
-                        <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Collapsed">
+                            <controls:ExtGrid Height="25" ConnectedElement="TileHolder">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="103*"/>
+                                    <ColumnDefinition Width="33*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Tiles" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
+                                <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </controls:ExtGrid>
+                            <WrapPanel x:Name="TileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Collapsed">
 
 
-                            <controls:TileImage></controls:TileImage>
-                        </WrapPanel>
-                    </StackPanel>
-                </ScrollViewer>
+                            </WrapPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="21"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Height="23"  TextWrapping="Wrap" x:Name="SearchBox" VerticalAlignment="Top" TextChanged="TextBox_TextChanged" />
+                        <Button Grid.Column="2" Content="Clear" FontSize="7" x:Name="ClearButton" Click="ClearButton_Click"></Button>
+                    </Grid>
+
+                </Grid>
             </TabItem>
             <TabItem Header="Options">
                 <Grid>

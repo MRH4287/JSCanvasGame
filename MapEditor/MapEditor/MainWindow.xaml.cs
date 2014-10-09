@@ -131,6 +131,85 @@ namespace MapEditor
 
         }
 
+        private void ClearButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.SearchBox.Clear();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var container = this.TileContainer;
+
+            int countChildElements = VisualTreeHelper.GetChildrenCount(container);
+            for (int i = 0; i < countChildElements; i++)
+            {
+                var element = VisualTreeHelper.GetChild(container, i) as FrameworkElement;
+                if ((element != null) && (element is WrapPanel))
+                {
+                    filterWrapPanel(element as WrapPanel, this.SearchBox.Text);
+                }
+
+            }
+
+        }
+
+        private void filterWrapPanel(WrapPanel element, string text)
+        {
+            int elementCount = VisualTreeHelper.GetChildrenCount(element);
+
+            for (int i = 0; i < elementCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(element, i) as FrameworkElement;
+
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child is TileImage)
+                {
+                    if (String.IsNullOrWhiteSpace(text))
+                    {
+                        child.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    else
+                    {
+                        if (((TileImage)child).Element.Name.ToLower().Contains(text.ToLower()))
+                        {
+                            child.Visibility = System.Windows.Visibility.Visible;
+                        }
+                        else
+                        {
+                            child.Visibility = System.Windows.Visibility.Collapsed;
+                        }
+                    }
+                }
+                else if (child is TilePrefab)
+                {
+                    if (String.IsNullOrWhiteSpace(text))
+                    {
+                        child.Visibility = System.Windows.Visibility.Visible;
+                    }
+                    else
+                    {
+                        if (((TilePrefab)child).Element.ID.ToLower().Contains(text.ToLower()))
+                        {
+                            child.Visibility = System.Windows.Visibility.Visible;
+                        }
+                        else
+                        {
+                            child.Visibility = System.Windows.Visibility.Collapsed;
+                        }
+                    }
+                }
+
+            }
+
+
+
+        }
+
+
         private void SaveMap(object sender, RoutedEventArgs e)
         {
             var dialoge = new System.Windows.Forms.SaveFileDialog();
@@ -225,6 +304,10 @@ namespace MapEditor
 
 
         }
+
+
+
+
 
     }
 }
