@@ -16,6 +16,11 @@
                                 <Image Source="{TemplateBinding BottomLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1" Visibility="{TemplateBinding VisibilityBottom}" />
                                 <Image Source="{TemplateBinding MiddleLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="2" Visibility="{TemplateBinding VisibilityMiddle}" />
                                 <Image Source="{TemplateBinding TopLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0"  Panel.ZIndex="3" Visibility="{TemplateBinding VisibilityTop}" />
+
+                                <Image Source="{TemplateBinding BottomGhostLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="1" Visibility="{TemplateBinding VisibilityBottom}" Opacity="0.6" />
+                                <Image Source="{TemplateBinding MiddleGhostLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0" Panel.ZIndex="2" Visibility="{TemplateBinding VisibilityMiddle}" Opacity="0.6" />
+                                <Image Source="{TemplateBinding TopGhostLayerImage}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Canvas.Left="0" Canvas.Top="0"  Panel.ZIndex="3" Visibility="{TemplateBinding VisibilityTop}" Opacity="0.6" />
+
                                 <Rectangle Fill="Yellow" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Opacity="0.3" Canvas.Left="0" Canvas.Top="0" Visibility="{TemplateBinding SelectionIndicatorVisible}" Panel.ZIndex="4" />
                             </Canvas>
                         </Border>

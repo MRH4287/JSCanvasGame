@@ -201,7 +201,7 @@ namespace MapEditor.GUIElements
         // ------------------------ Imgages -----------------
 
         /// <summary>
-        /// Get the current Value of the BottomLayer Proprty
+        /// Get the current Value of the BottomLayer Property
         /// </summary>
         /// <param name="obj">The Instance to get the Value</param>
         /// <returns>Current Value</returns>
@@ -280,6 +280,85 @@ namespace MapEditor.GUIElements
         /// </summary>
         public static readonly DependencyProperty TopLayerImageProperty =
             DependencyProperty.RegisterAttached("TopLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
+
+
+        /// <summary>
+        /// Gets the current Value of the Ghost-TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>CurrentValue</returns>
+        public static ImageSource GetBottomGhostLayerImage(DependencyObject obj)
+        {
+            return (ImageSource)obj.GetValue(BottomGhostLayerImageProperty);
+        }
+
+        /// <summary>
+        /// Sets the current Value of the Ghost-TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
+        public static void SetBottomGhostLayerImage(DependencyObject obj, ImageSource value)
+        {
+            obj.SetValue(BottomGhostLayerImageProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for BottomGhostLayerImage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BottomGhostLayerImageProperty =
+            DependencyProperty.RegisterAttached("BottomGhostLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
+
+
+
+        /// <summary>
+        /// Gets the current Value of the Ghost MiddleLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>CurrentValue</returns>
+        public static ImageSource GetMiddleGhostLayerImage(DependencyObject obj)
+        {
+            return (ImageSource)obj.GetValue(MiddleGhostLayerImageProperty);
+        }
+
+        /// <summary>
+        /// Sets the current Value of the Ghost-MiddleLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
+        public static void SetMiddleGhostLayerImage(DependencyObject obj, ImageSource value)
+        {
+            obj.SetValue(MiddleGhostLayerImageProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for MiddleGhostLayerImage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MiddleGhostLayerImageProperty =
+            DependencyProperty.RegisterAttached("MiddleGhostLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
+
+
+
+        /// <summary>
+        /// Gets the current Value of the Ghost TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to get the Value</param>
+        /// <returns>CurrentValue</returns>
+        public static ImageSource GetTopGhostLayerImage(DependencyObject obj)
+        {
+            return (ImageSource)obj.GetValue(TopGhostLayerImageProperty);
+        }
+
+
+        /// <summary>
+        /// Sets the current Value of the Ghost-TopLayer Property
+        /// </summary>
+        /// <param name="obj">The Instance to set the Value</param>
+        /// <param name="value">The Value to set</param>
+        public static void SetTopGhostLayerImage(DependencyObject obj, ImageSource value)
+        {
+            obj.SetValue(TopGhostLayerImageProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for TopGhostLayerImage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TopGhostLayerImageProperty =
+            DependencyProperty.RegisterAttached("TopGhostLayerImage", typeof(ImageSource), typeof(MapTile), new PropertyMetadata(null));
+
 
 
         #endregion
@@ -464,6 +543,70 @@ namespace MapEditor.GUIElements
 
             }
         }
+
+
+
+        /// <summary>
+        /// The ImageSource of the Ghost-BottomLayer Image
+        /// </summary>
+        public ImageSource BottomGhostLayerImage
+        {
+            get
+            {
+                return GetBottomGhostLayerImage(this);
+            }
+            set
+            {
+                SetBottomGhostLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("BottomGhostLayerImage"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// The Imagesource of the Ghost-MiddleLayer Image
+        /// </summary>
+        public ImageSource MiddleGhostLayerImage
+        {
+            get
+            {
+                return GetMiddleGhostLayerImage(this);
+            }
+            set
+            {
+                SetMiddleGhostLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("MiddleGhostLayerImage"));
+                }
+            }
+        }
+
+        /// <summary>
+        /// The ImageSource of the Ghost-TopLayer Image
+        /// </summary>
+        public ImageSource TopGhostLayerImage
+        {
+            get
+            {
+                return GetTopGhostLayerImage(this);
+            }
+            set
+            {
+                SetTopGhostLayerImage(this, value);
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("TopGhostLayerImage"));
+                }
+
+            }
+        }
+
 
 
         /// <summary>
@@ -999,6 +1142,16 @@ namespace MapEditor.GUIElements
             output.Tile = input;
 
             return output;
+        }
+
+        /// <summary>
+        /// Clears the Ghost Images of this Tile
+        /// </summary>
+        public void ClearGhostImage()
+        {
+            this.TopGhostLayerImage = null;
+            this.MiddleGhostLayerImage = null;
+            this.BottomGhostLayerImage = null;
         }
 
 
