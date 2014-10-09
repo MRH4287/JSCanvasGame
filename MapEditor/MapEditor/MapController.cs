@@ -25,9 +25,19 @@ namespace MapEditor
         /// </summary>
         StackPanel MapHolder = null;
         /// <summary>
-        /// The Element containing all Tiles (Command / Images / Prefabs)
+        /// The Element containing all Tiles
         /// </summary>
         WrapPanel TileHolder = null;
+
+        /// <summary>
+        /// The Element containing the CommandTiles
+        /// </summary>
+        WrapPanel CommandTileHolder = null;
+
+        /// <summary>
+        /// The Element containing the PrefabTiles
+        /// </summary>
+        WrapPanel PrefabTileHolder = null;
 
         /// <summary>
         /// List of all Element-Definitions
@@ -74,12 +84,14 @@ namespace MapEditor
         /// </summary>
         /// <param name="holder">The MapTile Container</param>
         /// <param name="tileHolder">The Container for the TileElements</param>
-        public MapController(StackPanel holder, WrapPanel tileHolder)
+        public MapController(StackPanel holder, WrapPanel tileHolder, WrapPanel commandTileHolder, WrapPanel prefabTileHolder)
         {
             this.MapHolder = holder;
             this.TileHolder = tileHolder;
+            this.CommandTileHolder = commandTileHolder;
+            this.PrefabTileHolder = prefabTileHolder;
 
-            foreach (var item in TileHolder.Children)
+            foreach (var item in CommandTileHolder.Children)
             {
                 if (item is TileCommand)
                 {
@@ -157,12 +169,14 @@ namespace MapEditor
 
 
                 // Clear all old Elements from the TileHolder
+                this.CommandTileHolder.Children.Clear();
+                this.PrefabTileHolder.Children.Clear();
                 this.TileHolder.Children.Clear();
 
-                // Readd all CommandElemens
+                // Read all CommandElemens
                 foreach (var item in this.CommandElements)
                 {
-                    this.TileHolder.Children.Add(item);
+                    this.CommandTileHolder.Children.Add(item);
                 }
 
                 // Add all Prefabs to the TileHolder
@@ -172,7 +186,7 @@ namespace MapEditor
 
                     tilePrefab.MouseDown += tilePrefab_MouseDown;
 
-                    this.TileHolder.Children.Add(tilePrefab);
+                    this.PrefabTileHolder.Children.Add(tilePrefab);
 
                 }
 
@@ -435,6 +449,10 @@ namespace MapEditor
                 }
 
                 var targetElement = map[targetY][targetX];
+                if (targetElement == null)
+                {
+                    continue;
+                }
 
                 if (drawGhost)
                 {
@@ -564,7 +582,7 @@ namespace MapEditor
 
                     if (!drawGhost && cloneTile.Flags != null)
                     {
-                        if ((targetTile.Flags != null) && (targetTile.Flags.Count > 0))
+                        if ((targetTile != null) && (targetTile.Flags != null) && (targetTile.Flags.Count > 0))
                         {
                             if (def.Overwrite)
                             {
@@ -581,13 +599,13 @@ namespace MapEditor
                                 }
                             }
                         }
-                        else
+                        else if (targetTile != null)
                         {
                             targetTile.Flags = cloneTile.Flags;
                         }
                     }
 
-                    if (!drawGhost)
+                    if (!drawGhost && targetTile != null)
                     {
 
                         targetTile.Passable = cloneTile.Passable;
@@ -596,7 +614,7 @@ namespace MapEditor
 
                         if (cloneTile.Events != null)
                         {
-                            if ((targetTile.Events != null) && (targetTile.Events.Count > 0))
+                            if ((targetTile != null) && (targetTile.Events != null) && (targetTile.Events.Count > 0))
                             {
                                 if (def.Overwrite)
                                 {
@@ -613,7 +631,7 @@ namespace MapEditor
                                     }
                                 }
                             }
-                            else
+                            else if (targetTile != null)
                             {
                                 targetTile.Events = cloneTile.Events;
                             }

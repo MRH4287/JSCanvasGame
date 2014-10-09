@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Elements\Animation.cs" />
     <Compile Include="GUIElements\ElementImporterDataModel.cs" />
+    <Compile Include="GUIElements\ExtGrid.cs" />
     <Compile Include="IntToStringValueConverter.cs" />
     <Compile Include="TextInput.xaml.cs">
       <DependentUpon>TextInput.xaml</DependentUpon>

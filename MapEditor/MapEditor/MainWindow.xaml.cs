@@ -32,7 +32,7 @@ namespace MapEditor
         {
             InitializeComponent();
 
-            controller = new MapController(this.MapHolder, this.TileHolder);
+            controller = new MapController(this.MapHolder, this.TileHolder, this.CommandTileHolder, this.PrefabTileHolder);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
@@ -89,43 +89,6 @@ namespace MapEditor
             #endregion
 
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-            controller.addRow(30);
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            controller.LoadConfig("./data/", "./prefabs/");
-            controller.LoadMap("./data/map2.json");
-
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            this.MapHolder.Children.Clear();
-        }
-
-        private async void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-
-            var text = await MapEditor.TextInput.Display("Insert Map Size. Comma Seperated for X and Y", "30,30");
-
-            MessageBox.Show(text);
-
-        }
-
 
         private void LoadConfigMenu(object sender, RoutedEventArgs e)
         {
