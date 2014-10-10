@@ -8,6 +8,6 @@ namespace MapEditor
 {
     enum CommandState
     {
-        Select, ClearAll, ClearBottom, ClearMiddle, ClearTop, Paint, PaintPrefab
+        Select, ClearAll, ClearBottom, ClearMiddle, ClearTop, Paint, PaintPrefab, PaintScriptedElement
     }
 }

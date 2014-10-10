@@ -125,6 +125,7 @@ interface AnimationContainer
     Animations: Animation[];
 }
 
+
 interface InternalAnimationContainer
 {
     // The ID of the Animation Container
@@ -133,6 +134,22 @@ interface InternalAnimationContainer
     ImageURI: string;
     //The Animations of this Container
     Animations: { [id: string]: Animation };
+}
+
+interface NPCInformation
+{
+    // The ID of the NPC-Type
+    ID: string;
+    // The Name of the NPC-Type
+    Name: string;
+    // The AnimationContainer of this NPC-Type
+    AnimationContainer: string;
+    // The Default Animation for this NPC-Type
+    DefaultAnimation: string;
+    // The Movement Speed of this NPC
+    Speed: number;
+    // The Script for this NPC
+    Script?: string;
 }
 
 interface EventData

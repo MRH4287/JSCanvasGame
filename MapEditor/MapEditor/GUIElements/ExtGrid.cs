@@ -74,7 +74,8 @@ namespace MapEditor.GUIElements
         static string[] GroupList = new string[] {
             "CommandTileHolder",
             "PrefabTileHolder",
-            "TileHolder"
+            "TileHolder",
+            "ScriptedTileHolder"
         };
 
 

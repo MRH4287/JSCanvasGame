@@ -9,29 +9,12 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor.GUIElements
 {
-    class TilePrefab : SelectableImage
+    class TilePrefab : TileElement<Prefab>
     {
-        private Prefab element = null;
-
-        public Prefab Element
-        {
-            get
-            {
-                return element;
-            }
-            set
-            {
-                element = value;
-                triggerPropertyChanged("Element");
-                triggerPropertyChanged("Tooltip");
-            }
-        }
-
-
         /// <summary>
         /// The Tooltip of the Element
         /// </summary>
-        public string Tooltip
+        public override string Tooltip
         {
             get
             {
@@ -48,16 +31,16 @@ namespace MapEditor.GUIElements
             }
         }
 
-        public TilePrefab(Prefab def)
+        public TilePrefab()
             : base()
         {
-            this.Width = MapTile.GlobalSize;
-            this.Height = MapTile.GlobalSize;
 
-            this.Element = def;
+        }
+
+        public TilePrefab(Prefab def)
+            : base(def)
+        {
             this.ImageSource = new BitmapImage(def.PreviewImageUri);
-
-            MapController.Bind(this, "Tooltip", MapTile.ToolTipProperty);
         }
 
 

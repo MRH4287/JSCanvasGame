@@ -1,0 +1,10 @@
+[
+    {
+        "ID": "test",
+        "Name": "Test-NPC",
+        "AnimationContainer": "pichu",
+        "DefaultAnimation": "sleep",
+        "Speed": 1.0,
+        "PreviewImagePath": "graphics/animations/pichu/sleep/sleep1.png"
+    }
+]

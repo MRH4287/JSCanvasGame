@@ -43,6 +43,20 @@
             </Setter>
         </Style>
 
+        <Style TargetType="{x:Type GUIElements:TileNPC}">
+            <Setter Property="Margin" Value="2,2,0,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GUIElements:TileNPC}">
+                        <Canvas ToolTip="{TemplateBinding ToolTip}">
+                            <Image Source="{TemplateBinding ImageSource}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"></Image>
+                            <Rectangle Fill="Yellow" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" Opacity="0.3" Canvas.Left="0" Canvas.Top="0" Visibility="{TemplateBinding SelectionIndicatorVisible}" />
+                        </Canvas>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style TargetType="{x:Type GUIElements:TileCommand}">
             <Setter Property="Margin" Value="2,2,0,0" />
             <Setter Property="Template">

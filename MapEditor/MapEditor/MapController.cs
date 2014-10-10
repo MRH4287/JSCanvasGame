@@ -40,6 +40,11 @@ namespace MapEditor
         WrapPanel PrefabTileHolder = null;
 
         /// <summary>
+        /// The Element containing scripted Tiles
+        /// </summary>
+        WrapPanel ScriptedTileHolder = null;
+
+        /// <summary>
         /// List of all Element-Definitions
         /// </summary>
         public Dictionary<string, ElementDefinition> Elements { get; private set; }
@@ -84,12 +89,13 @@ namespace MapEditor
         /// </summary>
         /// <param name="holder">The MapTile Container</param>
         /// <param name="tileHolder">The Container for the TileElements</param>
-        public MapController(StackPanel holder, WrapPanel tileHolder, WrapPanel commandTileHolder, WrapPanel prefabTileHolder)
+        public MapController(StackPanel holder, WrapPanel tileHolder, WrapPanel commandTileHolder, WrapPanel prefabTileHolder, WrapPanel sciptedTileHolder)
         {
             this.MapHolder = holder;
             this.TileHolder = tileHolder;
             this.CommandTileHolder = commandTileHolder;
             this.PrefabTileHolder = prefabTileHolder;
+            this.ScriptedTileHolder = sciptedTileHolder;
 
             foreach (var item in CommandTileHolder.Children)
             {
@@ -166,12 +172,29 @@ namespace MapEditor
 
                 }
 
+                Dictionary<string, NPC> npcData = null;
+
+                if (File.Exists(path + "npc/npcData.json"))
+                {
+                    info = new FileInfo(path + "npc/npcData.json");
+
+                    reader = info.OpenText();
+                    content = reader.ReadToEnd();
+
+                    reader.Close();
+
+                    List<NPC> npcList = Data.JSON.JSONSerializer.deserialize<List<NPC>>(content);
+
+                    npcData = npcList.ToDictionary(el => el.ID);
+
+                }
 
 
                 // Clear all old Elements from the TileHolder
                 this.CommandTileHolder.Children.Clear();
                 this.PrefabTileHolder.Children.Clear();
                 this.TileHolder.Children.Clear();
+                this.ScriptedTileHolder.Children.Clear();
 
                 // Read all CommandElemens
                 foreach (var item in this.CommandElements)
@@ -190,8 +213,6 @@ namespace MapEditor
 
                 }
 
-
-
                 // Add all ElementDefinitions to the TileHolder
                 foreach (var item in Elements)
                 {
@@ -202,12 +223,31 @@ namespace MapEditor
                     this.TileHolder.Children.Add(tileImage);
                 }
 
+                // Add NPCs to ScriptedTileHolder
+
+                if (npcData != null)
+                {
+                    ElementDefinition npcSpawnDef = (Elements.ContainsKey("NPCSpawn") ? Elements["NPCSpawn"] : null);
+                    if (npcSpawnDef != null)
+                    {
+                        foreach (var item in npcData)
+                        {
+                            var tileNPC = new TileNPC(item.Value, npcSpawnDef);
+
+                            tileNPC.MouseDown += tileNPC_MouseDown;
+
+                            this.ScriptedTileHolder.Children.Add(tileNPC);
+                        }
+                    }
+                }
 
             }
 
 
 
         }
+
+
 
         /// <summary>
         /// Loads the Map
@@ -273,6 +313,24 @@ namespace MapEditor
             state = CommandState.Paint;
 
             SelectedTile = (TileImage)sender;
+            SelectedTile.Selected = true;
+        }
+
+        /// <summary>
+        /// Triggered when one <see cref="TileNPC"/> was clicked
+        /// </summary>
+        /// <param name="sender">TileNPC instance</param>
+        /// <param name="e">Event Parameter</param>
+        void tileNPC_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (this.SelectedTile != null)
+            {
+                SelectedTile.Selected = false;
+            }
+
+            state = CommandState.PaintScriptedElement;
+
+            SelectedTile = (TileNPC)sender;
             SelectedTile.Selected = true;
         }
 
@@ -342,45 +400,13 @@ namespace MapEditor
         }
 
 
-
-        /// <summary>
-        /// Add a Row of blank MapTiles to the Map
-        /// </summary>
-        /// <param name="count">Ammount of Elements to add</param>
-        public void addRow(int count = 10)
-        {
-            var container = getRowContainer();
-
-            for (int i = 0; i < count; i++)
-            {
-                var tile = new MapTile();
-                tile.Tile = new Tile();
-
-                if (Elements != null)
-                {
-                    tile.BottomElement = Elements["grass"];
-                }
-
-                tile.MouseDown += tile_MouseDown;
-                tile.MouseMove += tile_MouseMove;
-                tile.MouseUp += tile_MouseUp;
-
-
-
-                container.Children.Add(tile);
-            }
-
-            MapHolder.Children.Add(container);
-
-        }
-
         /// <summary>
         /// Draw an element to the Map
         /// </summary>
         /// <param name="def">The <see cref="ElementDefinition"/> that should be set the field</param>
         /// <param name="destination">Field to apply the new ElementDefinition</param>
         /// <param name="drawGhost">Only draw the Ghost Image</param>
-        private void draw(ElementDefinition def, MapTile destination, bool drawGhost = false)
+        private void draw(ElementDefinition def, MapTile destination, TileElement element, bool drawGhost = false)
         {
             if (!drawGhost)
             {
@@ -388,12 +414,15 @@ namespace MapEditor
                 {
                     case ElementLevel.Bottom:
                         destination.BottomElement = def;
+                        destination.BottomTile = element;
                         break;
                     case ElementLevel.Middle:
                         destination.MiddleElement = def;
+                        destination.MiddleTile = element;
                         break;
                     case ElementLevel.Top:
                         destination.TopElement = def;
+                        destination.TopTile = element;
                         break;
                     default:
                         break;
@@ -465,6 +494,11 @@ namespace MapEditor
                     if (!drawGhost)
                     {
                         targetElement.Tile = element.Tile;
+
+                        targetElement.BottomTile = null;
+                        targetElement.MiddleTile = null;
+                        targetElement.TopTile = null;
+
                     }
                     else
                     {
@@ -501,6 +535,8 @@ namespace MapEditor
                                 if (!drawGhost)
                                 {
                                     targetElement.BottomElement = cloneTile[ElementLevel.Bottom];
+
+                                    targetElement.BottomTile = null;
                                 }
                                 else
                                 {
@@ -513,6 +549,8 @@ namespace MapEditor
                             if (!drawGhost)
                             {
                                 targetElement.BottomElement = cloneTile[ElementLevel.Bottom];
+
+                                targetElement.BottomTile = null;
                             }
                             else
                             {
@@ -530,6 +568,8 @@ namespace MapEditor
                                 if (!drawGhost)
                                 {
                                     targetElement.MiddleElement = cloneTile[ElementLevel.Middle];
+
+                                    targetElement.MiddleTile = null;
                                 }
                                 else
                                 {
@@ -542,6 +582,8 @@ namespace MapEditor
                             if (!drawGhost)
                             {
                                 targetElement.MiddleElement = cloneTile[ElementLevel.Middle];
+
+                                targetElement.MiddleTile = null;
                             }
                             else
                             {
@@ -559,6 +601,8 @@ namespace MapEditor
                                 if (!drawGhost)
                                 {
                                     targetElement.TopElement = cloneTile[ElementLevel.Top];
+
+                                    targetElement.TopTile = null;
                                 }
                                 else
                                 {
@@ -571,6 +615,8 @@ namespace MapEditor
                             if (!drawGhost)
                             {
                                 targetElement.TopElement = cloneTile[ElementLevel.Top];
+
+                                targetElement.TopTile = null;
                             }
                             else
                             {
@@ -690,29 +736,55 @@ namespace MapEditor
 
             if ((state == CommandState.Paint) && (this.SelectedTile != null) && (this.SelectedTile is TileImage))
             {
-                draw((SelectedTile as TileImage).Element, source);
+                var element = (SelectedTile as TileImage);
+                if (element.prePaint(source))
+                {
+                    draw(element.Element, source, element);
+                    element.postPaint(source);
+                }
             }
             else if (state == CommandState.ClearAll)
             {
                 source.BottomElement = null;
                 source.TopElement = null;
                 source.MiddleElement = null;
+                source.BottomTile = null;
+                source.TopTile = null;
+                source.MiddleTile = null;
             }
             else if (state == CommandState.ClearBottom)
             {
                 source.BottomElement = null;
+                source.BottomTile = null;
             }
             else if (state == CommandState.ClearMiddle)
             {
                 source.MiddleElement = null;
+                source.MiddleTile = null;
             }
             else if (state == CommandState.ClearTop)
             {
                 source.TopElement = null;
+                source.TopTile = null;
             }
             else if ((state == CommandState.PaintPrefab) && (this.SelectedTile != null) && (this.SelectedTile is TilePrefab))
             {
-                drawPrefab((SelectedTile as TilePrefab).Element, source);
+                var element = (SelectedTile as TilePrefab);
+                if (element.prePaint(source))
+                {
+                    drawPrefab((SelectedTile as TilePrefab).Element, source);
+                    element.postPaint(source);
+                }                
+            }
+            else if ((state == CommandState.PaintScriptedElement) && (this.SelectedTile != null) && (this.SelectedTile is IScriptedObject))
+            {
+                var element = (SelectedTile as IScriptedObject);
+                if (element.prePaint(source))
+                {
+                    draw(element.ElementDefinition, source, SelectedTile as TileElement);
+                    element.postPaint(source);
+                }
+
             }
             else if ((state == CommandState.Select) && (source == lastSelected) && click)
             {
@@ -772,7 +844,7 @@ namespace MapEditor
             }
             if ((state == CommandState.Paint) && (this.SelectedTile != null) && (this.SelectedTile is TileImage))
             {
-                draw((SelectedTile as TileImage).Element, (MapTile)sender, true);
+                draw((SelectedTile as TileImage).Element, (MapTile)sender, null, true);
             }
             else if ((state == CommandState.PaintPrefab) && (this.SelectedTile != null) && (this.SelectedTile is TilePrefab))
             {

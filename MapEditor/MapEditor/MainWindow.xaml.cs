@@ -32,7 +32,7 @@ namespace MapEditor
         {
             InitializeComponent();
 
-            controller = new MapController(this.MapHolder, this.TileHolder, this.CommandTileHolder, this.PrefabTileHolder);
+            controller = new MapController(this.MapHolder, this.TileHolder, this.CommandTileHolder, this.PrefabTileHolder, this.ScriptedTileHolder);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)

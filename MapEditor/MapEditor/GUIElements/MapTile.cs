@@ -1,5 +1,6 @@
 ﻿using GraphicLibary;
 using MapEditor.Elements;
+using MapEditor.GUIElements.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -198,7 +199,7 @@ namespace MapEditor.GUIElements
 
         #region Image Dependency Properties
 
-        // ------------------------ Imgages -----------------
+        // ------------------------ Images -----------------
 
         /// <summary>
         /// Get the current Value of the BottomLayer Property
@@ -780,6 +781,31 @@ namespace MapEditor.GUIElements
 
         }
 
+        private TileElement bottomTile;
+
+        /// <summary>
+        /// The used Tile for the Bottom
+        /// </summary>
+        public TileElement BottomTile
+        {
+            get
+            { 
+                return bottomTile; 
+            }
+            set 
+            {
+                var old = bottomTile;
+
+                bottomTile = value;
+
+                if (old != null)
+                {
+                    old.postDelete(this);
+                }
+            }
+        }
+
+
         /// <summary>
         /// The ElementDefinition for the MiddleLayer
         /// </summary>
@@ -821,6 +847,31 @@ namespace MapEditor.GUIElements
                 }
             }
 
+        }
+
+
+        private TileElement middleTile;
+
+        /// <summary>
+        /// The used Tile for the Middle
+        /// </summary>
+        public TileElement MiddleTile
+        {
+            get
+            {
+                return middleTile;
+            }
+            set
+            {
+                var old = middleTile;
+
+                middleTile = value;
+
+                if (old != null)
+                {
+                    old.postDelete(this);
+                }
+            }
         }
 
         /// <summary>
@@ -865,6 +916,32 @@ namespace MapEditor.GUIElements
             }
 
         }
+
+
+        private TileElement topTile;
+
+        /// <summary>
+        /// The used Tile for the Middle
+        /// </summary>
+        public TileElement TopTile
+        {
+            get
+            {
+                return topTile;
+            }
+            set
+            {
+                var old = topTile;
+
+                topTile = value;
+
+                if (old != null)
+                {
+                    old.postDelete(this);
+                }
+            }
+        }
+
 
         /// <summary>
         /// The Visibility of the BottomElement

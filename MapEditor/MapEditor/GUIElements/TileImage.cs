@@ -2,6 +2,7 @@
 using MapEditor.GUIElements.Base;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,63 +13,13 @@ using System.Windows.Media.Imaging;
 
 namespace MapEditor.GUIElements
 {
-    class TileImage : SelectableImage
+    class TileImage : TileElement<ElementDefinition>
     {
-        public static ElementDefinition GetElement(DependencyObject obj)
-        {
-            return (ElementDefinition)obj.GetValue(ElementProperty);
-        }
-
-        public static void SetElement(DependencyObject obj, ElementDefinition value)
-        {
-            obj.SetValue(ElementProperty, value);
-
-            var self = obj as TileImage;
-            if (self != null)
-            {
-
-                self.triggerPropertyChanged("Element");
-                self.triggerPropertyChanged("TileImageSource");
-                self.triggerPropertyChanged("Tooltip");
-            }
-        }
-
-        // Using a DependencyProperty as the backing store for Element.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ElementProperty =
-            DependencyProperty.RegisterAttached("Element", typeof(ElementDefinition), typeof(TileImage), new PropertyMetadata(null));
-
-
-
-        public ImageSource TileImageSource
-        {
-            get
-            {
-                if (this.Element == null)
-                {
-                    return null;
-                }
-
-                return this.Element.ImageSource;
-            }
-        }
-
-        public ElementDefinition Element
-        {
-            get
-            {
-                return GetElement(this);
-            }
-
-            set
-            {
-                SetElement(this, value);
-            }
-        }
 
         /// <summary>
         /// The Tooltip of the Element
         /// </summary>
-        public string Tooltip
+        public override string Tooltip
         {
             get
             {
@@ -88,19 +39,13 @@ namespace MapEditor.GUIElements
         public TileImage()
             : base()
         {
-            this.Width = MapTile.GlobalSize;
-            this.Height = MapTile.GlobalSize;
         }
 
         public TileImage(ElementDefinition def)
-            : this()
+            : base(def)
         {
-            this.Element = def;
+            this.ImageSource = def.ImageSource;
 
-            MapController.Bind(this, "Tooltip", TileImage.ToolTipProperty);
-            MapController.Bind(this, "TileImageSource", TileImage.ImageSourceProperty);
-
-            this.triggerPropertyChanged("TileImageSource");
         }
 
 

@@ -22,6 +22,7 @@ class GameHandler
         height: 300,
         tileSize: 25,
         elementsPath: "data/elements.json",
+        npcDataPath: "data/npc/npcData.json",
         mapPath: "data/map2.json",
         showBlocking: true,
         verbose: false,
@@ -47,6 +48,8 @@ class GameHandler
     public windowManager: WindowManager;
     public npcManager: NPCHandler;
     public pathHandler: PathHandler;
+
+    public npcDefinitions: { [id: string]: NPCInformation } = {};
 
 
     public spriteContainer: { [id: string]: HTMLElement };
@@ -138,7 +141,7 @@ class GameHandler
     }
 
 
-    public loadAnimation(path)
+    public loadAnimation(path: string)
     {
         var data: AnimationContainer = <AnimationContainer>this.getFile(path);
 
@@ -217,6 +220,18 @@ class GameHandler
         });
 
         this.log("Element Definitions loaded: ", this.elements);
+
+        this.log("Load NPC-Data");
+
+        result = this.getFile(this.config.npcDataPath);
+
+        $.each(result, function (_, el: NPCInformation)
+        {
+            self.npcDefinitions[el.ID] = el;
+        });
+
+        this.log("NPC-Data loaded", this.npcDefinitions);
+
 
         if (this.renderer !== undefined)
         {
@@ -333,6 +348,45 @@ class GameHandler
                 self.tileFlagIndex[flag].push(tile);
             });
         }
+
+        // Add NPCs:
+        if (tile.MiddleElementID === "NPCSpawn")
+        {
+            var npcRegex: RegExp = new RegExp("NPC=(.+)"); 
+            var npcID = null;
+
+            $.each(tile.Flags, function (_, flag)
+            {
+                if (npcRegex.test(flag))
+                {
+                    var match = npcRegex.exec(flag);
+                    npcID = match[1];
+                }
+
+            });
+
+            if (npcID === null)
+            {
+                this.warn("Element has Element 'NPCSpawn' but don't define the Flag 'NPC=...'!", tile);
+            }
+            else
+            {
+                var npcData = this.npcDefinitions[npcID];
+
+                if (this.animations[npcData.AnimationContainer] === undefined)
+                {
+                    this.log("Animation for NPC not available. Load Animation: ", npcData.AnimationContainer);
+                    this.loadAnimation("data/animations/" + npcData.AnimationContainer + ".json");
+                }
+
+                this.npcManager.addNPC("test", { X: tile.XCoord, Y: tile.YCoord }, npcData.AnimationContainer, npcData.DefaultAnimation, npcData.Speed);
+
+                //TODO: Add NPC-Script
+            }
+
+
+        }
+        
 
 
         this.eventHandler.callEvent("postTileUpdate", this, tile);

@@ -530,5 +530,17 @@
 			"player", "editorElement"
 		],
 		"ImageURI": "graphics/dynamic/pichu.png"	
-	}
+	},
+    {
+        "ID":  "NPCSpawn",
+        "Name":  "NPC-Spawner",
+        "Level":  1,
+        "Passable": "true",
+        "Speed":  1.0,
+        "Flags": [
+            "editorElement"
+        ],
+        "ImageURI":  "graphics/objects/unknown.png"
+
+    }
 ]

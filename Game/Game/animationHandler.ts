@@ -187,6 +187,16 @@ class AnimationHandler
         //this.gameHandler.log({ "X": x, " Y": y });
 
         var container: InternalAnimationContainer = this.gameHandler.animations[containerName];
+        if (container === undefined)
+        {
+            this.gameHandler.warn("Unknown Animation Cotainer: ", containerName, this.gameHandler.animations);
+
+            
+
+            return;
+        }
+
+
         var animation: Animation = container.Animations[startAnimation];
 
         if (this.useAnimationGroups)

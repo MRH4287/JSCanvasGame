@@ -109,12 +109,17 @@
       <DependentUpon>ElementImporter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Elements\Animation.cs" />
+    <Compile Include="Elements\NPC.cs" />
+    <Compile Include="GUIElements\Base\IScriptedObject.cs" />
     <Compile Include="GUIElements\ElementImporterDataModel.cs" />
     <Compile Include="GUIElements\ExtGrid.cs" />
+    <Compile Include="GUIElements\Base\TileElement.cs" />
+    <Compile Include="GUIElements\TileNPC.cs" />
     <Compile Include="IntToStringValueConverter.cs" />
     <Compile Include="TextInput.xaml.cs">
       <DependentUpon>TextInput.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TileScriptedObject.cs" />
     <Page Include="AnimationEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace MapEditor.GUIElements.Base
 {
-    abstract class SelectableImage : Selectable
+    public abstract class SelectableImage : Selectable
     {
         #region Dependencie Properties
 
@@ -28,7 +28,7 @@ namespace MapEditor.GUIElements.Base
             DependencyProperty.RegisterAttached("ImageSource", typeof(ImageSource), typeof(SelectableImage), new PropertyMetadata(null));
 
 
-        public ImageSource ImageSource
+        public virtual ImageSource ImageSource
         {
             get
             {
