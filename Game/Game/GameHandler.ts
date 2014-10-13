@@ -245,6 +245,8 @@ class GameHandler
 
     public changeLevel(path: string)
     {
+        this.eventHandler.callEvent("preLevelChange", this, path);
+
         this.config.mapPath = path;
         this.map = undefined;
         this.tileIDIndex = {};
@@ -256,6 +258,8 @@ class GameHandler
         this.loadMap(true);
         this.playerManager.movePlayerToSpawn();
         this.playerManager.resetPlayerModel();
+
+        this.eventHandler.callEvent("postLevelChange", this, null);
     }
 
     public loadMap(reset: boolean = false)

@@ -11,6 +11,21 @@ class PathHandler
 
     private debugElements: string[] = [];
 
+    private STOP = false;
+
+    public stopAllMovements()
+    {
+        this.STOP = true;
+        var self = this;
+
+        window.setTimeout(function ()
+        {
+            self.STOP = false;
+
+        }, 1000);
+
+    }
+
 
     public getRouteRaw(startPos: Coordinate, endPos: Coordinate): GridNode[]
     {
@@ -127,6 +142,11 @@ class PathHandler
 
         var callback = function ()
         {
+            if (self.STOP)
+            {
+                return;
+            }
+
             if (index + 1 >= route.length)
             {
                 if (typeof (onFinish) !== "undefined")
@@ -174,6 +194,11 @@ class PathHandler
 
         var callback = function ()
         {
+            if (self.STOP)
+            {
+                return;
+            }
+
             if (index + 1 >= route.length)
             {
                 if (typeof (onFinish) !== "undefined")

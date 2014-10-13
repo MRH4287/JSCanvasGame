@@ -3,6 +3,16 @@
 
 var playerPosition = loader.playerPosition;
 
+var ABORT = false;
+var self = this;
+
+gameHandler.eventHandler.addEventListener("preLevelChange", function(s, arg)
+{
+    ABORT = true;
+    gameHandler.pathHandler.stopAllMovements();
+    
+});
+
 
 /*
 window.setTimeout(function () {
@@ -21,6 +31,11 @@ var pichuloop = false;
 
 gameHandler.eventHandler.addEventListener("PlayerNPCAction", function (s, args)
 {
+    if (ABORT)
+    {
+        return;
+    }
+
     var containerName = args.animationData.AnimationContainer.ID;
     console.log("You interacted with a '" + containerName + "'!");
 
@@ -43,14 +58,29 @@ gameHandler.eventHandler.addEventListener("PlayerNPCAction", function (s, args)
         gameHandler.npcManager.renderSpeechBubble("pichu3", "I want to play too!", 2);
         window.setTimeout(function ()
         {
+            if (ABORT)
+            {
+                return;
+            }
+
             gameHandler.npcManager.renderSpeechBubble("pikachu1", "You are to young to play with your brothers.", 2);
 
             window.setTimeout(function ()
             {
+                if (ABORT)
+                {
+                    return;
+                }
+
                 gameHandler.npcManager.renderSpeechBubble("pichu3", "Awww!", 2);
 
                 window.setTimeout(function ()
                 {
+                    if (ABORT)
+                    {
+                        return;
+                    }
+
                     gameHandler.npcManager.setAnimation("pichu3", "stand-up");
                     gameHandler.npcManager.setAnimation("pikachu1", "stand");
                     pichuloop = false;
@@ -81,6 +111,11 @@ text = [
 var stateP1 = 0;
 function moveCallbackP1()
 {
+    if (ABORT)
+    {
+        return;
+    }
+
     var pos = null;
 
     switch (stateP1)
@@ -128,6 +163,11 @@ gameHandler.npcManager.addNPC("pichu2", pichu2Pos, "pichu", "stand", 0.8);
 var stateP2 = 0;
 function moveCallbackP2()
 {
+    if (ABORT)
+    {
+        return;
+    }
+
     var pos = null;
 
     switch (stateP2)
