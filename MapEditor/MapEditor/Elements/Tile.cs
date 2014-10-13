@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -101,7 +102,7 @@ namespace MapEditor.Elements
         /// List of Flags for this specific Tile
         /// </summary>
         [DataMember(IsRequired = false)]
-        public LinkedList<string> Flags = new LinkedList<string>();
+        public ObservableCollection<string> Flags = new ObservableCollection<string>();
 
         /// <summary>
         /// Defines if this Tile is passable by the Player
@@ -189,7 +190,7 @@ namespace MapEditor.Elements
         {
             if (this.Flags == null)
             {
-                this.Flags = new LinkedList<string>();
+                this.Flags = new ObservableCollection<string>();
             }
 
             var passable = true;
@@ -203,7 +204,7 @@ namespace MapEditor.Elements
                     {
                         if (!this.Flags.Contains(item))
                         {
-                            this.Flags.AddLast(item);
+                            this.Flags.Add(item);
                         }
                     }
 
@@ -219,7 +220,7 @@ namespace MapEditor.Elements
                     {
                         if (!this.Flags.Contains(item))
                         {
-                            this.Flags.AddLast(item);
+                            this.Flags.Add(item);
                         }
                     }
 
@@ -235,7 +236,7 @@ namespace MapEditor.Elements
                     {
                         if (!this.Flags.Contains(item))
                         {
-                            this.Flags.AddLast(item);
+                            this.Flags.Add(item);
                         }
                     }
 

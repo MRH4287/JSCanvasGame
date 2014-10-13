@@ -324,14 +324,7 @@ class PlayerManager
         this.position.X = 6;
         this.position.Y = 6;
 
-        // Get Player Tile:
-        var tiles: Tile[] = this.gameHandler.getTilesByFlagName("player");
-        if (tiles.length !== 0)
-        {
-            this.position.X = tiles[0].XCoord;
-            this.position.Y = tiles[0].YCoord;
-        }
-
+        this.movePlayerToSpawn();
 
         this.initPlayer(self, playerModel);
 
@@ -403,6 +396,28 @@ class PlayerManager
         });
 
 
+    }
+
+    public movePlayerToSpawn()
+    {
+        // Get Player Tile:
+        var tiles: Tile[] = this.gameHandler.getTilesByFlagName("player");
+        if (tiles.length !== 0)
+        {
+            this.position.X = tiles[0].XCoord;
+            this.position.Y = tiles[0].YCoord;
+        }
+    }
+
+    public resetPlayerModel()
+    {
+        var playerModel = this.gameHandler.config.playerModel;
+
+        this.playerAnimation.clear();
+
+        this.setPlayerModel(playerModel, this.position);
+
+        this.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
     }
 
     public getPosition(): Coordinate

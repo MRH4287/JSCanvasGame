@@ -96,6 +96,20 @@ class AnimationHandler
         //console.log("Animation Handler: ", this);
     }
 
+    public clear()
+    {
+        var self = this;
+
+        $.each(this.playableAnimations, function (id, el: PlayableAnimation)
+        {
+            self.stopAnimation(el.ID);
+        });
+
+        this.playableAnimations = {};
+        this.animationGroups = {};
+        this.genericDrawActions = {};
+    }
+
     public setPosition(elementName: string, x: number, y: number, rerender = true)
     {
         if (this.playableAnimations[elementName] !== undefined)
@@ -362,12 +376,18 @@ class AnimationHandler
 
                 this.eventHandler.addTimer(timerName, function ()
                 {
-                    /*
-                    $.each(self.animationGroups[group], function (id, callback)
+                    // If the Animation Group is unknown, don't render
+                    if (typeof self.animationGroups[group] === "undefined")
                     {
-                        callback();
-                    });
-                    */
+                        if (self.gameHandler.config.verbose)
+                        {
+                            self.gameHandler.log("Unknown Animation Group. Abort Render. ", group);
+                        }
+                        self.eventHandler.stopTimer(timerName);
+
+                        return;
+                    }
+                    
                     var animinations: PlayableAnimation[] = [];
                     $.each(self.animationGroups[group], function (name, _)
                     {

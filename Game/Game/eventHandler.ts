@@ -93,20 +93,28 @@ class EventHandler
         var self = this;
         var triggerEvent = function ()
         {
-            
-
-            var data = self.timedEvents[name];
-
-            if ((data !== undefined) && (data.run))
+            try
             {
-                data.callback(sender, arguments);
 
-                self.callEvent("TaskCreated", self, "Timer - " + name);
+                var data = self.timedEvents[name];
 
-                window.setTimeout(triggerEvent, intervall);
+                if ((data !== undefined) && (data.run))
+                {
+                    data.callback(sender, arguments);
+
+                    self.callEvent("TaskCreated", self, "Timer - " + name);
+
+                    window.setTimeout(triggerEvent, intervall);
+                }
+                else
+                {
+                    delete self.timedEvents[name];
+                }
+
             }
-            else
+            catch (ex)
             {
+                self.gameHandler.warn("Exception while executing timed Trigger '" + name + "': ", ex);
                 delete self.timedEvents[name];
             }
 

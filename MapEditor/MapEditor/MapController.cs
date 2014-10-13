@@ -640,7 +640,7 @@ namespace MapEditor
                                 {
                                     if (!targetTile.Flags.Contains(flag))
                                     {
-                                        targetTile.Flags.AddLast(flag);
+                                        targetTile.Flags.Add(flag);
                                     }
                                 }
                             }

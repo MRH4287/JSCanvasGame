@@ -8,7 +8,7 @@ interface Renderer
     getPlayerLayer(): RendererLayer;
     clearRenderContext(ctx: CanvasRenderingContext2D): void;
     getTileSize(): number;
-    setMap(map: Tile[][]);
+    setMap(map: Tile[][], reset?:boolean);
     initMap(sizeX: number, sizeY: number);
     setConfig(elements: { [id: string]: ElementDefinition });
     setOffset(offset: Coordinate);

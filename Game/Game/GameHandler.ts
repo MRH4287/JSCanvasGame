@@ -243,7 +243,22 @@ class GameHandler
         this.eventHandler.callEvent("postConfigLoad", this, null);
     }
 
-    public loadMap()
+    public changeLevel(path: string)
+    {
+        this.config.mapPath = path;
+        this.map = undefined;
+        this.tileIDIndex = {};
+        this.tileFlagIndex = {};
+        this.elementsFlagIndex = {};
+        this.npcManager.clear();
+
+
+        this.loadMap(true);
+        this.playerManager.movePlayerToSpawn();
+        this.playerManager.resetPlayerModel();
+    }
+
+    public loadMap(reset: boolean = false)
     {
         this.eventHandler.callEvent("preMapLoad", this, null);
 
@@ -257,8 +272,22 @@ class GameHandler
             this.renderer.initMap(result[0].length, result.length);
         }
 
-        // Has to be done here
-        this.initAnimationContainer();
+        if (reset)
+        {
+            var handler = [this.bottomAnimationHandler, this.middleAnimationHandler, this.middleAnimationHandler, this.playerAnimationHandler];
+            $.each(handler, function (_, el)
+            {
+                if (el !== undefined)
+                {
+                    el.clear();
+                }
+            });
+        }
+        else
+        {
+            // Has to be done here
+            this.initAnimationContainer();
+        }
 
         for (var y = 0; y < result.length; y++)
         {
@@ -274,7 +303,7 @@ class GameHandler
 
         if (this.renderer !== undefined)
         {
-            this.renderer.setMap(this.map);
+            this.renderer.setMap(this.map, reset);
         }
 
         //_staticHeight = _map.length * _config.tileSize;
@@ -284,7 +313,7 @@ class GameHandler
 
         this.log("Map Loaded: ", this.map);
 
-        this.eventHandler.callEvent("postMapLoad", this, null);
+        this.eventHandler.callEvent("postMapLoad", this, this.map);
     }
 
     private updateTile(tile: Tile, x: number, y: number)

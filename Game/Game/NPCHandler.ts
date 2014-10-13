@@ -80,6 +80,16 @@ class NPCHandler
 
     }
 
+    public clear()
+    {
+        var self = this;
+
+        $.each(this.npcList, function (key, el: NPCData)
+        {
+            self.removeNPC(el.ID);
+        });
+    }
+
 
     public addNPC(name: string, position: Coordinate, animationContainer: string, defaultAnimation: string, speed: number = 1)
     {

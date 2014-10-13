@@ -40,8 +40,8 @@
     <None Include="data\animations\flower.json" />
     <None Include="data\animations\pichu.json" />
     <None Include="data\elements.json" />
-    <None Include="data\map.json" />
     <None Include="data\map2.json" />
+    <None Include="data\npc\npcData.json" />
     <None Include="data\pika.json" />
     <None Include="data\scripts\test.json" />
     <None Include="data\scripts\types.json" />
@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controller\" />
+    <Folder Include="data\npc\scripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

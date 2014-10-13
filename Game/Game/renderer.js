@@ -188,7 +188,10 @@
         // Init Layer:
         $.each(_layer, function (k, el)
         {
-            _layer[k].canvas = document.createElement("canvas");
+            if (typeof (_layer[k].canvas) === "undefined" || _layer[k].canvas == null)
+            {
+                _layer[k].canvas = document.createElement("canvas");
+            }
             $(_layer[k].canvas)
                 .attr("width", _staticWidth)
                 .attr("height", _staticHeight);
@@ -197,8 +200,10 @@
         });
 
 
-
-        _bufferCanvas = document.createElement("canvas");
+        if (typeof(_bufferCanvas) === "undefined" || _bufferCanvas == null)
+        {
+            _bufferCanvas = document.createElement("canvas");
+        }
         $(_bufferCanvas)
             .attr("width", _staticWidth)
             .attr("height", _staticHeight);
@@ -239,13 +244,20 @@
         _staticHeight = sizeY * _config.tileSize;
         _staticWidth = sizeX * _config.tileSize;
 
+
         _initLayer();
     }
 
-    this.setMap = function (map)
+    this.setMap = function (map, reset)
     {
 
         _eventHandler.callEvent("renderPreMapLoad", this, null);
+
+        if (reset === true)
+        {
+            _staticRendered = false;
+        }
+
 
         if ((_staticHeight == 0) || (_staticWidth == 0))
         {
@@ -256,6 +268,10 @@
 
         _map = map;
 
+        if (reset === true)
+        {
+            _eventHandler.callEvent("forceRerender", this, null);
+        }
 
 
         _log("Renderer Map Loaded: ", _map);

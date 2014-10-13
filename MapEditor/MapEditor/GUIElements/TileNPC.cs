@@ -74,10 +74,10 @@ namespace MapEditor.GUIElements
 
             if (destination.Tile.Flags == null)
             {
-                destination.Tile.Flags = new LinkedList<string>();
+                destination.Tile.Flags = new System.Collections.ObjectModel.ObservableCollection<string>();
             }
 
-            destination.Tile.Flags.AddLast("NPC=" + this.Element.ID);
+            destination.Tile.Flags.Add("NPC=" + this.Element.ID);
         }
     }
 }
