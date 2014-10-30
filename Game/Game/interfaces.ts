@@ -1,3 +1,5 @@
+
+/*
 interface Renderer
 {
     test(offset: number): void;
@@ -14,6 +16,7 @@ interface Renderer
     setOffset(offset: Coordinate);
     getMapSize(): Coordinate;
 }
+*/
 
 interface RendererLayer
 {

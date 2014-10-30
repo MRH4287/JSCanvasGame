@@ -8,8 +8,8 @@ var self = this;
 
 gameHandler.eventHandler.addEventListener("preLevelChange", function(s, arg)
 {
-    ABORT = true;
     gameHandler.pathHandler.stopAllMovements();
+    ABORT = true;
     
 });
 

@@ -65,7 +65,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="data\scripts\testScript.js" />
     <Content Include="graphics\animations\pichu.png" />
     <Content Include="graphics\animations\pichu.png.txt" />
     <Content Include="graphics\animations\pichu\sleep\sleep1.png" />
@@ -107,7 +106,8 @@
     <Content Include="Gruntfile.js" />
     <Content Include="index.html" />
     <Content Include="js\jquery-2.1.0.min.js" />
-    <Content Include="renderer.js" />
+    <Content Include="renderer - Kopieren.js" />
+    <TypeScriptCompile Include="renderer.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="animationHandler.ts" />
