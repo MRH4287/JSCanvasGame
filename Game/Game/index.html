@@ -37,7 +37,8 @@
             //mapPath: "data/test.json",
             width: 600,
             height: 400,
-            playerModel: "pichu"
+            playerModel: "pichu",
+            basePath: "http://private.mrh-development.de/js/spriteGame/"
         });
         var eventHandler = new EventHandler(gameHandler);
         var render = new Renderer($("#canvas")[0], gameHandler);
@@ -91,7 +92,7 @@
                 if (person != null)
                 {
 
-                    mp = new MultiplayerHandler(gameHandler, "ws://server.mrh-development.de:8181", person);
+                    mp = new MultiplayerHandler(gameHandler, "wss://www.mrh-development.de:8181", person);
                     //mp = new MultiplayerHandler(gameHandler, "ws://localhost:8181", person);
                     mp.connect();
 

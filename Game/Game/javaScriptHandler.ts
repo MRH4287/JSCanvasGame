@@ -46,7 +46,7 @@ class JavaScriptHandler
         }
 
         $.ajax({
-            url: path,
+            url: this.gameHandler.config.basePath + path,
             type: "HEAD",
             error: function ()
             {

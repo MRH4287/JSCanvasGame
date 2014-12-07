@@ -6,6 +6,7 @@
 
 /// <reference path="animationHandler.ts" />
 /// <reference path="playerManager.ts" />
+/// <reference path="Renderer.ts" />
 /// <reference path="windowManager.ts" />
 /// <reference path="scriptHandler.ts" />
 /// <reference path="NPCHandler.ts" />
@@ -29,7 +30,8 @@ class GameHandler
         initStaticAnimations: true,
         playStaticAnimations: true,
         hideOwnUsername: true,
-        playerModel: "pichu"
+        playerModel: "pichu",
+        basePath: ""
     };
 
     public map: Tile[][];
@@ -185,7 +187,7 @@ class GameHandler
             callback(imageObj);
         };
 
-        imageObj.src = path;
+        imageObj.src = this.config.basePath + path;
 
     }
 
@@ -564,7 +566,7 @@ class GameHandler
 
         $.ajax({
             dataType: dataType,
-            url: url,
+            url: this.config.basePath + url,
             success: function (result)
             {
                 if (async)
