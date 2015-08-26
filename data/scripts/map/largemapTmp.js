@@ -39,10 +39,10 @@ gameHandler.eventHandler.addEventListener("PlayerNPCAction", function (s, args)
     var containerName = args.animationData.AnimationContainer.ID;
     console.log("You interacted with a '" + containerName + "'!");
 
-    if (containerName == "pichu")
+    /*if (containerName == "pichu")
     {
         loader.playSound("sound/pichu!.ogg");
-    }
+    }*/
 
     if (args.name == "pikachu1")
     {
@@ -95,7 +95,7 @@ gameHandler.eventHandler.addEventListener("PlayerNPCAction", function (s, args)
 
 });
 
-
+/*
 var pichu1Pos = { X: 36, Y: 4 };
 gameHandler.npcManager.addNPC("pichu1", pichu1Pos, "pichu", "stand", 0.8);
 
@@ -213,5 +213,5 @@ moveCallbackP1();
 moveCallbackP2();
 
 
-
+*/
 

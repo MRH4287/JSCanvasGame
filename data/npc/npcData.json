@@ -1,10 +1,28 @@
 [
     {
-        "ID": "test",
-        "Name": "Test-NPC",
+        "ID": "pichuSleep",
+        "Name": "pichuSleep",
         "AnimationContainer": "pichu",
         "DefaultAnimation": "sleep",
         "Speed": 1.0,
         "PreviewImagePath": "graphics/animations/pichu/sleep/sleep1.png"
+    },
+    {
+        "ID": "pikachuSleep",
+        "Name": "pikachuSleep",
+        "AnimationContainer": "pikachu",
+        "DefaultAnimation": "sleep",
+        "Speed": 1.0,
+        "PreviewImagePath": "graphics/animations/pikachu/sleep-1.png"
+    },
+    {
+        "ID": "mewSleep",
+        "Name": "mewSleep",
+        "AnimationContainer": "mew",
+        "DefaultAnimation": "sleep",
+        "Speed": 1.0,
+        "PreviewImagePath": "graphics/animations/mew/sleep.png"
     }
+    
+    
 ]

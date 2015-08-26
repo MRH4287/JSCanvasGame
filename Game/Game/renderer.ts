@@ -578,7 +578,7 @@ class Renderer
 
     private addImage(ctx, tile, x, y, width, height, imageOnLoad)
     {
-        var src = tile.ImageURI;
+        var src = this.gameHandler.config.basePath + tile.ImageURI;
 
 
         if (((tile.Dynamic !== undefined) && (tile.Dynamic)) ||

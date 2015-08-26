@@ -41,7 +41,12 @@ module.exports = function (grunt) {
             {
                 src: '<%= typescriptFiles %>',
                 dest: 'build/package.js' //<%= pkg.name %>
-
+            },
+            declaration:
+            {
+                src: ['build/*.d.ts'],
+                dest: 'build/spriteGame.d.ts',
+                stripBanners: true
             }
         },
 
@@ -152,7 +157,8 @@ module.exports = function (grunt) {
         'typescript',
         'copy:pack',
         'concat:main',
-        'uglify'
+        'uglify',
+        'concat:declaration'
       ]);
 
     grunt.registerTask('dev',

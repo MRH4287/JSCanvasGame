@@ -42,7 +42,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="SystemLib">
-      <HintPath>D:\Visual Studio 2010\Projects\Libary\SystemLib\SystemLib\bin\Debug\SystemLib.dll</HintPath>
+      <HintPath>..\..\..\Libary\SystemLib\SystemLib\bin\Release\SystemLib.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
