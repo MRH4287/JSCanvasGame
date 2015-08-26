@@ -29,7 +29,7 @@ class WindowManager
 
         this.setSize(this.gameHandler.config.width, this.gameHandler.config.height);
 
-        this.gameHandler.eventHandler.addTimedTrigger("windowManagerPositionUpdate", "updateWindowPosition", 50, this);
+        this.gameHandler.eventHandler.addTimedTrigger("windowManagerPositionUpdate", "updateWindowPosition", 10, this);
 
         this.gameHandler.eventHandler.addEventListener("updateWindowPosition", function (sender, args)
         {

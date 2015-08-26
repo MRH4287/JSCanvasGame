@@ -14,8 +14,14 @@
 /// <reference path="Profiler.ts" />
 /// <reference path="pathHandler.ts" />
 
+/**
+ * Main Class
+ */
 class GameHandler
 {
+    /**
+     * The Config Object
+     */
     public config =
     {
         debug: true,
@@ -34,65 +40,132 @@ class GameHandler
         basePath: ""
     };
 
+    /**
+     * The current Map
+     */
     public map: Tile[][];
+    /**
+     * List of all Element Definitions
+     */
     public elements: { [id: string]: ElementDefinition } = {};
 
+    /**
+     * EventHandler Instance
+     */
     public eventHandler: EventHandler;
+    /**
+     * Renderer Instance
+     */
     public renderer: Renderer;
 
 
+    /**
+     * Animation Handler used for the lowest Animation Level
+     */
     public bottomAnimationHandler: AnimationHandler;
+    /**
+     * Animation Handler used for the middle Animation Level
+     */
     public middleAnimationHandler: AnimationHandler;
+    /**
+     * Animation Handler used for the top Animation Level
+     */
     public topAnimationHandler: AnimationHandler;
 
+    /**
+     * Aniamtion Handler used for animating the Player
+     */
     public playerAnimationHandler: AnimationHandler;
+    /**
+     * Handler to manage the Player Actions
+     */
     public playerManager: PlayerManager;
+    /**
+     * Manager used for moving the current visible Window
+     */
     public windowManager: WindowManager;
+    /**
+     * Manager used for NPCs
+     */
     public npcManager: NPCHandler;
+    /**
+     * Handler used for Pathfinding
+     */
     public pathHandler: PathHandler;
 
+    /**
+     * List of predfined NPCs
+     */
     public npcDefinitions: { [id: string]: NPCInformation } = {};
 
-
+    /**
+     * List of all loaded Sprites
+     */
     public spriteContainer: { [id: string]: HTMLImageElement };
+    /**
+     * List of all loaded Animations
+     */
     public animations: { [id: string]: InternalAnimationContainer } = {};
 
-
+    /**
+     * Mapping between an ID and a Tile
+     */
     private tileIDIndex: { [index: string]: Tile } = {};
+    /**
+     * Mapping between a Flag and a Tile
+     */
     private tileFlagIndex: { [index: string]: Tile[] } = {};
+    /**
+     * Mapping between a Flag and Elements
+     */
     private elementsFlagIndex: { [index: string]: ElementDefinition[] } = {};
 
+    /**
+     * Constructor
+     * @param config Config Overload
+     */
     constructor(config: any)
     {
         this.config = $.extend(this.config, config);
 
     }
 
-    public init()
+    /**
+     * Intializes System
+     */
+    public init(callback: () => void)
     {
         this.eventHandler.callEvent("preInit", this, null);
 
-        this.loadConfig();
-        this.initAnimations();
-        this.windowManager = new WindowManager(this);
-
-
-        var self = this;
-
-        self.eventHandler.callEvent("TaskCreated", self, "Player - INIT");
-        window.setTimeout(function ()
+        this.loadConfig(() =>
         {
-            // Init Animation Container is called in loadMap
-            self.loadMap();
+            this.initAnimations(() =>
+            {
+                this.windowManager = new WindowManager(this);
 
-            this.eventHandler.callEvent("postInit", this, null);
+                this.eventHandler.callEvent("TaskCreated", self, "Player - INIT");
+                window.setTimeout(() =>
+                {
+                    // Init Animation Container is called in loadMap
+                    this.loadMap(() =>
+                    {
+                        this.eventHandler.callEvent("postInit", this, null);
 
-            self.eventHandler.callEvent("TaskDisposed", self, "Player - INIT");
-        }, 100);
+                        this.eventHandler.callEvent("TaskDisposed", self, "Player - INIT");
+
+                        callback();
+                    });
+                }, 100);
+            });
+        });
+
 
 
     }
 
+    /**
+     * Initializes the Animation Container and Manager
+     */
     private initAnimationContainer()
     {
         this.bottomAnimationHandler = this.createAnimationHandler(0, this.renderer.getBottomAnimationLayer());
@@ -105,6 +178,12 @@ class GameHandler
         this.pathHandler = new PathHandler(this);
     }
 
+    /**
+     * Create a new Animation Handler for a specific Level
+     * @param level The Level of the Handler
+     * @param layer The RendererLayer instance for this Layer
+     * @param staticName Used for combining a list of Animations into one
+     */
     private createAnimationHandler(level: number, layer: RendererLayer, staticName?: string): AnimationHandler
     {
         var handler: AnimationHandler = new AnimationHandler(this, level, staticName);
@@ -113,60 +192,114 @@ class GameHandler
         return handler;
     }
 
+    /**
+     * Set the Renderer Instance
+     * @param renderer The Renderer Instance
+     */
     public setRenderer(renderer: Renderer)
     {
         this.renderer = renderer;
     }
 
+    /**
+     * Set the EventHandler
+     * @param eventHandler The EventHandler Instance
+     */
     public setEventHandler(eventHandler: EventHandler)
     {
         this.eventHandler = eventHandler;
     }
 
 
-    private initAnimations()
+
+    /**
+     * Intialize the Animations for all Dynamic Elements in the elements List
+     * @param callback called when finished
+     */
+    private initAnimations(callback: () => void)
     {
         this.spriteContainer = {};
 
         // Load Animations of Elements ...
         var self = this;
+        var queue: ElementDefinition[] = [];
+
         $.each(self.elements, function (ID: string, el: ElementDefinition)
         {
-            if ((el.Dynamic !== undefined) && (el.Dynamic === true) && (el.AnimationDefinition !== undefined) && (el.AnimationDefinition !== ""))
-            {
-                self.loadAnimation(el.AnimationDefinition);
-            }
-
+            queue.push(el);
         });
 
+        var executeNext = function ()
+        {
+            var current = queue.pop();
+            if (current === undefined || current === null)
+            {
+                callback();
+                return;
+            }
+            else
+            {
+                if ((current.Dynamic !== undefined) && (current.Dynamic === true) && (current.AnimationDefinition !== undefined) && (current.AnimationDefinition !== ""))
+                {
+                    self.loadAnimation(current.AnimationDefinition, () =>
+                    {
+                        executeNext();
+                    });
 
+                    return;
+                }
+                else
+                {
+                    executeNext();
+                    return;
+                }
+            }
+
+        };
+
+        executeNext();
     }
 
 
-    public loadAnimation(path: string)
+    /**
+     * Load an Animation from a specfic Path
+     * @param path The Path to the Animation
+     * @param callback Callback when finished
+     */
+    public loadAnimation(path: string, callback: () => void)
     {
-        var data: AnimationContainer = <AnimationContainer>this.getFile(path);
-
-        var container: InternalAnimationContainer =
-            {
-                ID: data.ID,
-                ImageURI: data.ImageURI,
-                Animations: {}
-            };
-
-        for (var i = 0; i < data.Animations.length; i++)
+        //var data: AnimationContainer = <AnimationContainer>this.getFile(path);
+        this.getFile(path, (data: AnimationContainer) =>
         {
-            var anim = data.Animations[i];
-            container.Animations[anim.ID] = anim;
-        }
 
-        this.animations[data.ID] = container;
-        this.preloadImage(data.ID, data.ImageURI);
+            var container: InternalAnimationContainer =
+                {
+                    ID: data.ID,
+                    ImageURI: data.ImageURI,
+                    Animations: {}
+                };
 
+            for (var i = 0; i < data.Animations.length; i++)
+            {
+                var anim = data.Animations[i];
+                container.Animations[anim.ID] = anim;
+            }
 
+            this.animations[data.ID] = container;
+            this.preloadImage(data.ID, data.ImageURI);
+
+            callback();
+
+        });
         //console.log(this.animations);
     }
 
+
+    /**
+     * Preload a specific Image
+     * @param name The Name of the Image
+     * @param path The Path to the Image
+     */
     private preloadImage(name: string, path: string)
     {
         var self = this;
@@ -178,6 +311,11 @@ class GameHandler
         });
     }
 
+    /**
+     * Load an Image from a Path
+     * @param path The Path to the Image
+     * @param callback Callback with Image Result
+     */
     private loadImage(path: string, callback: (HTMLElement) => void)
     {
         var imageObj = new Image();
@@ -192,59 +330,73 @@ class GameHandler
     }
 
 
-    public loadConfig()
+    /**
+     * Load the Config File from the Server and Initialize
+     * @param callback Called when finished
+     */
+    public loadConfig(callback: () => void)
     {
         this.eventHandler.callEvent("preConfigLoad", this, null);
 
         this.log("Load Config from path: ", this.config.elementsPath);
 
-        var result = this.getFile(this.config.elementsPath);
-
-        var self = this;
-
-        $.each(result, function (_, el)
+        this.getFile(this.config.elementsPath, (result) =>
         {
-            self.elements[el.ID] = el;
 
-            if (self.elements[el.ID].Flags !== undefined)
+            var self = this;
+
+            $.each(result, function (_, el)
             {
-                $.each(self.elements[el.ID].Flags, function (_, flag)
+                self.elements[el.ID] = el;
+
+                if (self.elements[el.ID].Flags !== undefined)
                 {
-                    if (self.elementsFlagIndex[flag] === undefined)
+                    $.each(self.elements[el.ID].Flags, function (_, flag)
                     {
-                        self.elementsFlagIndex[flag] = [];
-                    }
+                        if (self.elementsFlagIndex[flag] === undefined)
+                        {
+                            self.elementsFlagIndex[flag] = [];
+                        }
 
-                    self.elementsFlagIndex[flag].push(el);
+                        self.elementsFlagIndex[flag].push(el);
+                    });
+                }
+
+            });
+
+            this.log("Element Definitions loaded: ", this.elements);
+
+            this.log("Load NPC-Data");
+
+            this.getFile(this.config.npcDataPath, (result) =>
+            {
+
+                $.each(result, function (_, el: NPCInformation)
+                {
+                    self.npcDefinitions[el.ID] = el;
                 });
-            }
 
+                this.log("NPC-Data loaded", this.npcDefinitions);
+
+
+                if (this.renderer !== undefined)
+                {
+                    console.log(this.renderer);
+
+                    this.renderer.setConfig(this.elements);
+                }
+
+                this.eventHandler.callEvent("postConfigLoad", this, null);
+
+                callback();
+            });
         });
-
-        this.log("Element Definitions loaded: ", this.elements);
-
-        this.log("Load NPC-Data");
-
-        result = this.getFile(this.config.npcDataPath);
-
-        $.each(result, function (_, el: NPCInformation)
-        {
-            self.npcDefinitions[el.ID] = el;
-        });
-
-        this.log("NPC-Data loaded", this.npcDefinitions);
-
-
-        if (this.renderer !== undefined)
-        {
-            console.log(this.renderer);
-
-            this.renderer.setConfig(this.elements);
-        }
-
-        this.eventHandler.callEvent("postConfigLoad", this, null);
     }
 
+    /**
+     * Change the current Level
+     * @param path Path to new Level File
+     */
     public changeLevel(path: string)
     {
         this.eventHandler.callEvent("preLevelChange", this, path);
@@ -256,73 +408,138 @@ class GameHandler
         this.elementsFlagIndex = {};
         this.npcManager.clear();
 
+        this.loadMap(() =>
+        {
+            this.playerManager.movePlayerToSpawn();
+            this.playerManager.resetPlayerModel();
 
-        this.loadMap(true);
-        this.playerManager.movePlayerToSpawn();
-        this.playerManager.resetPlayerModel();
-
-        this.eventHandler.callEvent("postLevelChange", this, null);
+            this.eventHandler.callEvent("postLevelChange", this, null);
+        }, true);
     }
 
-    public loadMap(reset: boolean = false)
+
+    /**
+     * Load the Map from the Path specific in the Config Object
+     * @param callback Called when finished
+     * @param reset Cleanup old Instance
+     */
+    public loadMap(callback: () => void, reset: boolean = false)
     {
         this.eventHandler.callEvent("preMapLoad", this, null);
 
         this.log("Load Map from path:", this.config.mapPath);
 
-        var result = <Tile[][]>this.getFile(this.config.mapPath);
 
-
-        if (this.renderer !== undefined)
+        this.getFile(this.config.mapPath, (result: Tile[][]) =>
         {
-            this.renderer.initMap(result[0].length, result.length);
-        }
-
-        if (reset)
-        {
-            var handler = [this.bottomAnimationHandler, this.middleAnimationHandler, this.middleAnimationHandler, this.playerAnimationHandler];
-            $.each(handler, function (_, el)
+            // Check File Size:
+            var maxTileCount = 3025;
+            var count = 0;
+            $.each(result, (i, column) =>
             {
-                if (el !== undefined)
-                {
-                    el.clear();
-                }
-            });
-        }
-        else
-        {
-            // Has to be done here
-            this.initAnimationContainer();
-        }
+                count += column.length;
+            }); 
 
-        for (var y = 0; y < result.length; y++)
-        {
-            var collom = result[y];
-
-            for (var x = 0; x < collom.length; x++)
+            console.log("TileCount: " + count + " - Max: " + maxTileCount);
+            if (count > maxTileCount)
             {
-                result[y][x] = this.updateTile(result[y][x], x + 1, y + 1);
+                console.error("The Size of the Map is too big!");
+
+                callback();
+                return;
             }
 
-        }
-        this.map = result;
 
-        if (this.renderer !== undefined)
-        {
-            this.renderer.setMap(this.map, reset);
-        }
 
-        //_staticHeight = _map.length * _config.tileSize;
-        //_staticWidth = _map[0].length * _config.tileSize;
+            if (this.renderer !== undefined)
+            {
+                this.renderer.initMap(result[0].length, result.length);
+            }
 
-        //_initLayer();
+            if (reset)
+            {
+                var handler = [this.bottomAnimationHandler, this.middleAnimationHandler, this.middleAnimationHandler, this.playerAnimationHandler];
+                $.each(handler, function (_, el)
+                {
+                    if (el !== undefined)
+                    {
+                        el.clear();
+                    }
+                });
+            }
+            else
+            {
+                // Has to be done here
+                this.initAnimationContainer();
+            }
 
-        this.log("Map Loaded: ", this.map);
+            var queue: { element: Tile; x: number; y: number }[] = [];
 
-        this.eventHandler.callEvent("postMapLoad", this, this.map);
+            for (var y = 0; y < result.length; y++)
+            {
+                var collom = result[y];
+
+                for (var x = 0; x < collom.length; x++)
+                {
+                    queue.push({
+                        element: result[y][x],
+                        x: x,
+                        y: y
+                    });
+                }
+
+            }
+
+            var done = (result: Tile[][]) =>
+            {
+                this.map = result;
+
+                if (this.renderer !== undefined)
+                {
+                    this.renderer.setMap(this.map, reset);
+                }
+
+                //_staticHeight = _map.length * _config.tileSize;
+                //_staticWidth = _map[0].length * _config.tileSize;
+
+                //_initLayer();
+
+                this.log("Map Loaded: ", this.map);
+
+                this.eventHandler.callEvent("postMapLoad", this, this.map);
+
+                callback();
+            };
+
+            var executeNext = () =>
+            {
+                var current: { element: Tile; x: number; y: number } = queue.pop();
+                if (current === undefined || current === null)
+                {
+                    done(result);
+                    return;
+                }
+                else
+                {
+                    this.updateTile(current.element, current.x + 1, current.y + 1, () =>
+                    {
+                        executeNext();
+                    });
+                }
+            };
+
+            executeNext();
+        });
     }
 
-    private updateTile(tile: Tile, x: number, y: number)
+    /**
+     * Update a Tile loaded from the Map-File and add Content
+     * @param tile The Tile Instance
+     * @param x The current X-Position
+     * @param y The current Y-Position
+     * @param callback Called when finished
+     */
+    private updateTile(tile: Tile, x: number, y: number, callback: (result: Tile) => void): void
     {
         tile.XCoord = x;
         tile.YCoord = y;
@@ -384,18 +601,31 @@ class GameHandler
             });
         }
 
+        var postNPC = () =>
+        {
+            this.eventHandler.callEvent("postTileUpdate", this, tile);
+            callback(tile);
+        };
+
         // Add NPCs:
         if (tile.MiddleElementID === "NPCSpawn")
         {
-            var npcRegex: RegExp = new RegExp("NPC=(.+)"); 
+            var npcRegex: RegExp = new RegExp("NPC=(.+)");
+            var nameRegex: RegExp = new RegExp("NPCName=(.+)");
             var npcID = null;
+            var npcName = null;
 
             $.each(tile.Flags, function (_, flag)
             {
                 if (npcRegex.test(flag))
                 {
-                    var match = npcRegex.exec(flag);
-                    npcID = match[1];
+                    var idMatch = npcRegex.exec(flag);
+                    npcID = idMatch[1];
+                }
+                if (nameRegex.test(flag))
+                {
+                    var nameMatch = npcRegex.exec(flag);
+                    npcName = nameMatch[1];
                 }
 
             });
@@ -407,34 +637,59 @@ class GameHandler
             else
             {
                 var npcData = this.npcDefinitions[npcID];
+                npcName = npcName || npcID + Math.random();
+
+                console.info("Add NPC with ID: ", npcName);
+
+                var addNPC = () =>
+                {
+                    this.npcManager.addNPC(npcName, { X: tile.XCoord, Y: tile.YCoord }, npcData.AnimationContainer, npcData.DefaultAnimation, npcData.Speed);
+
+                    postNPC();
+                };
 
                 if (this.animations[npcData.AnimationContainer] === undefined)
                 {
                     this.log("Animation for NPC not available. Load Animation: ", npcData.AnimationContainer);
-                    this.loadAnimation("data/animations/" + npcData.AnimationContainer + ".json");
+                    this.loadAnimation("data/animations/" + npcData.AnimationContainer + ".json", () =>
+                    {
+                        addNPC();
+                    });
+                    return;
                 }
-
-                this.npcManager.addNPC("test", { X: tile.XCoord, Y: tile.YCoord }, npcData.AnimationContainer, npcData.DefaultAnimation, npcData.Speed);
-
+                else
+                {
+                    addNPC();
+                    return;
+                }
                 //TODO: Add NPC-Script
             }
 
 
         }
-        
+        else
+        {
+            postNPC();
+            return;
+        }
 
-
-        this.eventHandler.callEvent("postTileUpdate", this, tile);
-
-
-        return tile;
     }
 
+    /**
+     * Gets a Tile at a specific Position
+     * @param x X-Position
+     * @param y Y-Position
+     */
     public getTileAtPos(x: number, y: number): Tile
     {
         return this.map[y - 1][x - 1];
     }
 
+    /**
+     * Check if a secific Coordinate is passable by the Player
+     * @param x X-Position
+     * @param y Y-Position
+     */
     public isCoordPassable(x: number, y: number): boolean
     {
         var tile = this.getTileAtPos(x, y);
@@ -464,29 +719,11 @@ class GameHandler
 
     }
 
-    public getMapPassableData(): boolean[][]
-    {
-        var maxX = this.map.length;
-        var maxY = this.map[0].length;
-
-        var result: boolean[][] = [];
-
-        for (var y = 0; y < maxY; y++)
-        {
-            var data: boolean[] = [];
-
-            for (var x = 0; x < maxX; x++)
-            {
-                data[x] = !this.isCoordPassable(x + 1, y + 1);
-            }
-
-            result[y] = data;
-        }
-
-        return result;
-    }
-
-    public getMapPassableData2(): number[][]
+    /**
+     * Get a Map of all passable Tiles.
+     * Used for Pathfinding
+     */
+    public getMapPassableData(): number[][]
     {
         var maxX = this.map.length;
         var maxY = this.map[0].length;
@@ -508,12 +745,19 @@ class GameHandler
         return result;
     }
 
-
+    /**
+     * Get an ElementDefintion by its Name
+     * @param ID Name of the Element
+     */
     public getElementByID(ID: string): ElementDefinition
     {
         return this.elements[ID];
     }
 
+    /**
+     * Get List of Elements by their Flag
+     * @param Flag Name of the Flag
+     */
     public getElementsByFlagName(Flag: string): ElementDefinition[]
     {
         var list = this.elementsFlagIndex[Flag];
@@ -521,11 +765,19 @@ class GameHandler
         return (list !== undefined) ? list : [];
     }
 
+    /** 
+     * Get Tile by ID
+     * @param ID ID of the Tile
+     */
     public getTileByID(ID: string): Tile
     {
         return this.tileIDIndex[ID];
     }
 
+    /**
+     * Get List of Tiles by their Flag
+     * @param Flag Name of the Flag
+     */
     public getTilesByFlagName(Flag: string): Tile[]
     {
         var list = this.tileFlagIndex[Flag];
@@ -536,6 +788,10 @@ class GameHandler
 
     // ---------------------------------------
 
+    /**
+     * Ecevute a specific Callback wih full Debug-Log
+     * @param data The Action to execute
+     */
     public execVerbose(data: () => void)
     {
         this.config.verbose = true;
@@ -543,6 +799,10 @@ class GameHandler
         this.config.verbose = false;
     }
 
+    /**
+     * Start Full Debug-Log for a specific Time
+     * @param time Time in Miliseconds
+     */
     public activateVerbose(time: number = 500)
     {
         this.config.verbose = true;
@@ -557,7 +817,13 @@ class GameHandler
 
 
     // Global Helper Functions:
-    public getFile(url: string, callback?: (any) => void, dataType?: string): any
+
+    /**
+     * Load a File from the Sever
+     * @param url Path to the File
+     * @param callback Callback with Result
+     */
+    public getFile(url: string, callback: (any) => void, dataType?: string): any
     {
         var async = (!(typeof (callback) === "undefined"));
         dataType = (typeof (dataType) === "undefined") ? "json" : dataType;

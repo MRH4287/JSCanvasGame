@@ -19,7 +19,7 @@ class AnimationHandler
     private layer: number;
 
     public playableAnimations: { [id: string]: PlayableAnimation } = {};
-    private animationGroups: { [id: string]: {[index: string ]: boolean } } = {}; // { [id: string]: { (): void } }
+    private animationGroups: { [id: string]: { [index: string]: boolean } } = {}; // { [id: string]: { (): void } }
 
     private useAnimationGroups: boolean = true;
     private staticName: string = null;
@@ -205,7 +205,7 @@ class AnimationHandler
         {
             this.gameHandler.warn("Unknown Animation Cotainer: ", containerName, this.gameHandler.animations);
 
-            
+
 
             return;
         }
@@ -280,7 +280,7 @@ class AnimationHandler
             this.eventHandler.callEvent("forceRerender", this, null);
         }
 
-    } 
+    }
 
     public drawRect(name: string, x: number, y: number, width: number, height: number, fillStyle: string = "rgba(225,225,225,1)", rerender: boolean = true)
     {
@@ -320,6 +320,11 @@ class AnimationHandler
     public playAnimation(elementID: string, animation: string, group?: string)
     {
         var container: PlayableAnimation = this.playableAnimations[elementID];
+
+        if (container === undefined)
+        {
+            console.error("Can't play Animation: No Animation Container with name '" + elementID + "' can be found!");
+        }
 
         if ((container.Animation !== null) && (container.Animation.ID === animation))
         {
@@ -387,7 +392,7 @@ class AnimationHandler
 
                         return;
                     }
-                    
+
                     var animinations: PlayableAnimation[] = [];
                     $.each(self.animationGroups[group], function (name, _)
                     {
@@ -630,9 +635,9 @@ class AnimationHandler
     {
         var tileSize: number = this.renderer.getTileSize();
         var result = {
-               X: ((x - 1) * tileSize),
-               Y: ((y - 1) * tileSize)
-            };
+            X: ((x - 1) * tileSize),
+            Y: ((y - 1) * tileSize)
+        };
 
         return result;
     }
@@ -713,11 +718,14 @@ class AnimationHandler
 
     public test()
     {
-        this.gameHandler.loadAnimation("data/animations/mew.json");
+        this.gameHandler.loadAnimation("data/animations/mew.json", () =>
+        {
 
-        var pos = this.gameHandler.playerManager.getPosition();
 
-        this.addAnimation("test", "mew", "stand", pos.X, pos.Y + 2);
+            var pos = this.gameHandler.playerManager.getPosition();
+
+            this.addAnimation("test", "mew", "stand", pos.X, pos.Y + 2);
+        });
 
     }
 

@@ -55,7 +55,7 @@ class PlayerManager
         var self = this;
         this.gameHandler.eventHandler.addEventListener("postInit", function (s, e)
         {
-            self.init(playerModel);
+            self.init(() => { }, playerModel);
         });
 
 
@@ -153,7 +153,7 @@ class PlayerManager
             });
 
             var offsetPerUpdate = (1 / this.playerSpeed) / this.updatesPerSecond;
-            var intervall = (1 / this.updatesPerSecond) * 1000; // 1 sec / updatesPerSecond
+            var interval = (1 / this.updatesPerSecond) * 1000; // 1 sec / updatesPerSecond
 
             this.targetPosition = target;
 
@@ -166,7 +166,7 @@ class PlayerManager
             }
 
             var self = this;
-            this.positionUpdateStep(this, direction, offsetPerUpdate, intervall, function ()
+            this.positionUpdateStep(this, direction, offsetPerUpdate, interval, function ()
             {
                 self.moveFinishedCallback(resetAnimation);
 
@@ -179,7 +179,7 @@ class PlayerManager
         }
         else
         {
-            this.gameHandler.log("Target not passable: ", target);
+            //this.gameHandler.log("Target not passable: ", target);
             this.playerState = PlayerState.Standing;
 
         }
@@ -316,7 +316,7 @@ class PlayerManager
 
     }
 
-    public init(playerModel: string = "pichu")
+    public init(callback: () => void, playerModel: string = "pichu")
     {
         var self = this;
 
@@ -326,75 +326,78 @@ class PlayerManager
 
         this.movePlayerToSpawn();
 
-        this.initPlayer(self, playerModel);
-
-        $(document).keydown(function (event)
+        this.initPlayer(() =>
         {
-            self.keysDown[event.keyCode] = true;
 
-            self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
-        })
-            .keyup(function (event)
+            $(document).keydown(function (event)
             {
-                self.keysDown[event.keyCode] = false;
+                self.keysDown[event.keyCode] = true;
 
-                self.lastAction = Date.now();
+                self.gameHandler.eventHandler.callEvent("PlayerManagerInputCheck", self, null);
+            })
+                .keyup(function (event)
+                {
+                    self.keysDown[event.keyCode] = false;
+
+                    self.lastAction = Date.now();
+                });
+
+            this.gameHandler.eventHandler.addTimedTrigger("playerManagerInputCheck", "PlayerManagerInputCheck", 500, this, null);
+
+            this.gameHandler.eventHandler.addEventListener("PlayerManagerInputCheck", function (sender, args)
+            {
+                //self.gameHandler.log("Check for Input ...", self.KeysDown);
+
+                if (self.playerState === PlayerState.Standing)
+                {
+                    if (self.keyDown(self.keys.up))
+                    {
+                        self.initMove(WalkDirection.Up);
+                    }
+                    else if (self.keyDown(self.keys.down))
+                    {
+                        self.initMove(WalkDirection.Down);
+                    }
+                    else if (self.keyDown(self.keys.left))
+                    {
+                        self.initMove(WalkDirection.Left);
+                    }
+                    else if (self.keyDown(self.keys.right))
+                    {
+                        self.initMove(WalkDirection.Right);
+                    }
+                    else if (self.keyDown(self.keys.action))
+                    {
+                        var now = Date.now();
+                        if ((now - self.lastAction) > 300)
+                        {
+                            self.playerAction();
+                        }
+                    }
+
+                }
             });
 
-        this.gameHandler.eventHandler.addTimedTrigger("playerManagerInputCheck", "PlayerManagerInputCheck", 500, this, null);
 
-        this.gameHandler.eventHandler.addEventListener("PlayerManagerInputCheck", function (sender, args)
-        {
-            //self.gameHandler.log("Check for Input ...", self.KeysDown);
+            this.gameHandler.eventHandler.addTimedTrigger("playerLastActivityCheck", "PlayerLastActivityCheck", 60000, this, null);
 
-            if (self.playerState === PlayerState.Standing)
+            this.gameHandler.eventHandler.addEventListener("PlayerLastActivityCheck", function (sender, args)
             {
-                if (self.keyDown(self.keys.up))
+                var currentTime = Date.now();
+
+                var diff = currentTime - self.lastAction;
+
+                //console.log("CheckDiff: ", diff);
+
+                if (diff > 120000)
                 {
-                    self.initMove(WalkDirection.Up);
-                }
-                else if (self.keyDown(self.keys.down))
-                {
-                    self.initMove(WalkDirection.Down);
-                }
-                else if (self.keyDown(self.keys.left))
-                {
-                    self.initMove(WalkDirection.Left);
-                }
-                else if (self.keyDown(self.keys.right))
-                {
-                    self.initMove(WalkDirection.Right);
-                }
-                else if (self.keyDown(self.keys.action))
-                {
-                    var now = Date.now();
-                    if ((now - self.lastAction) > 300)
-                    {
-                        self.playerAction();
-                    }
+                    self.playAnimation("sleep");
                 }
 
-            }
-        });
-
-
-        this.gameHandler.eventHandler.addTimedTrigger("playerLastActivityCheck", "PlayerLastActivityCheck", 60000, this, null);
-
-        this.gameHandler.eventHandler.addEventListener("PlayerLastActivityCheck", function (sender, args)
-        {
-            var currentTime = Date.now();
-
-            var diff = currentTime - self.lastAction;
-
-            //console.log("CheckDiff: ", diff);
-
-            if (diff > 120000)
-            {
-                self.playAnimation("sleep");
-            }
-
-        });
-
+            });
+            
+            callback();
+        }, playerModel);
 
     }
 
@@ -433,14 +436,22 @@ class PlayerManager
         return ((value !== undefined) && (value));
     }
 
-    private initPlayer(self: PlayerManager, playerModel: string = "pichu")
+    private initPlayer(callback: () => void, playerModel: string = "pichu")
     {
-        self.gameHandler.loadAnimation("data/animations/pichu.json");
-        self.gameHandler.loadAnimation("data/animations/mew.json");
-        self.gameHandler.loadAnimation("data/animations/pikachu.json");
-        self.setPlayerModel(playerModel, this.position);
+        this.gameHandler.loadAnimation("data/animations/pichu.json", () =>
+        {
 
-        self.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
+            this.gameHandler.loadAnimation("data/animations/mew.json", () =>
+            {
+                this.gameHandler.loadAnimation("data/animations/pikachu.json", () =>
+                {
+                    this.setPlayerModel(playerModel, this.position);
+
+                    this.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, this.position);
+                    callback();
+                });
+            });
+        });
     }
 
     public setPlayerModel(model: string, position?: Coordinate)

@@ -5,8 +5,22 @@
     <meta charset="utf-8" />
     <title>SpriteGame Development</title>
     <script src="js/jquery-2.1.0.min.js"></script>
-    <script src="build/package.js"></script>
+    <!--<script src="build/package.js"></script>-->
     <script src="js/astar.js"></script>
+
+    <script src="animationHandler.js"></script>
+    <script src="eventHandler.js"></script>
+    <script src="gameHandler.js"></script>
+    <script src="interfaces.js"></script>
+    <script src="javaScriptHandler.js"></script>
+    <script src="MultiplayerHandler.js"></script>
+    <script src="NPCHandler.js"></script>
+    <script src="pathHandler.js"></script>
+    <script src="playerManager.js"></script>
+    <script src="Profiler.js"></script>
+    <script src="Renderer.js"></script>
+    <script src="scriptHandler.js"></script>
+    <script src="windowManager.js"></script>
 </head>
 <body>
 
@@ -32,13 +46,13 @@
         var gameHandler = new GameHandler({
             verbose: false,
             initStaticAnimations: true,
-            mapPath: "data/largemapTmp.json",
-            //mapPath: "data/lake2.json",
-            //mapPath: "data/test.json",
+            //mapPath: "data/largemapTmp.json",
+            mapPath: "data/loadTest1.json",
+
             width: 600,
             height: 400,
-            playerModel: "pichu",
-            basePath: "http://private.mrh-development.de/js/spriteGame/"
+            playerModel: "pichu" //,
+            //basePath: "http://private.mrh-development.de/js/spriteGame/"
         });
         var eventHandler = new EventHandler(gameHandler);
         var render = new Renderer($("#canvas")[0], gameHandler);
@@ -46,8 +60,10 @@
 
         var profiler = new Profiler(gameHandler);
 
-        gameHandler.init();
-
+        gameHandler.execVerbose(function()
+        {
+            gameHandler.init(function () { console.info("System Initialized!") });
+        });
 
         var script = new JavaScriptHandler(gameHandler);
 

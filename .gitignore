@@ -152,3 +152,6 @@ $RECYCLE.BIN/
 /Main/Main/*.js
 /Main/Main/*.js.map
 /Main/Main/node_modules/
+/Main/Main/data
+/Main/Main/graphics
+/Main/Main/sound

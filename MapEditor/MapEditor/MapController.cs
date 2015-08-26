@@ -337,6 +337,12 @@ namespace MapEditor
 
         public void createMap(int width, int height)
         {
+            if (width * height > 3025)
+            {
+                MessageBox.Show("Map is too big! Max allowed number of Tiles: 3025");
+                return;
+            }
+
             MapHolder.Children.Clear();
 
             for (int y = 0; y < height; y++)
@@ -938,7 +944,7 @@ namespace MapEditor
             // Sets the Path to the development Path while in Design time
             if (loadPath.Contains("Designer"))
             {
-                loadPath = @"E:\Visual Studio 2010\Projects\SpriteGame";
+                loadPath = @"M:\Visual Studio 2010\Projects\SpriteGame";
             }
             return new Uri(loadPath + "\\" + path, UriKind.Absolute);
 

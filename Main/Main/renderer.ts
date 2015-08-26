@@ -2,28 +2,14 @@
 
 class Renderer
 {
-    /*
-    // Default Config
-    var _config = {
-        debug: true,
-        width: 800,
-        height: 300,
-        tileSize: 25,
-        elementsPath: "data/elements.json",
-        mapPath: "data/map2.json",
-        showBlocking: true
-    };
-    */
-
-
-
+    public static SHOW_FPS = false;
 
     // Variables
-    private canvas;
-    private ctx;
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
 
-    private bufferCanvas;
-    private bufferCtx;
+    private bufferCanvas: HTMLCanvasElement;
+    private bufferCtx: CanvasRenderingContext2D;
 
     private fps = 0;
     private now = Date.now();
@@ -373,15 +359,15 @@ class Renderer
                 //continue;
                 //}
 
-                if (
-                    ((xOffset + this.gameHandler.config.tileSize) < this.offset.X) ||
-                    (yOffset + this.gameHandler.config.tileSize) < this.offset.Y //||
-                //(xOffset > ( _width + _offset.x))
+                //if (
+                //    ((xOffset + this.gameHandler.config.tileSize) < this.offset.X) ||
+                //    (yOffset + this.gameHandler.config.tileSize) < this.offset.Y //||
+                ////(xOffset > ( _width + _offset.x))
 
-                    )
-                {
-                    continue;
-                }
+                //    )
+                //{
+                //    continue;
+                //}
 
                 var last = ((collom === this.map.length - 1) && (element === this.map[collom].length - 1));
 
@@ -435,6 +421,10 @@ class Renderer
 
 
             self.ctx.drawImage(self.bufferCanvas, self.offset.X * -1, self.offset.Y * -1);
+            if (Renderer.SHOW_FPS)
+            {
+                self.ctx.fillText(self.fps.toFixed(2).toString(), 5, 10);
+            }
 
             //_eventHandler.callEvent("TaskDisposed", this, "Renderer - DrawImage");
 

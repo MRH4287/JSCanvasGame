@@ -53,19 +53,20 @@ class ScriptHandler
 
     private variables: { [index: string]: any } = {};
 
-    private loadScript(path: string)
+    private loadScript(path: string, callback: () => void)
     {
-        var script = this.gameHandler.getFile(path);
-
-        if (script != null)
-        {
-            this.parseScript(script);
-        }
-        else
-        {
-            this.gameHandler.warn("Script file is not valid!", path);
-        }
-
+        this.gameHandler.getFile(path, (script) =>
+        {   
+            if (script != null)
+            {
+                this.parseScript(script);
+            }
+            else
+            {
+                this.gameHandler.warn("Script file is not valid!", path);
+            }
+            callback();
+        });
     }
 
     public parseScript(scriptRoot: any)

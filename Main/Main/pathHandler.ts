@@ -29,7 +29,7 @@ class PathHandler
 
     public getRouteRaw(startPos: Coordinate, endPos: Coordinate): GridNode[]
     {
-        var map = this.gameHandler.getMapPassableData2();
+        var map = this.gameHandler.getMapPassableData();
 
         var graph = new Graph(map);
 
