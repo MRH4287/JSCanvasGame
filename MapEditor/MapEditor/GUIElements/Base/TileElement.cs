@@ -80,9 +80,9 @@ namespace MapEditor.GUIElements.Base
         /// </summary>
         /// <param name="destination">The paint Destination</param>
         /// <returns>Allow painting</returns>
-        public virtual bool prePaint(MapTile destination)
+        public async virtual Task<bool> prePaint(MapTile destination)
         {
-            return true;
+            return await Task.FromResult(true);
         }
 
 
@@ -91,9 +91,9 @@ namespace MapEditor.GUIElements.Base
         /// </summary>
         /// <param name="destination">The paint Destination</param>
         /// <returns>Allow painting</returns>
-        public virtual void postPaint(MapTile destination)
+        public async virtual void postPaint(MapTile destination)
         {
-
+            await Task.FromResult(true);
         }
 
 
@@ -101,9 +101,9 @@ namespace MapEditor.GUIElements.Base
         /// Trigger after an Element with this Definition was removed
         /// </summary>
         /// <param name="destination">The Tile where the Element was</param>
-        public virtual void postDelete(MapTile destination)
+        public async virtual void postDelete(MapTile destination)
         {
-
+            await Task.FromResult(true);
         }
     }
 

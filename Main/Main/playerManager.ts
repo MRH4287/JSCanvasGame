@@ -9,17 +9,17 @@ class PlayerManager
     private playerAnimation: AnimationHandler;
     private gameHandler: GameHandler;
 
-    private position: Coordinate = { X: 0, Y: 0 };
+    public position: Coordinate = { X: 0, Y: 0 };
     private targetPosition: Coordinate = { X: 0, Y: 0 };
 
 
-    private playerSpeed: number = 0.5;
+    public playerSpeed: number = 0.5;
     private updatesPerSecond: number = 20;
 
 
-    private playerElementName: string = "player";
-    private playerState: PlayerState = PlayerState.Standing;
-    private moveDirection: WalkDirection = WalkDirection.None;
+    public playerElementName: string = "player";
+    public playerState: PlayerState = PlayerState.Standing;
+    public moveDirection: WalkDirection = WalkDirection.None;
 
     private lastAction: number = Date.now();
     private displaySpeechBubbleTo: number = undefined;
@@ -407,9 +407,15 @@ class PlayerManager
         var tiles: Tile[] = this.gameHandler.getTilesByFlagName("player");
         if (tiles.length !== 0)
         {
-            this.position.X = tiles[0].XCoord;
-            this.position.Y = tiles[0].YCoord;
+            this.movePlayer({ X: tiles[0].XCoord, Y: tiles[0].YCoord });
         }
+    }
+
+    public movePlayer(target: Coordinate)
+    {
+        this.position = target;
+        this.playerAnimation.setPosition(this.playerElementName, target.X, target.Y);
+        this.gameHandler.eventHandler.callEvent("PlayerPositionChanged", this, target);
     }
 
     public resetPlayerModel()

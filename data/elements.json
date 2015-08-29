@@ -1,239 +1,256 @@
 [
-	{
-		"ID": "grass",
-		"Name": "Grass",
-		"Level": 0,
-		"Passable": true,
-		"Speed": 1.0,
-		"Flags": [
-			"green", "soft"
-		],
-		"ImageURI": "graphics/terrain/grass.png"	
-	},
-	{
-		"ID": "flower",
-		"Name": "Flower",
-		"Level": 1,
-		"Passable": true,
-		"Speed": 1.0,
-		"Flags": [
-			"green", "soft"
-		],
-		"ImageURI": "graphics/terrain/flowers.png",
-		"Dynamic": true,
-		"AnimationDefinition": "data/animations/flower.json",
-		"AnimationContainer": "flower",
-		"DefaultAnimation": "default"
-	},
-	{
-		"ID": "bush",
-		"Name": "Bush",
-		"Level": 1,
-		"Passable": false,
-		"Flags": [
-			"green", "thorny"
-		],
-		"ImageURI": "graphics/terrain/bush.png"	
-	},
-	{
-		"ID": "blocked",
-		"Name": "Blocked",
-		"Level": 2,
-		"Passable": false,
-		"Flags": [
-			"editorElement"
-		],
-		"ImageURI": "graphics/terrain/blocked.png"	
-	},
-	{
-		"ID": "grassBush",
-		"Name": "GrassBush",
-		"Level": 1,
-		"Passable": true,
-		"Flags": [
-			"encounter"
-		],
-		"ImageURI": "graphics/objects/grassBush.png"	
-	},
-	{
-		"ID": "tree_bottom",
-		"Name": "Tree-Bottom",
-		"Level": 0,
-		"Passable": true,
-		"ImageURI": "graphics/objects/tree_bottom2.png"	
-	},
-	{
-		"ID": "tree_middle",
-		"Name": "Tree-Middle",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/objects/tree_middle.png"	
-	},
-	{
-		"ID": "tree_top",
-		"Name": "Tree-Top",
-		"Level": 2,
-		"Passable": true,
-		"ImageURI": "graphics/objects/tree_top.png"	
-	},
-	{
-		"ID": "grass-ledge-horizontal-left",
-		"Name": "Ledge Left",
-		"Level": 0,
-		"Passable": false,
-		"Speed": 0.0,
-		"ImageURI": "graphics/terrain/ledge_left.png"	
-	},
-	{
-		"ID": "grass-ledge-horizontal-middle",
-		"Name": "Ledge Middle",
-		"Level": 0,
-		"Passable": false,
-		"Speed": 0.3,
-		"Flags": [
-			"ledge", "horizontal"
-		],
-		"ImageURI": "graphics/terrain/ledge.png"	
-	},
-	{
-		"ID": "grass-ledge-horizontal-right",
-		"Name": "Lidge Right",
-		"Level": 0,
-		"Passable": false,
-		"Speed": 0.0,
-		"ImageURI": "graphics/terrain/ledge_right.png"	
-	},
-	{
-		"ID": "water_still_bottom_left",
-		"Name": "Still Water (Bottom Left)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_bottom_left.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_bottom_middle",
-		"Name": "Still Water (Bottom middle)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_bottom_middle.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_bottom_right",
-		"Name": "Still Water (Bottom Right)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_bottom_right.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_middle",
-		"Name": "Still Water (Middle)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_middle.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_middle_left",
-		"Name": "Still Water (Middle Left)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_middle_left.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_middle_right",
-		"Name": "Still Water (Middle Right)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_middle_right.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_top_right",
-		"Name": "Still Water (Top Right)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_top_right.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_top_left",
-		"Name": "Still Water (Top Left)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_top_left.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_top_middle",
-		"Name": "Still Water (Top Middle)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_top_middle.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_corner_bottom_left",
-		"Name": "Still Water (Corner Bottom Left)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_corner_bottom_left.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_corner_bottom_right",
-		"Name": "Still Water (Corner Bottom Right)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_corner_bottom_right.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_corner_top_left",
-		"Name": "Still Water (Corner Top Left)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_corner_top_left.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
-		"ID": "water_still_corner_top_right",
-		"Name": "Still Water (Corner Top Right)",
-		"Level": 0,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/water_still_corner_top_right.png",
-		"Flags": [
-			"water", "swimable"
-		]
-	},
-	{
+    {
+        "ID": "grass",
+        "Name": "Grass",
+        "Level": 0,
+        "Passable": true,
+        "Speed": 1.0,
+        "Flags": [
+            "green",
+            "soft"
+        ],
+        "ImageURI": "graphics/terrain/grass.png"
+    },
+    {
+        "ID": "flower",
+        "Name": "Flower",
+        "Level": 1,
+        "Passable": true,
+        "Speed": 1.0,
+        "Flags": [
+            "green",
+            "soft"
+        ],
+        "ImageURI": "graphics/terrain/flowers.png",
+        "Dynamic": true,
+        "AnimationDefinition": "data/animations/flower.json",
+        "AnimationContainer": "flower",
+        "DefaultAnimation": "default"
+    },
+    {
+        "ID": "bush",
+        "Name": "Bush",
+        "Level": 1,
+        "Passable": false,
+        "Flags": [
+            "green",
+            "thorny"
+        ],
+        "ImageURI": "graphics/terrain/bush.png"
+    },
+    {
+        "ID": "blocked",
+        "Name": "Blocked",
+        "Level": 2,
+        "Passable": false,
+        "Flags": [
+            "editorElement"
+        ],
+        "ImageURI": "graphics/terrain/blocked.png"
+    },
+    {
+        "ID": "grassBush",
+        "Name": "GrassBush",
+        "Level": 1,
+        "Passable": true,
+        "Flags": [
+            "encounter"
+        ],
+        "ImageURI": "graphics/objects/grassBush.png"
+    },
+    {
+        "ID": "tree_bottom",
+        "Name": "Tree-Bottom",
+        "Level": 0,
+        "Passable": true,
+        "ImageURI": "graphics/objects/tree_bottom2.png"
+    },
+    {
+        "ID": "tree_middle",
+        "Name": "Tree-Middle",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/objects/tree_middle.png"
+    },
+    {
+        "ID": "tree_top",
+        "Name": "Tree-Top",
+        "Level": 2,
+        "Passable": true,
+        "ImageURI": "graphics/objects/tree_top.png"
+    },
+    {
+        "ID": "grass-ledge-horizontal-left",
+        "Name": "Ledge Left",
+        "Level": 0,
+        "Passable": false,
+        "Speed": 0.0,
+        "ImageURI": "graphics/terrain/ledge_left.png"
+    },
+    {
+        "ID": "grass-ledge-horizontal-middle",
+        "Name": "Ledge Middle",
+        "Level": 0,
+        "Passable": false,
+        "Speed": 0.3,
+        "Flags": [
+            "ledge",
+            "horizontal"
+        ],
+        "ImageURI": "graphics/terrain/ledge.png"
+    },
+    {
+        "ID": "grass-ledge-horizontal-right",
+        "Name": "Lidge Right",
+        "Level": 0,
+        "Passable": false,
+        "Speed": 0.0,
+        "ImageURI": "graphics/terrain/ledge_right.png"
+    },
+    {
+        "ID": "water_still_bottom_left",
+        "Name": "Still Water (Bottom Left)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_bottom_left.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_bottom_middle",
+        "Name": "Still Water (Bottom middle)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_bottom_middle.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_bottom_right",
+        "Name": "Still Water (Bottom Right)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_bottom_right.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_middle",
+        "Name": "Still Water (Middle)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_middle.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_middle_left",
+        "Name": "Still Water (Middle Left)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_middle_left.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_middle_right",
+        "Name": "Still Water (Middle Right)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_middle_right.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_top_right",
+        "Name": "Still Water (Top Right)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_top_right.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_top_left",
+        "Name": "Still Water (Top Left)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_top_left.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_top_middle",
+        "Name": "Still Water (Top Middle)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_top_middle.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_corner_bottom_left",
+        "Name": "Still Water (Corner Bottom Left)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_corner_bottom_left.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_corner_bottom_right",
+        "Name": "Still Water (Corner Bottom Right)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_corner_bottom_right.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_corner_top_left",
+        "Name": "Still Water (Corner Top Left)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_corner_top_left.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
+        "ID": "water_still_corner_top_right",
+        "Name": "Still Water (Corner Top Right)",
+        "Level": 0,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/water_still_corner_top_right.png",
+        "Flags": [
+            "water",
+            "swimable"
+        ]
+    },
+    {
         "ID": "sand-grass-botom-left",
         "Name": "Sand-Grass-Botom-Left",
         "Level": 0,
@@ -324,7 +341,7 @@
         "Passable": true,
         "ImageURI": "graphics/terrain/sand.png"
     },
-	{
+    {
         "ID": "water-sand-bottom-left",
         "Name": "Water-Sand-Bottom-Left",
         "Level": 0,
@@ -407,140 +424,151 @@
         "Level": 0,
         "Passable": true,
         "ImageURI": "graphics/terrain/water-sand-top-right.png"
-    },	
-	{
-		"ID": "bridge_bottom_left",
-		"Name": "Bridge (Bottom Left)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_bottom_left.png"	
-	},
-	{
-		"ID": "bridge_bottom_middle",
-		"Name": "Bridge (Bottom Middle)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_bottom_middle.png"	
-	},
-	{
-		"ID": "bridge_bottom_middle2",
-		"Name": "Bridge (Bottom Middle2)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_bottom_middle2.png"	
-	},
-	{
-		"ID": "bridge_bottom_right",
-		"Name": "Bridge (Bottom Right)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_bottom_right.png"	
-	},
-	{
-		"ID": "bridge_left_middle",
-		"Name": "Bridge (Left Middle)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_left_middle.png"	
-	},
-	{
-		"ID": "bridge_middle_left",
-		"Name": "Bridge (Middle Left)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_left.png"	
-	},
-	{
-		"ID": "bridge_middle_left2",
-		"Name": "Bridge (Middle Left2)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_left2.png"	
-	},
-	{
-		"ID": "bridge_middle_middle",
-		"Name": "Bridge (Middle Middle)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_middle.png"	
-	},
-	{
-		"ID": "bridge_middle_middle2",
-		"Name": "Bridge (Middle Middle2)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_middle2.png"	
-	},
-	{
-		"ID": "bridge_middle_right",
-		"Name": "Bridge (Middle Right)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_right.png"	
-	},
-	{
-		"ID": "bridge_middle_right2",
-		"Name": "Bridge (Middle Right2)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_middle_right2.png"	
-	},
-	{
-		"ID": "bridge_right_top",
-		"Name": "Bridge (Right Top)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_right_top.png"	
-	},
-	{
-		"ID": "bridge_top_left",
-		"Name": "Bridge (Top Left)",
-		"Level": 1,
-		"Passable": false,
-		"ImageURI": "graphics/terrain/bridge/bridge_top_left.png"	
-	},
-	{
-		"ID": "bridge_top_middle",
-		"Name": "Bridge (Top Middle)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_top_middle.png"	
-	},
-	{
-		"ID": "bridge_top_middle2",
-		"Name": "Bridge (Top Middle2)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_top_middle2.png"	
-	},
-	{
-		"ID": "bridge_top_middle3",
-		"Name": "Bridge (Top Middle3)",
-		"Level": 1,
-		"Passable": true,
-		"ImageURI": "graphics/terrain/bridge/bridge_top_middle3.png"	
-	},
-	{
-		"ID": "PlayerSpawn",
-		"Name": "Player Spawn",
-		"Level": 1,
-		"Passable": true,
-		"Speed": 1.0,
-		"Flags": [
-			"player", "editorElement"
-		],
-		"ImageURI": "graphics/dynamic/pichu.png"	
-	},
+    },
     {
-        "ID":  "NPCSpawn",
-        "Name":  "NPC-Spawner",
-        "Level":  1,
-        "Passable": "true",
-        "Speed":  1.0,
+        "ID": "bridge_bottom_left",
+        "Name": "Bridge (Bottom Left)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_bottom_left.png"
+    },
+    {
+        "ID": "bridge_bottom_middle",
+        "Name": "Bridge (Bottom Middle)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_bottom_middle.png"
+    },
+    {
+        "ID": "bridge_bottom_middle2",
+        "Name": "Bridge (Bottom Middle2)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_bottom_middle2.png"
+    },
+    {
+        "ID": "bridge_bottom_right",
+        "Name": "Bridge (Bottom Right)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_bottom_right.png"
+    },
+    {
+        "ID": "bridge_left_middle",
+        "Name": "Bridge (Left Middle)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_left_middle.png"
+    },
+    {
+        "ID": "bridge_middle_left",
+        "Name": "Bridge (Middle Left)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_left.png"
+    },
+    {
+        "ID": "bridge_middle_left2",
+        "Name": "Bridge (Middle Left2)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_left2.png"
+    },
+    {
+        "ID": "bridge_middle_middle",
+        "Name": "Bridge (Middle Middle)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_middle.png"
+    },
+    {
+        "ID": "bridge_middle_middle2",
+        "Name": "Bridge (Middle Middle2)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_middle2.png"
+    },
+    {
+        "ID": "bridge_middle_right",
+        "Name": "Bridge (Middle Right)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_right.png"
+    },
+    {
+        "ID": "bridge_middle_right2",
+        "Name": "Bridge (Middle Right2)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_middle_right2.png"
+    },
+    {
+        "ID": "bridge_right_top",
+        "Name": "Bridge (Right Top)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_right_top.png"
+    },
+    {
+        "ID": "bridge_top_left",
+        "Name": "Bridge (Top Left)",
+        "Level": 1,
+        "Passable": false,
+        "ImageURI": "graphics/terrain/bridge/bridge_top_left.png"
+    },
+    {
+        "ID": "bridge_top_middle",
+        "Name": "Bridge (Top Middle)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_top_middle.png"
+    },
+    {
+        "ID": "bridge_top_middle2",
+        "Name": "Bridge (Top Middle2)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_top_middle2.png"
+    },
+    {
+        "ID": "bridge_top_middle3",
+        "Name": "Bridge (Top Middle3)",
+        "Level": 1,
+        "Passable": true,
+        "ImageURI": "graphics/terrain/bridge/bridge_top_middle3.png"
+    },
+    {
+        "ID": "PlayerSpawn",
+        "Name": "Player Spawn",
+        "Level": 1,
+        "Passable": true,
+        "Speed": 1.0,
+        "Flags": [
+            "player",
+            "editorElement"
+        ],
+        "ImageURI": "graphics/dynamic/pichu.png"
+    },
+    {
+        "ID": "NPCSpawn",
+        "Name": "NPC-Spawner",
+        "Level": 1,
+        "Passable": true,
+        "Speed": 1.0,
         "Flags": [
             "editorElement"
         ],
-        "ImageURI":  "graphics/objects/unknown.png"
-
+        "ImageURI": "graphics/objects/unknown.png"
+    },
+    {
+        "ID": "Teleport",
+        "Name": "Teleport",
+        "Level": 2,
+        "Passable": true,
+        "Speed": 1.0,
+        "Flags": [
+            "editorElement"
+        ],
+        "ImageURI": "graphics/objects/teleporter.png"
     }
 ]

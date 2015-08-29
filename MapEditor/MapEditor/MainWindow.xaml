@@ -36,6 +36,8 @@
                 <MenuItem Header="_New Map" Click="NewMap" />
                 <MenuItem Header="_Open Map" Click="OpenMap" />
                 <MenuItem Header="_Save Map" Click="SaveMap" />
+                <Separator />
+                <MenuItem Header="_Change Size" Click="ChangeSize" />
 
             </MenuItem>
             <MenuItem Header="Editor">
@@ -115,7 +117,7 @@
                                 <Label Content="Scripted" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top"/>
                                 <Label Content="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </controls:ExtGrid>
-                            <WrapPanel x:Name="ScriptedTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Visible">
+                            <WrapPanel x:Name="ScriptedTileHolder" Background="#FFE5E5E5" Orientation="Horizontal" MinHeight="30" Visibility="Collapsed">
                                 <controls:TileNPC></controls:TileNPC>
                             </WrapPanel>
 

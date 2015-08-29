@@ -105,6 +105,7 @@
     <TypeScriptCompile Include="Profiler.ts" />
     <TypeScriptCompile Include="renderer.ts" />
     <TypeScriptCompile Include="scriptHandler.ts" />
+    <TypeScriptCompile Include="TileHandler.ts" />
     <TypeScriptCompile Include="windowManager.ts" />
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@
 /// <reference path="MultiplayerHandler.ts" />
 /// <reference path="Profiler.ts" />
 /// <reference path="pathHandler.ts" />
+/// <reference path="TileHandler.ts" />
 
 /**
  * Main Class
@@ -92,6 +93,11 @@ class GameHandler
      * Handler used for Pathfinding
      */
     public pathHandler: PathHandler;
+
+    /**
+     * Handler used for managing Tile-Events
+     */
+    public tileHandler: TileHandler;
 
     /**
      * List of predfined NPCs
@@ -176,6 +182,7 @@ class GameHandler
         this.playerManager = new PlayerManager(this, this.playerAnimationHandler, this.config.playerModel);
         this.npcManager = new NPCHandler(this, this.middleAnimationHandler);
         this.pathHandler = new PathHandler(this);
+        this.tileHandler = new TileHandler(this);
     }
 
     /**
@@ -396,13 +403,14 @@ class GameHandler
     /**
      * Change the current Level
      * @param path Path to new Level File
+     * @param callback Is triggered when the Call is ready
      */
-    public changeLevel(path: string)
+    public changeLevel(path: string, callback?: () => void)
     {
         this.eventHandler.callEvent("preLevelChange", this, path);
 
         this.config.mapPath = path;
-        this.map = undefined;
+        this.map = [];
         this.tileIDIndex = {};
         this.tileFlagIndex = {};
         this.elementsFlagIndex = {};
@@ -414,6 +422,12 @@ class GameHandler
             this.playerManager.resetPlayerModel();
 
             this.eventHandler.callEvent("postLevelChange", this, null);
+
+            if (callback !== undefined)
+            {
+                callback();
+            }
+
         }, true);
     }
 
@@ -438,7 +452,7 @@ class GameHandler
             $.each(result, (i, column) =>
             {
                 count += column.length;
-            }); 
+            });
 
             console.log("TileCount: " + count + " - Max: " + maxTileCount);
             if (count > maxTileCount)
@@ -458,7 +472,7 @@ class GameHandler
 
             if (reset)
             {
-                var handler = [this.bottomAnimationHandler, this.middleAnimationHandler, this.middleAnimationHandler, this.playerAnimationHandler];
+                var handler = [this.bottomAnimationHandler, this.middleAnimationHandler, this.topAnimationHandler, this.playerAnimationHandler];
                 $.each(handler, function (_, el)
                 {
                     if (el !== undefined)
@@ -528,7 +542,10 @@ class GameHandler
                 }
             };
 
-            executeNext();
+            window.setTimeout(() =>
+            {
+                executeNext();
+            }, 150);
         });
     }
 
@@ -601,6 +618,26 @@ class GameHandler
             });
         }
 
+        if (tile.Events !== undefined && tile.Events !== null)
+        {
+            tile.EventMapping = {};
+
+            $.each(tile.Events, (_, el) =>
+            {
+                tile.EventMapping[el.key] = el.value;
+            });
+        }
+
+        if (tile.Data !== undefined && tile.Data !== null)
+        {
+            tile.DataMapping = {};
+
+            $.each(tile.Data, (_, el) =>
+            {
+                tile.DataMapping[el.key] = el.value;
+            });
+        }
+
         var postNPC = () =>
         {
             this.eventHandler.callEvent("postTileUpdate", this, tile);
@@ -610,29 +647,43 @@ class GameHandler
         // Add NPCs:
         if (tile.MiddleElementID === "NPCSpawn")
         {
-            var npcRegex: RegExp = new RegExp("NPC=(.+)");
-            var nameRegex: RegExp = new RegExp("NPCName=(.+)");
-            var npcID = null;
-            var npcName = null;
+            var npcID : string = undefined;
+            var npcName : string = undefined;
 
-            $.each(tile.Flags, function (_, flag)
+            if (tile.DataMapping !== undefined && tile.DataMapping !== null)
             {
-                if (npcRegex.test(flag))
-                {
-                    var idMatch = npcRegex.exec(flag);
-                    npcID = idMatch[1];
-                }
-                if (nameRegex.test(flag))
-                {
-                    var nameMatch = npcRegex.exec(flag);
-                    npcName = nameMatch[1];
-                }
-
-            });
-
-            if (npcID === null)
+                npcID = tile.DataMapping["NPC"];
+                npcName = tile.DataMapping["NPC-Name"];
+            }
+            else
             {
-                this.warn("Element has Element 'NPCSpawn' but don't define the Flag 'NPC=...'!", tile);
+                console.warn("No Data Attribute found for NPC-Spawner. Using Flags instead. This method is deprecated");
+
+                var npcRegex: RegExp = new RegExp("NPC=(.+)");
+                var nameRegex: RegExp = new RegExp("NPCName=(.+)");
+
+                $.each(tile.Flags, function (_, flag)
+                {
+                    if (npcRegex.test(flag))
+                    {
+                        var idMatch = npcRegex.exec(flag);
+                        npcID = idMatch[1];
+                    }
+                    if (nameRegex.test(flag))
+                    {
+                        var nameMatch = npcRegex.exec(flag);
+                        npcName = nameMatch[1];
+                    }
+
+                });
+            }
+
+            if (npcID === undefined)
+            {
+                console.warn("Element has Element 'NPCSpawn' but don't define the Data 'NPC=...'!", tile);
+
+                postNPC();
+                return;
             }
             else
             {
@@ -662,16 +713,14 @@ class GameHandler
                     addNPC();
                     return;
                 }
-                //TODO: Add NPC-Script
             }
-
-
+            //TODO: Add NPC-Script
         }
         else
         {
             postNPC();
-            return;
         }
+
 
     }
 
@@ -682,6 +731,12 @@ class GameHandler
      */
     public getTileAtPos(x: number, y: number): Tile
     {
+        if (this.map === undefined || this.map[y - 1] === undefined || this.map[y - 1][x - 1] === undefined)
+        {
+            console.log("Found no Tile at Position: ", x, y);
+            return null;
+        }
+
         return this.map[y - 1][x - 1];
     }
 
@@ -694,7 +749,7 @@ class GameHandler
     {
         var tile = this.getTileAtPos(x, y);
 
-        if (tile === undefined)
+        if (tile === undefined || tile === null)
         {
             this.warn("Tile not found: ", [x, y]);
             return false;

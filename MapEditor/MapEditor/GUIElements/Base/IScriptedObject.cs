@@ -9,7 +9,7 @@ namespace MapEditor.GUIElements.Base
 {
     interface IScriptedObject
     {
-        bool prePaint(MapTile destination);
+        Task<bool> prePaint(MapTile destination);
 
         void postPaint(MapTile destination);
 

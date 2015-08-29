@@ -15,6 +15,11 @@ class EventHandler
         [id: string]: {
             run: boolean;
             callback: (sender: any, args: any) => void;
+            control: string;
+            timeout: number;
+            lastTick: number;
+            sender: any;
+            args: any;
         }
     } = {};
 
@@ -22,6 +27,30 @@ class EventHandler
     {
         this.gameHandler = gameHandler;
         gameHandler.setEventHandler(this);
+
+        this.addTimedTrigger("internal_Heartbeat", "TimerHeartbeat", 500, this);
+        this.addEventListener("TimerHeartbeat", (s, a) =>
+        {
+            $.each(this.timedEvents, (id, data) =>
+            {
+                var time = Date.now() - data.lastTick;
+
+                if (data.run === true && time > (data.timeout * 2) && time > 200)
+                {
+                    console.warn("Timer '" + id + "' seems to have crashed! Restart ...");
+                    console.log("Timer was not active for: " + time + " ms");
+
+                    var control = Math.random().toString();
+                    this.timedEvents[id].control = control;
+                    
+                    window.setTimeout(() =>
+                    {
+                        this.triggerEvent(id, control);
+                    }, 1);
+                }
+            });
+        });
+
     }
 
 
@@ -77,52 +106,69 @@ class EventHandler
         return (this.getEvents().indexOf(index) !== -1);
     }
 
-    public addTimer(name: string, callback: (sender: any, args: any) => void, intervall: number, sender?: any, args?: any)
+    public addTimer(name: string, callback: (sender: any, args: any) => void, timeout: number, sender?: any, args?: any)
     {
         if (this.timedEvents[name] !== undefined)
         {
             this.stopTimer(name);
         }
 
+        var control = Math.random().toString();
 
         this.timedEvents[name] = {
             run: true,
-            callback: callback
+            callback: callback,
+            control: control,
+            timeout: timeout,
+            lastTick: Number.MAX_VALUE,
+            sender: sender,
+            args: args
         };
 
-        var self = this;
-        var triggerEvent = function ()
+
+        this.callEvent("TaskCreated", self, "Timer - " + name);
+        window.setTimeout(() => { this.triggerEvent(name, control); }, timeout);
+    }
+
+
+    private triggerEvent(name: string, control: string)
+    {
+        try
         {
-            try
+
+            var data = this.timedEvents[name];
+
+            if (control !== data.control)
             {
+                // Wrong Context for Timer: kill current Event
+                this.callEvent("TaskDisposed", self, "Timer - " + name);
+                console.info("Stopping Timer '" + name + "': Wrong Context", control, data.control);
 
-                var data = self.timedEvents[name];
-
-                if ((data !== undefined) && (data.run))
-                {
-                    data.callback(sender, args);
-
-                    self.callEvent("TaskCreated", self, "Timer - " + name);
-
-                    window.setTimeout(triggerEvent, intervall);
-                }
-                else
-                {
-                    delete self.timedEvents[name];
-                }
-
-            }
-            catch (ex)
-            {
-                self.gameHandler.warn("Exception while executing timed Trigger '" + name + "': ", ex);
-                delete self.timedEvents[name];
+                return;
             }
 
-            self.callEvent("TaskDisposed", self, "Timer - " + name);
-        };
+            if ((data !== undefined) && (data.run))
+            {
+                data.lastTick = Date.now();
 
-        self.callEvent("TaskCreated", self, "Timer - " + name);
-        window.setTimeout(triggerEvent, intervall);
+                data.callback(data.sender, data.args);
+
+                this.callEvent("TaskCreated", self, "Timer - " + name);
+
+                window.setTimeout(() => { this.triggerEvent(name, control); }, data.timeout);
+            }
+            else
+            {
+                delete this.timedEvents[name];
+            }
+
+        }
+        catch (ex)
+        {
+            this.gameHandler.warn("Exception while executing timed Trigger '" + name + "': ", ex);
+            delete this.timedEvents[name];
+        }
+        this.callEvent("TaskDisposed", this, "Timer - " + name);
     }
 
 

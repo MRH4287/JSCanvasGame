@@ -102,12 +102,19 @@ class AnimationHandler
 
         $.each(this.playableAnimations, function (id, el: PlayableAnimation)
         {
+            self.stopAnimation(id);
             self.stopAnimation(el.ID);
+        });
+
+        $.each(this.animationGroups, function (name, elements)
+        {
+            self.eventHandler.stopTimer("anim-" + name);
         });
 
         this.playableAnimations = {};
         this.animationGroups = {};
         this.genericDrawActions = {};
+
     }
 
     public setPosition(elementName: string, x: number, y: number, rerender = true)
@@ -205,29 +212,10 @@ class AnimationHandler
         {
             this.gameHandler.warn("Unknown Animation Cotainer: ", containerName, this.gameHandler.animations);
 
-
-
             return;
         }
 
-
         var animation: Animation = container.Animations[startAnimation];
-
-        if (this.useAnimationGroups)
-        {
-            if ((animation.AnimationGroup === undefined) || (animation.AnimationGroup === null) || (animation.AnimationGroup === ""))
-            {
-                animation.AnimationGroup = "group-" + ElementID;
-            }
-            else if (animation.AnimationGroup === "@")
-            {
-                animation.AnimationGroup = "group-" + Math.random() + Math.random();
-            }
-        }
-        else
-        {
-            animation.AnimationGroup = this.staticName;
-        }
 
         var element: PlayableAnimation =
             {
@@ -241,7 +229,7 @@ class AnimationHandler
 
         this.playableAnimations[ElementID] = element;
 
-        this.playAnimation(ElementID, startAnimation, animation.AnimationGroup);
+        this.playAnimation(ElementID, startAnimation);
 
         return element;
     }
@@ -314,7 +302,7 @@ class AnimationHandler
 
     private getNewAnimationInstance(input: Animation): Animation
     {
-        return <Animation>jQuery.extend({}, input);
+        return <Animation>jQuery.extend(true, {}, input);
     }
 
     public playAnimation(elementID: string, animation: string, group?: string)
@@ -323,7 +311,7 @@ class AnimationHandler
 
         if (container === undefined)
         {
-            console.error("Can't play Animation: No Animation Container with name '" + elementID + "' can be found!");
+            console.error("Can't play Animation: No Animation Container for element '" + elementID + "' can be found!");
         }
 
         if ((container.Animation !== null) && (container.Animation.ID === animation))
@@ -340,14 +328,23 @@ class AnimationHandler
 
         if ((group === undefined) || (group === null) || (group === ""))
         {
-            if ((newAnimation.AnimationGroup === undefined) || (newAnimation.AnimationGroup === null) || (newAnimation.AnimationGroup === ""))
+            if ((container.AnimationGroup !== undefined) && (container.AnimationGroup !== null) && (container.AnimationGroup !== ""))
             {
-                group = "group-" + Math.random();
+                group = container.AnimationGroup;
             }
-            else
+            else if ((newAnimation.AnimationGroup !== undefined) && (newAnimation.AnimationGroup !== null) && (newAnimation.AnimationGroup !== ""))
             {
                 group = newAnimation.AnimationGroup;
             }
+            else
+            {
+                do
+                {
+                    group = "group-" + elementID + "-" + Math.random();
+                }
+                while (this.animationGroups[group] !== undefined);
+            }
+
         }
 
         var timerName = (this.useAnimationGroups) ? ("anim-" + group) : this.staticName;

@@ -1129,6 +1129,43 @@ namespace MapEditor.GUIElements
             }
         }
 
+
+        /// <summary>
+        /// The ID of the <see cref="Tile"/> that corresponds with this Element
+        /// </summary>
+        public string ID
+        {
+            get
+            {
+                if (this.Tile == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Tile.ID;
+                }
+            }
+
+            set
+            {
+                if (this.Tile == null)
+                {
+                    throw new NullReferenceException();
+                }
+                else
+                {
+                    this.Tile.ID = value;
+                }
+
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("ID"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("Tooltip"));
+                }
+            }
+        }
+
         /// <summary>
         /// The Tooltip of the Element
         /// </summary>

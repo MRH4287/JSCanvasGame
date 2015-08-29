@@ -21,6 +21,7 @@
     <script src="Renderer.js"></script>
     <script src="scriptHandler.js"></script>
     <script src="windowManager.js"></script>
+    <script src="tileHandler.js"></script>
 </head>
 <body>
 
@@ -48,6 +49,7 @@
             initStaticAnimations: true,
             //mapPath: "data/largemapTmp.json",
             mapPath: "data/loadTest1.json",
+            verbose: false,
 
             width: 600,
             height: 400,
@@ -60,10 +62,8 @@
 
         var profiler = new Profiler(gameHandler);
 
-        gameHandler.execVerbose(function()
-        {
-            gameHandler.init(function () { console.info("System Initialized!") });
-        });
+        gameHandler.init(function () { console.info("System Initialized!") });
+
 
         var script = new JavaScriptHandler(gameHandler);
 
@@ -71,7 +71,7 @@
         {
             window.setTimeout(function ()
             {
-            //    script.include("testScript.js");
+                //    script.include("testScript.js");
 
             }, 1000);
         });

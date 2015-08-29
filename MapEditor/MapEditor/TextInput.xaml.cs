@@ -65,7 +65,12 @@ namespace MapEditor
             }
         }
 
-
-
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (Callback != null)
+            {
+                Callback(null);
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Data.JSON;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -78,7 +80,7 @@ namespace MapEditor.Elements
         /// Used for Event-System 
         /// </summary>
         [DataMember(IsRequired = false)]
-        public string ID = null;
+        public string ID { get; set; }
 
         /// <summary>
         /// The Unique ID of the Element in the lowest Level
@@ -120,7 +122,13 @@ namespace MapEditor.Elements
         /// The Events fired by this Tile
         /// </summary>
         [DataMember(IsRequired=false)]
-        public List<KeyValuePair<string, string>> Events = new List<KeyValuePair<string, string>>(0);
+        public ObservableCollection<KeyValuePair<string, string>> Events = new ObservableCollection<KeyValuePair<string, string>>();
+
+        /// <summary>
+        /// The Data that is stored in this Tile
+        /// </summary>
+        [DataMember(IsRequired = false)]
+        public ObservableCollection<KeyValuePair<string, string>> Data = new ObservableCollection<KeyValuePair<string, string>>();
 
 
         /// <summary>
@@ -132,7 +140,7 @@ namespace MapEditor.Elements
         /// 
         public static List<List<Tile>> Create(string JSON, Dictionary<string, ElementDefinition> elements)
         {
-            var array = Data.JSON.JSONSerializer.deserialize<List<List<Tile>>>(JSON);
+            var array = JSONSerializer.deserialize<List<List<Tile>>>(JSON);
 
             for (int i = 0; i < array.Count; i++ )
             {

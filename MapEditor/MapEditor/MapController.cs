@@ -223,6 +223,18 @@ namespace MapEditor
                     this.TileHolder.Children.Add(tileImage);
                 }
 
+                // Add Teleporter to ScriptedTileHolder
+                ElementDefinition teleporter = (Elements.ContainsKey("Teleport") ? Elements["Teleport"] : null);
+                if (teleporter != null)
+                {
+                    var tileTeleporter = new TileTeleporter(teleporter);
+
+                    tileTeleporter.MouseDown += tileImage_MouseDown;
+
+                    this.ScriptedTileHolder.Children.Add(tileTeleporter);
+                }
+
+
                 // Add NPCs to ScriptedTileHolder
 
                 if (npcData != null)
@@ -234,7 +246,7 @@ namespace MapEditor
                         {
                             var tileNPC = new TileNPC(item.Value, npcSpawnDef);
 
-                            tileNPC.MouseDown += tileNPC_MouseDown;
+                            tileNPC.MouseDown += tileScripted_MouseDown;
 
                             this.ScriptedTileHolder.Children.Add(tileNPC);
                         }
@@ -317,11 +329,11 @@ namespace MapEditor
         }
 
         /// <summary>
-        /// Triggered when one <see cref="TileNPC"/> was clicked
+        /// Triggered when one <see cref="IScriptedObject"/> was clicked
         /// </summary>
         /// <param name="sender">TileNPC instance</param>
         /// <param name="e">Event Parameter</param>
-        void tileNPC_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        void tileScripted_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (this.SelectedTile != null)
             {
@@ -330,7 +342,7 @@ namespace MapEditor
 
             state = CommandState.PaintScriptedElement;
 
-            SelectedTile = (TileNPC)sender;
+            SelectedTile = (Selectable)sender;
             SelectedTile.Selected = true;
         }
 
@@ -359,9 +371,134 @@ namespace MapEditor
 
                 addRow(tiles, y);
             }
+        }
+
+        public void changeMapSize(int width, int height)
+        {
+            bool different = false;
+            different |= height < MapHolder.Children.Count;
+
+            if (MapHolder.Children.Count > 0)
+            {
+                different |= width < ((StackPanel)MapHolder.Children[0]).Children.Count;
+            }
+
+
+            Action work = () =>
+            {
+                var heightDiff = height - MapHolder.Children.Count;
+                if (heightDiff < 0)
+                {
+                    heightDiff *= -1;
+                    MapHolder.Children.RemoveRange(height, heightDiff);
+                }
+
+                for (int y = 0; y < height; y++)
+                {
+                    StackPanel container = null;
+                    if (y >= MapHolder.Children.Count)
+                    {
+                        if (MapHolder.Children.Count == y)
+                        {
+                            container = getRowContainer();
+                            MapHolder.Children.Add(container);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        container = MapHolder.Children[y] as StackPanel;
+                    }
+
+
+                    var widthDiff = width - container.Children.Count;
+                    if (widthDiff < 0)
+                    {
+                        widthDiff *= -1;
+                        container.Children.RemoveRange(width, widthDiff);
+
+                    }
+                    else
+                    {
+                        for (int x = 0; x < widthDiff; x++)
+                        {
+                            var tile = new Tile();
+                            tile[ElementLevel.Bottom] = Elements["grass"];
+
+                            addElement(tile, y);
+                        }
+                    }
+                }
+
+
+
+            };
+
+
+            if (different)
+            {
+                var result = MessageBox.Show("The selected Size is smaller than the current. Continue?", "Warning", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    work();
+                }
+            }
+            else
+            {
+                work();
+            }
+
 
 
         }
+
+
+        /// <summary>
+        /// Add an <see cref="Tile"/> to a specific Row
+        /// </summary>
+        /// <param name="input">Tile Input</param>
+        /// <param name="row">The row to add</param>
+        public void addElement(Tile input, int row)
+        {
+            StackPanel container = null;
+            if (row >= MapHolder.Children.Count)
+            {
+                if (MapHolder.Children.Count == row)
+                {
+                    container = getRowContainer();
+                    MapHolder.Children.Add(container);
+                }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("row", "The Line with this Index was not found!");
+                }
+            }
+            else
+            {
+                container = MapHolder.Children[row] as StackPanel;
+            }
+
+            if (container == null)
+            {
+                throw new Exception();
+            }
+
+            var mapTile = MapTile.Create(input);
+
+            mapTile.MouseDown += tile_MouseDown;
+            mapTile.MouseMove += tile_MouseMove;
+            mapTile.MouseUp += tile_MouseUp;
+
+            mapTile.X = container.Children.Count + 1;
+            mapTile.Y = row + 1;
+
+            container.Children.Add(mapTile);
+        }
+
+
 
         /// <summary>
         /// Adds a Row of <see cref="Tile" /> instances to the Map 
@@ -370,40 +507,15 @@ namespace MapEditor
         /// <param name="YIndex">The Current Y-Coordinate</param>
         public void addRow(IEnumerable<Tile> elements, int YIndex = 0)
         {
-            var mapTileArray = elements.Select(el => MapTile.Create(el)).ToArray();
-
-            for (int x = 0; x < mapTileArray.Length; x++)
+            var elementList = elements.ToArray();
+            for (int x = 0; x < elementList.Length; x++)
             {
-                var tile = mapTileArray[x];
-
-                tile.MouseDown += tile_MouseDown;
-                tile.MouseMove += tile_MouseMove;
-                tile.MouseUp += tile_MouseUp;
-
-                tile.X = x + 1;
-                tile.Y = YIndex + 1;
+                addElement(elementList[x], YIndex);
             }
 
-
-            addRow(mapTileArray);
         }
 
 
-        /// <summary>
-        /// Adds a Row of <see cref="MapTile"/> instances to the Map
-        /// </summary>
-        /// <param name="elements">List of <see cref="MapTile"/> instances</param>
-        public void addRow(IEnumerable<MapTile> elements)
-        {
-            var container = getRowContainer();
-
-            foreach (var item in elements)
-            {
-                container.Children.Add(item);
-            }
-
-            MapHolder.Children.Add(container);
-        }
 
 
         /// <summary>
@@ -727,7 +839,7 @@ namespace MapEditor
         /// <param name="source">Destination of Mouse Action</param>
         /// <param name="lastSelected">The Element that was selected before the current</param>
         /// <param name="click">Was the Event Triggered by the MouseDown Event</param>
-        private void execMouseEvent(MapTile source, MapTile lastSelected, bool click = false)
+        private async void execMouseEvent(MapTile source, MapTile lastSelected, bool click = false)
         {
             if (source == null)
             {
@@ -743,7 +855,7 @@ namespace MapEditor
             if ((state == CommandState.Paint) && (this.SelectedTile != null) && (this.SelectedTile is TileImage))
             {
                 var element = (SelectedTile as TileImage);
-                if (element.prePaint(source))
+                if (await element.prePaint(source))
                 {
                     draw(element.Element, source, element);
                     element.postPaint(source);
@@ -776,16 +888,16 @@ namespace MapEditor
             else if ((state == CommandState.PaintPrefab) && (this.SelectedTile != null) && (this.SelectedTile is TilePrefab))
             {
                 var element = (SelectedTile as TilePrefab);
-                if (element.prePaint(source))
+                if (await element.prePaint(source))
                 {
-                    drawPrefab((SelectedTile as TilePrefab).Element, source);
+                     drawPrefab((SelectedTile as TilePrefab).Element, source);
                     element.postPaint(source);
-                }                
+                }
             }
             else if ((state == CommandState.PaintScriptedElement) && (this.SelectedTile != null) && (this.SelectedTile is IScriptedObject))
             {
                 var element = (SelectedTile as IScriptedObject);
-                if (element.prePaint(source))
+                if (await element.prePaint(source))
                 {
                     draw(element.ElementDefinition, source, SelectedTile as TileElement);
                     element.postPaint(source);
@@ -794,15 +906,10 @@ namespace MapEditor
             }
             else if ((state == CommandState.Select) && (source == lastSelected) && click)
             {
-                Task delayTask = new Task(() =>
-                {
-                    System.Threading.Thread.Sleep(100);
+                var editor = new TileEdit(source);
+                editor.Show();
 
-                    MessageBox.Show("Some Information ...");
-
-                });
-
-                delayTask.Start();
+                editor.Focus();
 
 
             }

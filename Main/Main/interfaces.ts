@@ -57,6 +57,12 @@ interface Tile
         key: string;
         value: string;
     }[];
+    EventMapping: { [index: string]: string };
+    Data?: {
+        key: string;
+        value: string;
+    }[];
+    DataMapping?: { [index: string]: string };
     BottomElement: ElementDefinition;
     MiddleElement: ElementDefinition;
     TopElement: ElementDefinition;

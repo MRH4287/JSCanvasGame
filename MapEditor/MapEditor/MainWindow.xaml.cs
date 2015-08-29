@@ -256,6 +256,45 @@ namespace MapEditor
             }
         }
 
+
+        private async void ChangeSize(object sender, RoutedEventArgs e)
+        {
+            if (controller.Elements == null)
+            {
+                var res = MessageBox.Show("No config loaded. Load default Config?", "Load default Config?", MessageBoxButton.YesNo);
+                if (res == MessageBoxResult.Yes)
+                {
+                    LoadDefaultConfigMenu(sender, e);
+                }
+            }
+            if (controller.Elements != null)
+            {
+                try
+                {
+                    var height = MapHolder.Children.Count;
+                    if (height == 0)
+                    {
+                        NewMap(sender, e);
+                        return;
+                    }
+
+                    var width = ((StackPanel)MapHolder.Children[0]).Children.Count;
+
+
+                    var size = await MapEditor.TextInput.Display("Insert new Map Size. Comma Seperated for X and Y", width + "," + height);
+
+                    var sizeSplit = size.Split(',');
+
+                    controller.changeMapSize(int.Parse(sizeSplit[0]), int.Parse(sizeSplit[1]));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error in Map Changing: " + ex.Message);
+                }
+            }
+        }
+
+
         private void ShowElementDisplay(object sender, RoutedEventArgs e)
         {
             if (controller.Elements == null)
@@ -304,9 +343,6 @@ namespace MapEditor
 
 
         }
-
-
-
 
 
     }

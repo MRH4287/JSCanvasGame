@@ -47,12 +47,12 @@ namespace MapEditor.GUIElements
         {
             // Check for old definitions
 
-            if (destination.Tile.Flags != null)
+            if (destination.Tile.Data != null)
             {
-                LinkedList<string> removeList = new LinkedList<string>();
-                foreach (var item in destination.Tile.Flags)
+                var removeList = new LinkedList<KeyValuePair<string, string>>();
+                foreach (var item in destination.Tile.Data)
                 {
-                    if (item.StartsWith("NPC="))
+                    if (item.Key == "NPC")
                     {
                         removeList.AddLast(item);
                     }
@@ -60,7 +60,7 @@ namespace MapEditor.GUIElements
 
                 foreach (var item in removeList)
                 {
-                    destination.Tile.Flags.Remove(item);
+                    destination.Tile.Data.Remove(item);
                 }
 
             }
@@ -72,12 +72,12 @@ namespace MapEditor.GUIElements
             // Set NPC-Flag:
             postDelete(destination);
 
-            if (destination.Tile.Flags == null)
+            if (destination.Tile.Data == null)
             {
-                destination.Tile.Flags = new System.Collections.ObjectModel.ObservableCollection<string>();
+                destination.Tile.Data = new System.Collections.ObjectModel.ObservableCollection<KeyValuePair<string, string>>();
             }
 
-            destination.Tile.Flags.Add("NPC=" + this.Element.ID);
+            destination.Tile.Data.Add(new KeyValuePair<string, string>("NPC", this.Element.ID));
         }
     }
 }
